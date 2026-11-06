@@ -222,3 +222,106 @@ h1.sekce .vystrizky { font-size: clamp(54px, 11vw, 100px); }
 .precteno { font-size: 14px; color: var(--toner-slaby); }
 .kus .precteno { margin-left: 12px; }
 .meta .precteno { border: 1px dashed var(--toner-slaby); padding: 1px 8px; }
+
+/* ============================================================
+   POHYB
+   Všechno jen když člověk nemá v systému vypnuté animace.
+   ============================================================ */
+
+/* přechod mezi stránkami: list odjede, přijede nový */
+@view-transition { navigation: auto; }
+
+@media (prefers-reduced-motion: no-preference) {
+  ::view-transition-old(root) { animation: .22s ease-in both list-ven; }
+  ::view-transition-new(root) { animation: .38s cubic-bezier(.2, .9, .3, 1) both list-sem; }
+  @keyframes list-ven { to { opacity: 0; translate: 0 -14px; rotate: -.5deg; } }
+  @keyframes list-sem { from { opacity: 0; translate: 0 18px; rotate: .6deg; } }
+
+  /* písmena se lepí jedno po druhém */
+  .js-pohyb .vystrizky .p {
+    animation: nalepit .5s cubic-bezier(.2, 1.5, .4, 1) both;
+    animation-delay: calc(var(--i) * 55ms + 80ms);
+  }
+  @keyframes nalepit {
+    from { opacity: 0; scale: 1.8; rotate: calc(var(--naklon) * 4); translate: 0 -.25em; }
+    60% { opacity: 1; }
+  }
+
+  /* lístky a fotky se přilepí, až k nim dojedeš */
+  .js-pohyb .ceka { opacity: 0; translate: 0 26px; scale: 1.04; }
+  .js-pohyb .nalepeno {
+    opacity: 1; translate: 0 0; scale: 1;
+    transition: opacity .35s ease-out, translate .55s cubic-bezier(.2, 1.3, .4, 1), scale .55s cubic-bezier(.2, 1.3, .4, 1);
+    transition-delay: var(--zpozdeni, 0ms);
+  }
+  /* páska se plácne až po papíru */
+  .js-pohyb .ceka.paska::before, .js-pohyb .ceka .paska::before { opacity: 0; scale: 1.6; }
+  .js-pohyb .nalepeno.paska::before, .js-pohyb .nalepeno .paska::before {
+    opacity: 1; scale: 1;
+    transition: opacity .2s, scale .3s cubic-bezier(.2, 1.6, .4, 1);
+    transition-delay: calc(var(--zpozdeni, 0ms) + 280ms);
+  }
+
+  /* lístek se při najetí trochu odlepí od papíru */
+  .kus .vystrizek, .rozcestnik a, .fotky figure {
+    transition: translate .25s cubic-bezier(.2, 1.4, .4, 1), filter .25s;
+  }
+  a.kus:hover .vystrizek, .rozcestnik a:hover, .fotky figure:hover {
+    translate: 0 -5px;
+    filter: drop-shadow(4px 7px 0 rgba(0, 0, 0, .16));
+  }
+
+  /* štítky se při kliknutí zmáčknou */
+  .dymo, .zalozky button { transition: translate .08s, background .15s, color .15s; }
+  .dymo:active, .zalozky button:active { translate: 0 2px; }
+
+  /* světlo kopírky při prvním otevření webu */
+  .js-kopirka body::before {
+    content: ""; position: fixed; left: 0; right: 0; top: 0; height: 110px; z-index: 50; pointer-events: none;
+    background: linear-gradient(to bottom, transparent, rgba(220, 255, 230, .55) 45%, rgba(255, 255, 255, .8) 50%, rgba(220, 255, 230, .55) 55%, transparent);
+    mix-blend-mode: screen;
+    animation: kopirka 1.1s cubic-bezier(.5, 0, .5, 1) .15s both;
+  }
+  @keyframes kopirka { from { translate: 0 -120px; } to { translate: 0 100vh; opacity: .2; } }
+
+  /* přepínání přepis / rukopis */
+  .panel:not([hidden]) { animation: list-sem .35s cubic-bezier(.2, .9, .3, 1); }
+}
+
+/* ukazatel čtení: tah zvýrazňovačem nahoře */
+.postup {
+  position: fixed; top: 0; left: 0; height: 6px; width: 100%; z-index: 40; pointer-events: none;
+  background: var(--zvyraz); transform-origin: left; transform: scaleX(0);
+  clip-path: polygon(0 20%, 100% 0, 100% 80%, 0 100%);
+}
+
+/* ---------- prohlížení fotek rukopisu ---------- */
+.prohlizec {
+  position: fixed; inset: 0; z-index: 100; display: grid; grid-template-rows: 1fr auto; place-items: center;
+  background: rgba(18, 18, 18, .92); padding: 24px 20px 18px;
+}
+.prohlizec[hidden] { display: none; }
+.prohlizec img {
+  max-width: min(100%, 900px); max-height: calc(100vh - 120px); object-fit: contain; display: block;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, .5); background: #fff;
+}
+.prohlizec .ovladani { display: flex; gap: 10px; align-items: center; flex-wrap: wrap; justify-content: center; margin-top: 14px; color: #f2f2f2; font-size: 14px; text-shadow: none; }
+.prohlizec .dymo { background: #f2f2f2; color: var(--toner); border: 0; cursor: pointer; font: 400 13px/1 "Archivo", sans-serif; letter-spacing: .14em; text-transform: uppercase; padding: 7px 11px 6px; }
+.prohlizec .dymo:hover { background: var(--zvyraz); }
+.prohlizec .popis-fotky { min-width: 10em; text-align: center; }
+.prohlizec a { color: var(--zvyraz); }
+@media (prefers-reduced-motion: no-preference) {
+  .prohlizec:not([hidden]) { animation: ztmavit .2s ease-out; }
+  .prohlizec:not([hidden]) img { animation: nalepit .4s cubic-bezier(.2, 1.3, .4, 1); --naklon: 1deg; }
+  @keyframes ztmavit { from { background: rgba(18, 18, 18, 0); } }
+}
+.fotky img, .rukopis-stranky img { cursor: zoom-in; }
+
+/* ---------- listování mezi texty ---------- */
+.listovani { display: flex; justify-content: space-between; gap: 16px; flex-wrap: wrap; margin: 40px 0 0; }
+.listovani a { text-decoration: none; display: block; max-width: 48%; }
+.listovani .kam { display: block; font-size: 13px; color: var(--toner-slaby); margin-bottom: 6px; }
+.listovani .nazev { font: 400 30px/1 "Anton", sans-serif; text-transform: uppercase; text-shadow: none; }
+.listovani a:hover .nazev { background: var(--toner); color: var(--vystrizek); }
+.listovani .dalsi { text-align: right; margin-left: auto; }
+@media (max-width: 700px) { .listovani a { max-width: 100%; } }

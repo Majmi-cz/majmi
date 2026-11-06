@@ -32,7 +32,7 @@ zin.js               skládá vystřižená písmena a přepíná přepis/rukopi
 
 1. Zkopíruj `texty/_sablona.html` a přejmenuj ho (`o-pratelstvi.html`).
 2. Napiš název VELKÝMI písmeny do `<h1 class="vystrizky">`, z výstřižků se poskládá sám.
-3. Do `texty.html` přidej odkaz (zkopíruj jeden `<a class="kus">`).
+3. Do `texty.html` přidej odkaz (zkopíruj jeden `<a class="kus">`) a na začátek `zin.js` do seznamu `TEXTY` přidej řádek s názvem, aby fungovalo listování „předchozí / další“.
 4. Fotky stránek zmenši na zhruba 1600 px a ulož do `rukopis/`.
 5. U `data-pocitadlo` napiš název souboru bez `.html` (na stránce textu i v `texty.html`), aby měl text vlastní počítadlo přečtení.
 6. V `<head>` přepiš `og:title`, `og:description` a `og:url`, aby se při sdílení ukázal správný náhled. Obrázek může zůstat `og.jpg`, nebo si uděláš vlastní (1200 × 630 px).
