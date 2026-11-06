@@ -217,3 +217,8 @@ h1.sekce .vystrizky { font-size: clamp(54px, 11vw, 100px); }
 
 .osoby strong { font-weight: 400; text-transform: uppercase; letter-spacing: .06em; }
 .osoby .dymo { margin-bottom: 6px; }
+
+/* počítadlo přečtení */
+.precteno { font-size: 14px; color: var(--toner-slaby); }
+.kus .precteno { margin-left: 12px; }
+.meta .precteno { border: 1px dashed var(--toner-slaby); padding: 1px 8px; }

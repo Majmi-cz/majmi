@@ -63,3 +63,30 @@ document.querySelectorAll('.zalozky [role="tab"]').forEach(function (tab, _, all
     });
   });
 });
+
+// 3) Počítadlo přečtení (služba Abacus, zdarma a bez registrace).
+//    <span class="precteno" data-pocitadlo="pickle-jar"></span>
+//    Na stránce textu přičte 1 (jednou za návštěvu), v seznamu jen čte.
+(function () {
+  var API = 'https://abacus.jasoncameron.dev';
+  var NS = 'majmi-cz-zapisnik';
+  var naWebu = location.hostname === 'majmi-cz.github.io';
+  document.querySelectorAll('[data-pocitadlo]').forEach(function (el) {
+    var klic = el.getAttribute('data-pocitadlo');
+    var pricist = el.hasAttribute('data-pricist') && naWebu;
+    if (pricist) {
+      try {
+        if (sessionStorage.getItem('precteno-' + klic)) pricist = false;
+        else sessionStorage.setItem('precteno-' + klic, '1');
+      } catch (e) {}
+    }
+    fetch(API + (pricist ? '/hit/' : '/get/') + NS + '/' + klic)
+      .then(function (r) { return r.status === 404 ? { value: 0 } : r.json(); })
+      .then(function (d) {
+        if (typeof d.value !== 'number') return;
+        el.textContent = 'přečteno ' + d.value + '×';
+        el.hidden = false;
+      })
+      .catch(function () {});
+  });
+})();
