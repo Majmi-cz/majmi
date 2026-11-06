@@ -156,7 +156,7 @@ a.kus:hover h3 { background: var(--toner); color: var(--vystrizek); display: inl
 .panel[hidden] { display: none; }
 
 .list-textu { max-width: 720px; margin-top: 18px; padding: 44px 46px 40px; }
-.list-textu p { margin: 0 0 1.1em; hyphens: auto; }
+.list-textu p { margin: 0 0 1.1em; }
 .list-textu h3 { margin: 2em 0 .8em; }
 .list-textu h3 span { font: 400 30px/1 "Anton", sans-serif; text-transform: uppercase; text-shadow: none; background: var(--toner); color: var(--vystrizek); padding: 2px 8px; display: inline-block; transform: rotate(-1deg); }
 
