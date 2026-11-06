@@ -33,6 +33,7 @@ zin.js               skládá vystřižená písmena a přepíná přepis/rukopi
 2. Napiš název VELKÝMI písmeny do `<h1 class="vystrizky">`, z výstřižků se poskládá sám.
 3. Do `texty.html` přidej odkaz (zkopíruj jeden `<a class="kus">`).
 4. Fotky stránek zmenši na zhruba 1600 px a ulož do `rukopis/`.
+5. V `<head>` přepiš `og:title`, `og:description` a `og:url`, aby se při sdílení ukázal správný náhled. Obrázek může zůstat `og.jpg`, nebo si uděláš vlastní (1200 × 630 px).
 
 ## Licence
 
