@@ -8,6 +8,7 @@
 
 | | | |
 |---|---|---|
+| II. | [Héraklés](https://majmi-cz.github.io/majmi/texty/herakles.html) | dialog, 2026 |
 | I. | [Pickle Jar](https://majmi-cz.github.io/majmi/texty/pickle-jar.html) | dialog, 2026 |
 
 ## Jak je to udělané
