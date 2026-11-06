@@ -1,0 +1,73 @@
+<!doctype html>
+<html lang="cs">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Název — Majmi</title>
+  <!-- ŠABLONA: zkopíruj, přejmenuj (např. o-pratelstvi.html), smaž co nepotřebuješ.
+       Na webu nikde odkázaná není. -->
+  <link rel="stylesheet" href="../styl.css">
+</head>
+<body>
+<div class="arch">
+
+  <header class="horni">
+    <nav class="navigace"><a class="dymo" href="../index.html">obálka</a><a class="dymo ted" href="../texty.html">texty</a><a class="dymo" href="../rukopis.html">rukopis</a><a class="dymo" href="../o-zapisniku.html">o zápisníku</a></nav>
+    <div class="info">zápisník č. 1<br>text II.</div>
+  </header>
+
+  <section class="hlava">
+    <!-- název VELKÝMI písmeny, poskládá se z výstřižků sám -->
+    <h1 class="vystrizky">NÁZEV TEXTU</h1>
+    <div class="meta"><span class="dymo">esej</span> <span>2026</span></div>
+  </section>
+
+  <div class="zalozky" role="tablist">
+    <button role="tab" aria-selected="true" aria-controls="prepis">přepis</button>
+    <button role="tab" aria-selected="false" aria-controls="rukopis">rukopis</button>
+  </div>
+
+  <article class="panel list-textu vystrizek b" id="prepis" role="tabpanel">
+
+    <!-- ===== ESEJ ===== -->
+    <p>Odstavec.</p>
+    <p>Další odstavec. Důležité místo <span class="zvyraz">přejedeš zvýrazňovačem</span>.</p>
+    <h3><span>Mezititulek</span></h3>
+    <p>Pokračování.</p>
+
+    <!-- ===== TEZE ===== -->
+    <ol class="teze">
+      <li>První teze.</li>
+      <li>Druhá teze.</li>
+    </ol>
+
+    <!-- ===== DIALOG / DRAMA ===== -->
+    <div class="osoby">
+      <p>Osoby: MUŽ, ŽENA</p>
+      <p>Kde a kdy.</p>
+    </div>
+    <p class="replika"><span class="dymo">Žena</span>Replika.</p>
+    <p class="scena">(Scénická poznámka.)</p>
+    <p class="replika"><span class="dymo">Muž</span>Odpověď.</p>
+
+    <!-- ===== BÁSEŇ: řádky se zalomí přesně jak je napíšeš ===== -->
+    <p class="basen">první verš
+druhý verš
+třetí verš</p>
+
+  </article>
+
+  <section class="panel list-textu vystrizek rukopis-stranky" id="rukopis" role="tabpanel" hidden>
+    <figure>
+      <img src="../rukopis/nazev-1.jpg" alt="Název, rukopis, str. 1">
+      <figcaption>str. 1</figcaption>
+    </figure>
+  </section>
+
+  <div class="cara"><span class="sym">✂</span> konec</div>
+  <p class="zpet-dolu"><a class="dymo" href="../texty.html">☞ zpět na texty</a></p>
+
+</div>
+<script src="../zin.js"></script>
+</body>
+</html>
