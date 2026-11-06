@@ -258,3 +258,110 @@ document.querySelectorAll('.zalozky [role="tab"]').forEach(function (tab, _, all
       .catch(function () {});
   });
 })();
+
+/* ---------- 9) Zvuky dělané pusou ----------
+   Soubory ve složce zvuky/ (mp3). Když soubor chybí, je ticho.
+   Přepínač zvuku se ukáže, až když existuje aspoň jeden zvuk.
+   Každé přehrání má trochu jinou výšku, aby to neznělo jako robot. */
+var Zvuk = (function () {
+  var NAZVY = ['klik', 'sust', 'plesk', 'fuk', 'bzz'];
+  var koren = document.querySelector('script[src$="zin.js"]').getAttribute('src').replace('zin.js', '');
+  var zapnuto = true;
+  try { zapnuto = localStorage.getItem('zvuk') !== 'vyp'; } catch (e) {}
+  var ctx = null, buffery = {}, data = {}, prepinac = null;
+  var AC = window.AudioContext || window.webkitAudioContext;
+  if (!AC || !window.fetch) return { hraj: function () {} };
+
+  // stáhnout zvuky (jen data, AudioContext až po prvním kliknutí)
+  NAZVY.forEach(function (n) {
+    fetch(koren + 'zvuky/' + n + '.mp3')
+      .then(function (r) { if (!r.ok) throw 0; return r.arrayBuffer(); })
+      .then(function (b) { data[n] = b; if (!ctx) ctx = new AC(); dekoduj(n); ukazPrepinac(); })
+      .catch(function () {});
+  });
+
+  function odemkni() {
+    if (!ctx) {
+      ctx = new AC();
+      Object.keys(data).forEach(dekoduj);
+    }
+    if (ctx.state === 'suspended') ctx.resume();
+  }
+  function dekoduj(n) {
+    if (!ctx || buffery[n] || !data[n]) return;
+    var kopie = data[n].slice(0);
+    ctx.decodeAudioData(kopie, function (buf) { buffery[n] = buf; }, function () {});
+  }
+  function hraj(n, hlasitost) {
+    if (!zapnuto) return;
+    odemkni();
+    dekoduj(n);
+    var buf = buffery[n];
+    if (!buf) return;
+    var zdroj = ctx.createBufferSource();
+    zdroj.buffer = buf;
+    zdroj.playbackRate.value = 0.88 + Math.random() * 0.24;
+    var g = ctx.createGain();
+    g.gain.value = (hlasitost || 0.6) * (0.85 + Math.random() * 0.3);
+    zdroj.connect(g).connect(ctx.destination);
+    zdroj.start();
+  }
+  function ukazPrepinac() {
+    if (prepinac) return;
+    var nav = document.querySelector('.navigace');
+    if (!nav) return;
+    prepinac = document.createElement('button');
+    prepinac.className = 'dymo prepinac-zvuku';
+    prepinac.type = 'button';
+    function popis() {
+      prepinac.textContent = zapnuto ? 'zvuk: zap' : 'zvuk: vyp';
+      prepinac.setAttribute('aria-pressed', zapnuto);
+    }
+    popis();
+    prepinac.addEventListener('click', function () {
+      zapnuto = !zapnuto;
+      try { localStorage.setItem('zvuk', zapnuto ? 'zap' : 'vyp'); } catch (e) {}
+      popis();
+      if (zapnuto) hraj('klik');
+    });
+    nav.appendChild(prepinac);
+  }
+
+  // kdy co zní
+  document.addEventListener('pointerdown', odemkni, { once: true });
+  document.addEventListener('keydown', odemkni, { once: true });
+  document.addEventListener('click', function (e) {
+    var t = e.target;
+    if (t.closest('.prepinac-zvuku')) return;
+    if (t.closest('.prohlizec .zavrit')) return hraj('fuk');
+    if (t.closest('.prohlizec .zpet, .prohlizec .vpred, .zalozky button')) return hraj('sust');
+    if (t.closest('.fotky img, .rukopis-stranky img')) return hraj('plesk');
+    var a = t.closest('a[href]');
+    if (a && !e.defaultPrevented && a.origin === location.origin && !e.metaKey && !e.ctrlKey) {
+      // nechat zvuk dohrát, než se přejde na další stránku
+      var n = a.closest('.kus, .rozcestnik, .listovani') ? 'plesk' : 'klik';
+      if (!zapnuto || !buffery[n]) return;
+      hraj(n);
+      e.preventDefault();
+      setTimeout(function () { location.href = a.href; }, 140);
+      return;
+    }
+    if (t.closest('button, .dymo')) hraj('klik');
+  });
+  // jednou za návštěvu "bzz" kopírky při prvním kliknutí na webu
+  document.addEventListener('pointerdown', function () {
+    try {
+      if (sessionStorage.getItem('bzz')) return;
+      sessionStorage.setItem('bzz', '1');
+    } catch (e) { return; }
+    setTimeout(function () { hraj('bzz', 0.35); }, 60);
+  }, { once: true });
+  addEventListener('keydown', function (e) {
+    var box = document.querySelector('.prohlizec');
+    if (!box || box.hidden) return;
+    if (e.key === 'ArrowLeft' || e.key === 'ArrowRight') hraj('sust');
+    if (e.key === 'Escape') hraj('fuk');
+  });
+
+  return { hraj: hraj };
+})();
