@@ -8,6 +8,7 @@
 
 | | | |
 |---|---|---|
+| básně | [výběr z Ročníku 08](https://majmi-cz.github.io/majmi/basne.html) | 5 básní |
 | II. | [Héraklés](https://majmi-cz.github.io/majmi/texty/herakles.html) | dialog, 2026 |
 | I. | [Pickle Jar](https://majmi-cz.github.io/majmi/texty/pickle-jar.html) | dialog, 2026 |
 
@@ -18,6 +19,7 @@
 ```
 index.html           obálka
 texty.html           seznam textů
+basne.html           výběr básní z Ročníku 08
 rukopis.html         fotky ze sešitu
 o-zapisniku.html     pár slov o zápisníku
 texty/               jeden soubor = jeden text
@@ -39,4 +41,4 @@ zin.js               skládá vystřižená písmena a přepíná přepis/rukopi
 
 ## Licence
 
-Texty a fotky rukopisu jsou pod **CC BY-NC-SA 4.0**: opiš a pošli dál, ale uveď autora, nevydělávej na tom a sdílej to stejně. Kód je pod licencí **MIT**. Písma mají vlastní licence. Podrobnosti najdeš v [LICENSE](LICENSE).
+Texty a fotky rukopisu jsou pod **CC BY-NC-SA 4.0** (kromě básní z Ročníku 08, ty mají všechna práva vyhrazena): opiš a pošli dál, ale uveď autora, nevydělávej na tom a sdílej to stejně. Kód je pod licencí **MIT**. Písma mají vlastní licence. Podrobnosti najdeš v [LICENSE](LICENSE).

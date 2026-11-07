@@ -72,9 +72,9 @@ a.dymo:hover, button.dymo:hover { background: var(--zvyraz); color: var(--toner)
 /* papír s nerovně ustřiženými okraji je pod obsahem, aby nebyla oříznutá páska */
 .vystrizek::after {
   content: ""; position: absolute; inset: 0; z-index: -1; background: var(--vystrizek);
-  clip-path: polygon(0 1%, 4% 0, 31% 1.5%, 58% 0, 100% 1%, 99.3% 38%, 100% 71%, 99% 100%, 62% 98.8%, 27% 100%, 1% 99%, .4% 60%);
+  clip-path: polygon(0 4px, 4% 0, 31% 6px, 58% 0, 100% 4px, calc(100% - 3px) 38%, 100% 71%, calc(100% - 4px) 100%, 62% calc(100% - 5px), 27% 100%, 4px calc(100% - 4px), 2px 60%);
 }
-.vystrizek.b::after { clip-path: polygon(1% 0, 45% 1.2%, 99% 0, 100% 46%, 99.2% 99%, 52% 100%, 0 98.5%, .8% 51%); }
+.vystrizek.b::after { clip-path: polygon(5px 0, 45% 5px, calc(100% - 5px) 0, 100% 46%, calc(100% - 3px) calc(100% - 4px), 52% 100%, 0 calc(100% - 6px), 3px 51%); }
 .paska { position: relative; }
 .paska::before {
   content: ""; position: absolute; z-index: 2; top: -11px; left: 50%; width: 92px; height: 24px;
@@ -329,3 +329,16 @@ h1.sekce .vystrizky { font-size: clamp(54px, 11vw, 100px); }
 /* přepínač zvuku */
 .prepinac-zvuku { border: 0; cursor: pointer; background: transparent; color: var(--toner); box-shadow: inset 0 0 0 2px var(--toner); text-shadow: none; }
 .prepinac-zvuku[aria-pressed="true"] { background: var(--zvyraz); box-shadow: inset 0 0 0 2px var(--toner); }
+
+/* ---------- básně ---------- */
+.basne { columns: 2 340px; column-gap: 34px; }
+.basen-kus { break-inside: avoid; margin: 0 0 40px; padding-top: 12px; }
+.basen-kus .vystrizek { padding: 30px 32px 26px; }
+.basen-kus:nth-child(odd) .vystrizek { rotate: -1.1deg; }
+.basen-kus:nth-child(even) .vystrizek { rotate: .9deg; }
+.basen-kus h2 { font: 400 clamp(28px, 4vw, 38px)/1.05 "Anton", sans-serif; text-transform: uppercase; text-shadow: none; margin: 14px 0 18px; }
+.basen-kus .basen { margin: 0; line-height: 1.6; }
+.rozcestnik a:nth-child(4) { transform: rotate(2.2deg); margin-top: 20px; }
+
+/* ---------- rukopisy vždy černobíle, jako z kopírky ---------- */
+.rukopis-stranky img, .prohlizec img { filter: grayscale(1) contrast(1.5) brightness(1.05); }
