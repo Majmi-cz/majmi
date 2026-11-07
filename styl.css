@@ -336,7 +336,7 @@ h1.sekce .vystrizky { font-size: clamp(54px, 11vw, 100px); }
 .basen-kus .vystrizek { padding: 30px 32px 26px; }
 .basen-kus:nth-child(odd) .vystrizek { rotate: -1.1deg; }
 .basen-kus:nth-child(even) .vystrizek { rotate: .9deg; }
-.basen-kus h2 { font: 400 clamp(28px, 4vw, 38px)/1.05 "Anton", sans-serif; text-transform: uppercase; text-shadow: none; margin: 14px 0 18px; }
+.basen-kus h2 { font: 400 clamp(28px, 4vw, 38px)/1.05 "Anton", sans-serif; text-transform: uppercase; text-shadow: none; margin: 4px 0 18px; }
 .basen-kus .basen { margin: 0; line-height: 1.6; }
 .rozcestnik a:nth-child(4) { transform: rotate(2.2deg); margin-top: 20px; }
 

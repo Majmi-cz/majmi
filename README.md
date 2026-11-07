@@ -8,7 +8,7 @@
 
 | | | |
 |---|---|---|
-| básně | [výběr z Ročníku 08](https://majmi-cz.github.io/majmi/basne.html) | první báseň z každé kapitoly |
+| básně | [Básně](https://majmi-cz.github.io/majmi/basne.html) | 5 básní |
 | II. | [Héraklés](https://majmi-cz.github.io/majmi/texty/herakles.html) | dialog, 2026 |
 | I. | [Pickle Jar](https://majmi-cz.github.io/majmi/texty/pickle-jar.html) | dialog, 2026 |
 
@@ -19,7 +19,7 @@
 ```
 index.html           obálka
 texty.html           seznam textů
-basne.html           výběr básní z Ročníku 08
+basne.html           básně
 rukopis.html         fotky ze sešitu
 o-zapisniku.html     pár slov o zápisníku
 texty/               jeden soubor = jeden text
