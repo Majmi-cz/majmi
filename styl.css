@@ -350,3 +350,11 @@ h1.sekce .vystrizky { font-size: clamp(54px, 11vw, 100px); }
 .proc { max-width: 640px; padding: 40px 42px 30px; font-size: 21px; line-height: 1.75; rotate: -.7deg; margin: 20px 0 60px; }
 .proc p { margin: 0 0 1em; }
 @media (max-width: 700px) { .proc { font-size: 18px; padding: 30px 24px 22px; } }
+.vystrizky.prehrat .p {
+  animation: nalepit .5s cubic-bezier(.2, 1.5, .4, 1) both;
+  animation-delay: calc(var(--i) * 55ms + 80ms);
+}
+@keyframes nalepit {
+  from { opacity: 0; scale: 1.8; rotate: calc(var(--naklon) * 4); translate: 0 -.25em; }
+  60% { opacity: 1; }
+}

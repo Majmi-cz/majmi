@@ -410,7 +410,8 @@ var Zvuk = (function () {
     el.classList.add('klikaci');
     el.setAttribute('title', 'nalepit znovu');
     el.addEventListener('click', function () {
-      if (!pohyb) return;
+      // funguje i s vypnutými animacemi v systému – je to akce, kterou si člověk sám vyžádal
+      el.classList.add('prehrat');
       el.querySelectorAll('.p').forEach(function (p) {
         p.style.animation = 'none';
         void p.offsetWidth;          // donutit prohlížeč zapomenout animaci
