@@ -460,16 +460,15 @@ var Zvuk = (function () {
   b.textContent = '↑ nahoru';
   b.setAttribute('aria-label', 'Zpět nahoru');
   document.body.appendChild(b);
-  var ceka = false;
-  function obnov() {
-    ceka = false;
-    var vyska = document.documentElement.scrollHeight;
-    var dole = scrollY + innerHeight > vyska - 260;
-    b.classList.toggle('videt', vyska > innerHeight * 1.4 && dole);
+  // ukáže se, jakmile horní lišta zmizí z obrazovky
+  var lista = document.querySelector('.horni');
+  if (lista && 'IntersectionObserver' in window) {
+    new IntersectionObserver(function (z) {
+      b.classList.toggle('videt', !z[0].isIntersecting);
+    }).observe(lista);
+  } else {
+    addEventListener('scroll', function () { b.classList.toggle('videt', scrollY > 200); }, { passive: true });
   }
-  addEventListener('scroll', function () { if (!ceka) { ceka = true; requestAnimationFrame(obnov); } }, { passive: true });
-  addEventListener('resize', obnov);
-  obnov();
   b.addEventListener('click', function () {
     if (typeof Zvuk !== 'undefined') Zvuk.hraj('sust');
     scrollTo({ top: 0, behavior: pohyb ? 'smooth' : 'auto' });
@@ -483,5 +482,51 @@ var Zvuk = (function () {
       }
       requestAnimationFrame(hlidej);
     })();
+  });
+})();
+
+/* ---------- 12) Recenze: formulář → přijde Majmimu na mail ----------
+   <section class="recenze" data-text="Pickle Jar"></section>
+   Zveřejněné recenze se píšou ručně do <div class="dopisy"> na stránce. */
+(function () {
+  var MAIL = 'tobikb8@gmail.com';
+  document.querySelectorAll('.recenze[data-text]').forEach(function (sek, k) {
+    var nazev = sek.getAttribute('data-text');
+    var f = document.createElement('form');
+    f.className = 'formular vystrizek paska';
+    f.innerHTML =
+      '<label for="r-jmeno' + k + '">jméno nebo přezdívka</label>' +
+      '<input type="text" id="r-jmeno' + k + '" name="jmeno" required maxlength="60" autocomplete="nickname">' +
+      '<label for="r-text' + k + '">co si o tom myslíš</label>' +
+      '<textarea id="r-text' + k + '" name="recenze" required maxlength="3000"></textarea>' +
+      '<label class="zaskrt"><input type="checkbox" name="zverejnit" value="ano, klidně to zveřejni"> chci, aby to bylo na webu (Majmi to nejdřív přečte a schválí)</label>' +
+      '<input type="text" name="_honey" class="past" tabindex="-1" autocomplete="off" aria-hidden="true">' +
+      '<button type="submit" class="dymo">poslat ☞</button>' +
+      '<p class="stav" role="status"></p>';
+    sek.appendChild(f);
+    var stav = f.querySelector('.stav'), tl = f.querySelector('button');
+    f.addEventListener('submit', function (e) {
+      e.preventDefault();
+      var d = new FormData(f);
+      if (d.get('_honey')) return;
+      if (!d.get('zverejnit')) d.set('zverejnit', 'ne, jen pro tebe');
+      d.append('text', nazev);
+      d.append('_subject', 'Recenze: ' + nazev + ' (' + d.get('jmeno') + ')');
+      d.append('_template', 'box');
+      d.append('_captcha', 'false');
+      tl.disabled = true;
+      stav.textContent = 'posílám…';
+      fetch('https://formsubmit.co/ajax/' + MAIL, { method: 'POST', headers: { Accept: 'application/json' }, body: d })
+        .then(function (r) { return r.json(); })
+        .then(function (o) {
+          if (String(o.success) !== 'true') throw 0;
+          f.innerHTML = '<p style="margin:0">Díky! Došlo to. <span class="zvyraz">Majmi si to přečte.</span></p>';
+          if (typeof Zvuk !== 'undefined') Zvuk.hraj('plesk');
+        })
+        .catch(function () {
+          tl.disabled = false;
+          stav.textContent = 'Něco se pokazilo. Zkus to za chvíli znovu.';
+        });
+    });
   });
 })();
