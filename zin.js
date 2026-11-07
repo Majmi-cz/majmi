@@ -298,12 +298,19 @@ var Zvuk = (function () {
     return (posledni[n] = v[Math.floor(Math.random() * v.length)]);
   }
 
+  var odemceno = false;
   function odemkni() {
-    if (!ctx) {
-      ctx = new AC();
-      Object.keys(data).forEach(dekoduj);
+    if (!ctx) ctx = new AC();
+    Object.keys(data).forEach(dekoduj);
+    if (ctx.state !== 'running') ctx.resume();
+    // Safari / iPhone: zvuk se odemkne až přehráním něčeho přímo při kliknutí
+    if (!odemceno) {
+      var ticho = ctx.createBufferSource();
+      ticho.buffer = ctx.createBuffer(1, 1, 22050);
+      ticho.connect(ctx.destination);
+      ticho.start(0);
+      odemceno = true;
     }
-    if (ctx.state === 'suspended') ctx.resume();
   }
   function dekoduj(n) {
     if (!ctx || buffery[n] || !data[n]) return;
@@ -346,8 +353,9 @@ var Zvuk = (function () {
   }
 
   // kdy co zní
-  document.addEventListener('pointerdown', odemkni, { once: true });
-  document.addEventListener('keydown', odemkni, { once: true });
+  ['pointerdown', 'touchend', 'click', 'keydown'].forEach(function (ev) {
+    document.addEventListener(ev, odemkni, true);
+  });
   document.addEventListener('click', function (e) {
     var t = e.target;
     if (t.closest('.prepinac-zvuku')) return;
