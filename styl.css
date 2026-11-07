@@ -358,3 +358,17 @@ h1.sekce .vystrizky { font-size: clamp(54px, 11vw, 100px); }
   from { opacity: 0; scale: 1.8; rotate: calc(var(--naklon) * 4); translate: 0 -.25em; }
   60% { opacity: 1; }
 }
+
+/* písmena čekají, až budou připravené zvuky */
+.vystrizky.ceka-na-zvuk .p { animation-play-state: paused; }
+
+/* štítek nahoru */
+.nahoru {
+  position: fixed; right: 22px; bottom: 22px; z-index: 30; border: 0; cursor: pointer;
+  font-size: 15px; padding: 10px 14px 9px;
+  translate: 0 160%; rotate: -4deg; transition: translate .35s cubic-bezier(.2, 1.4, .4, 1), background .15s;
+  box-shadow: 3px 4px 0 rgba(0, 0, 0, .18);
+}
+.nahoru.videt { translate: 0 0; }
+.nahoru:hover { background: var(--zvyraz); color: var(--toner); }
+@media (prefers-reduced-motion: reduce) { .nahoru { transition: none; } }

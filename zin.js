@@ -271,7 +271,10 @@ var Zvuk = (function () {
   try { zapnuto = localStorage.getItem('zvuk') !== 'vyp'; } catch (e) {}
   var ctx = null, buffery = {}, data = {}, prepinac = null;
   var AC = window.AudioContext || window.webkitAudioContext;
-  if (!AC || !window.fetch) return { hraj: function () {} };
+  if (!AC || !window.fetch) return { hraj: function () {}, hrajKdyzBezi: function () {}, pripraveno: function () { return Promise.resolve(false); } };
+  // Prohlížeč dovolí zvuk hned po načtení, pokud už člověk na webu někdy kliknul.
+  try { ctx = new AC(); } catch (e) {}
+  var klikHotovy, klikySlib = new Promise(function (r) { klikHotovy = r; });
 
   // stáhnout zvuky (jen data, AudioContext až po prvním kliknutí)
   // každý zvuk může mít varianty: klik.mp3, klik2.mp3 … klik6.mp3
@@ -315,7 +318,7 @@ var Zvuk = (function () {
   function dekoduj(n) {
     if (!ctx || buffery[n] || !data[n]) return;
     var kopie = data[n].slice(0);
-    ctx.decodeAudioData(kopie, function (buf) { buffery[n] = buf; }, function () {});
+    ctx.decodeAudioData(kopie, function (buf) { buffery[n] = buf; if (n.indexOf('klik') === 0) klikHotovy(); }, function () {});
   }
   function hraj(n, hlasitost) {
     if (!zapnuto) return;
@@ -358,7 +361,7 @@ var Zvuk = (function () {
   });
   document.addEventListener('click', function (e) {
     var t = e.target;
-    if (t.closest('.prepinac-zvuku')) return;
+    if (t.closest('.prepinac-zvuku, .nahoru')) return;
     if (t.closest('.prohlizec .zavrit')) return hraj('fuk');
     if (t.closest('.prohlizec .zpet, .prohlizec .vpred, .zalozky button')) return hraj('sust');
     if (t.closest('.fotky img, .rukopis-stranky img')) return hraj('plesk');
@@ -394,7 +397,26 @@ var Zvuk = (function () {
     hraj(n, hlasitost);
   }
 
-  return { hraj: hraj, hrajKdyzBezi: hrajKdyzBezi };
+  // Počká (nejvýš chvilku), jestli může zvuk hrát a jestli jsou kliky připravené.
+  // Když prohlížeč zvuk nepustí, pozná se to za ~150 ms a nečeká se zbytečně.
+  var klikyOk = false;
+  klikySlib.then(function () { klikyOk = true; });
+  function pripraveno(limit) {
+    return new Promise(function (hotovo) {
+      if (!zapnuto || !ctx) return hotovo(false);
+      if (ctx.state !== 'running') { try { ctx.resume().catch(function () {}); } catch (e) {} }
+      var start = Date.now();
+      (function zkus() {
+        var t = Date.now() - start;
+        if (ctx.state === 'running' && klikyOk) return hotovo(true);
+        if (ctx.state !== 'running' && t > 150) return hotovo(false);
+        if (t > (limit || 700)) return hotovo(false);
+        setTimeout(zkus, 25);
+      })();
+    });
+  }
+
+  return { hraj: hraj, hrajKdyzBezi: hrajKdyzBezi, pripraveno: pripraveno };
 })();
 
 /* ---------- 10) Klik na nadpis: písmena se nalepí znovu a každé cvakne ---------- */
@@ -419,7 +441,47 @@ var Zvuk = (function () {
       });
       zvukyPismen(el);
     });
-    // i při načtení stránky, pokud už zvuk smí hrát
-    if (pohyb) setTimeout(function () { zvukyPismen(el); }, 0);
+    // při načtení: písmena chvilku počkají, až budou zvuky připravené, pak padají i s cvakáním
+    if (pohyb && typeof Zvuk !== 'undefined') {
+      el.classList.add('ceka-na-zvuk');
+      Zvuk.pripraveno(700).then(function (muze) {
+        el.classList.remove('ceka-na-zvuk');
+        if (muze) zvukyPismen(el);
+      });
+    }
+  });
+})();
+
+/* ---------- 11) Na konci stránky: štítek „↑ nahoru“ ---------- */
+(function () {
+  var b = document.createElement('button');
+  b.type = 'button';
+  b.className = 'dymo nahoru';
+  b.textContent = '↑ nahoru';
+  b.setAttribute('aria-label', 'Zpět nahoru');
+  document.body.appendChild(b);
+  var ceka = false;
+  function obnov() {
+    ceka = false;
+    var vyska = document.documentElement.scrollHeight;
+    var dole = scrollY + innerHeight > vyska - 260;
+    b.classList.toggle('videt', vyska > innerHeight * 1.4 && dole);
+  }
+  addEventListener('scroll', function () { if (!ceka) { ceka = true; requestAnimationFrame(obnov); } }, { passive: true });
+  addEventListener('resize', obnov);
+  obnov();
+  b.addEventListener('click', function () {
+    if (typeof Zvuk !== 'undefined') Zvuk.hraj('sust');
+    scrollTo({ top: 0, behavior: pohyb ? 'smooth' : 'auto' });
+    // až dojede nahoru, nadpis se znovu nalepí
+    var start = Date.now();
+    (function hlidej() {
+      if (scrollY < 4 || Date.now() - start > 2000) {
+        var h = document.querySelector('h1.vystrizky, h1 .vystrizky');
+        if (h) h.click();
+        return;
+      }
+      requestAnimationFrame(hlidej);
+    })();
   });
 })();
