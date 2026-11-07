@@ -264,7 +264,8 @@ document.querySelectorAll('.zalozky [role="tab"]').forEach(function (tab, _, all
    Přepínač zvuku se ukáže, až když existuje aspoň jeden zvuk.
    Každé přehrání má trochu jinou výšku, aby to neznělo jako robot. */
 var Zvuk = (function () {
-  var NAZVY = ['klik', 'sust', 'plesk', 'fuk', 'bzz'];
+  // kolik variant má který zvuk (klik.mp3, klik2.mp3 … klik6.mp3)
+  var ZVUKY = { klik: 6, sust: 1, plesk: 1, fuk: 1, bzz: 1 };
   var koren = document.querySelector('script[src$="zin.js"]').getAttribute('src').replace('zin.js', '');
   var zapnuto = true;
   try { zapnuto = localStorage.getItem('zvuk') !== 'vyp'; } catch (e) {}
@@ -273,12 +274,29 @@ var Zvuk = (function () {
   if (!AC || !window.fetch) return { hraj: function () {} };
 
   // stáhnout zvuky (jen data, AudioContext až po prvním kliknutí)
-  NAZVY.forEach(function (n) {
-    fetch(koren + 'zvuky/' + n + '.mp3')
-      .then(function (r) { if (!r.ok) throw 0; return r.arrayBuffer(); })
-      .then(function (b) { data[n] = b; if (!ctx) ctx = new AC(); dekoduj(n); ukazPrepinac(); })
-      .catch(function () {});
+  // každý zvuk může mít varianty: klik.mp3, klik2.mp3 … klik6.mp3
+  var varianty = {};
+  Object.keys(ZVUKY).forEach(function (n) {
+    for (var c = 1; c <= ZVUKY[n]; c++) (function (soubor) {
+      fetch(koren + 'zvuky/' + soubor + '.mp3')
+        .then(function (r) { if (!r.ok) throw 0; return r.arrayBuffer(); })
+        .then(function (b) {
+          data[soubor] = b;
+          (varianty[n] = varianty[n] || []).push(soubor);
+          if (!ctx) ctx = new AC();
+          dekoduj(soubor);
+          ukazPrepinac();
+        })
+        .catch(function () {});
+    })(c === 1 ? n : n + c);
   });
+  var posledni = {};
+  function vyberVariantu(n) {
+    var v = (varianty[n] || []).filter(function (s) { return buffery[s]; });
+    if (!v.length) return null;
+    if (v.length > 1) v = v.filter(function (s) { return s !== posledni[n]; }); // ne dvakrát stejný po sobě
+    return (posledni[n] = v[Math.floor(Math.random() * v.length)]);
+  }
 
   function odemkni() {
     if (!ctx) {
@@ -295,9 +313,9 @@ var Zvuk = (function () {
   function hraj(n, hlasitost) {
     if (!zapnuto) return;
     odemkni();
-    dekoduj(n);
-    var buf = buffery[n];
-    if (!buf) return;
+    var soubor = vyberVariantu(n);
+    if (!soubor) return;
+    var buf = buffery[soubor];
     var zdroj = ctx.createBufferSource();
     zdroj.buffer = buf;
     zdroj.playbackRate.value = 0.88 + Math.random() * 0.24;
@@ -340,7 +358,7 @@ var Zvuk = (function () {
     if (a && !e.defaultPrevented && a.origin === location.origin && !e.metaKey && !e.ctrlKey) {
       // nechat zvuk dohrát, než se přejde na další stránku
       var n = a.closest('.kus, .rozcestnik, .listovani') ? 'plesk' : 'klik';
-      if (!zapnuto || !buffery[n]) return;
+      if (!zapnuto || !(varianty[n] || []).some(function (s) { return buffery[s]; })) return;
       hraj(n);
       e.preventDefault();
       setTimeout(function () { location.href = a.href; }, 140);

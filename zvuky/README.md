@@ -1,6 +1,8 @@
 # Zvuky
 
-Nahrané pusou. Každý soubor je krátký `.mp3` (do 0,5 s). Když některý chybí, je prostě ticho.
+Nahrané pusou, upravené jen lehce (střih, hlasitost, krátký náběh a doznění). Když některý chybí, je ticho.
+
+Každý zvuk může mít až 6 variant (`klik.mp3`, `klik2.mp3` … `klik6.mp3`). Web pokaždé náhodně vybere jinou a nikdy nezahraje stejnou dvakrát po sobě. Počet variant se zapisuje na začátek sekce se zvuky v `zin.js` (`ZVUKY = { klik: 6, … }`).
 
 | soubor | kdy zní | jak ho udělat pusou |
 |---|---|---|
