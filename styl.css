@@ -342,3 +342,6 @@ h1.sekce .vystrizky { font-size: clamp(54px, 11vw, 100px); }
 
 /* ---------- rukopisy vždy černobíle, jako z kopírky ---------- */
 .rukopis-stranky img, .prohlizec img { filter: grayscale(1) contrast(1.5) brightness(1.05); }
+
+/* nadpis se dá znovu nalepit kliknutím */
+.vystrizky.klikaci { cursor: pointer; user-select: none; -webkit-user-select: none; }

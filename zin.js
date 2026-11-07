@@ -389,5 +389,36 @@ var Zvuk = (function () {
     if (e.key === 'Escape') hraj('fuk');
   });
 
-  return { hraj: hraj };
+  function hrajKdyzBezi(n, hlasitost) {
+    if (!ctx || ctx.state !== 'running') return;
+    hraj(n, hlasitost);
+  }
+
+  return { hraj: hraj, hrajKdyzBezi: hrajKdyzBezi };
+})();
+
+/* ---------- 10) Klik na nadpis: písmena se nalepí znovu a každé cvakne ---------- */
+(function () {
+  function zvukyPismen(el) {
+    if (typeof Zvuk === 'undefined') return;
+    var pismena = el.querySelectorAll('.p');
+    pismena.forEach(function (p, i) {
+      setTimeout(function () { Zvuk.hrajKdyzBezi('klik', 0.3); }, 80 + i * 55 + 190);
+    });
+  }
+  document.querySelectorAll('h1.vystrizky, h1 .vystrizky').forEach(function (el) {
+    el.classList.add('klikaci');
+    el.setAttribute('title', 'nalepit znovu');
+    el.addEventListener('click', function () {
+      if (!pohyb) return;
+      el.querySelectorAll('.p').forEach(function (p) {
+        p.style.animation = 'none';
+        void p.offsetWidth;          // donutit prohlížeč zapomenout animaci
+        p.style.animation = '';
+      });
+      zvukyPismen(el);
+    });
+    // i při načtení stránky, pokud už zvuk smí hrát
+    if (pohyb) setTimeout(function () { zvukyPismen(el); }, 0);
+  });
 })();
