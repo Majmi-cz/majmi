@@ -266,7 +266,7 @@ document.querySelectorAll('.zalozky [role="tab"]').forEach(function (tab, _, all
 var Zvuk = (function () {
   // kolik variant má který zvuk (klik.mp3, klik2.mp3 … klik6.mp3)
   var ZVUKY = { klik: 6, sust: 1, plesk: 1, fuk: 1, bzz: 1 };
-  var koren = document.querySelector('script[src$="zin.js"]').getAttribute('src').replace('zin.js', '');
+  var koren = document.querySelector('script[src*="zin.js"]').getAttribute('src').replace(/zin\.js.*$/, '');
   var zapnuto = true;
   try { zapnuto = localStorage.getItem('zvuk') !== 'vyp'; } catch (e) {}
   var ctx = null, buffery = {}, data = {}, prepinac = null;

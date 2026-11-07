@@ -42,3 +42,7 @@ zin.js               skládá vystřižená písmena a přepíná přepis/rukopi
 ## Licence
 
 Texty a fotky rukopisu jsou pod **CC BY-NC-SA 4.0** (kromě básní z Ročníku 08, ty mají všechna práva vyhrazena): opiš a pošli dál, ale uveď autora, nevydělávej na tom a sdílej to stejně. Kód je pod licencí **MIT**. Písma mají vlastní licence. Podrobnosti najdeš v [LICENSE](LICENSE).
+
+## Po změně vzhledu nebo skriptu
+
+Spusť `python3 obnov-verzi.py`. K odkazům na `styl.css` a `zin.js` se přidá nové číslo verze, takže lidem se hned načte nová verze, ne ta stará z mezipaměti.
