@@ -234,24 +234,24 @@ h1.sekce .vystrizky { font-size: clamp(54px, 11vw, 100px); }
 @media (prefers-reduced-motion: no-preference) {
   ::view-transition-old(root) { animation: .22s ease-in both list-ven; }
   ::view-transition-new(root) { animation: .38s cubic-bezier(.2, .9, .3, 1) both list-sem; }
-  @keyframes list-ven { to { opacity: 0; translate: 0 -14px; rotate: -.5deg; } }
-  @keyframes list-sem { from { opacity: 0; translate: 0 18px; rotate: .6deg; } }
+  @keyframes list-ven { to { opacity: 0; } }
+  @keyframes list-sem { from { opacity: 0; translate: 0 6px; } }
 
   /* písmena se lepí jedno po druhém */
   .js-pohyb .vystrizky .p {
-    animation: nalepit .5s cubic-bezier(.2, 1.5, .4, 1) both;
-    animation-delay: calc(var(--i) * 55ms + 80ms);
+    animation: nalepit .35s cubic-bezier(.2, 1.2, .4, 1) both;
+    animation-delay: calc(var(--i) * 45ms + 60ms);
   }
   @keyframes nalepit {
-    from { opacity: 0; scale: 1.8; rotate: calc(var(--naklon) * 4); translate: 0 -.25em; }
+    from { opacity: 0; scale: 1.25; rotate: calc(var(--naklon) * 1.5); translate: 0 -.1em; }
     60% { opacity: 1; }
   }
 
   /* lístky a fotky se přilepí, až k nim dojedeš */
-  .js-pohyb .ceka { opacity: 0; translate: 0 26px; scale: 1.04; }
+  .js-pohyb .ceka { opacity: 0; translate: 0 10px; }
   .js-pohyb .nalepeno {
     opacity: 1; translate: 0 0; scale: 1;
-    transition: opacity .35s ease-out, translate .55s cubic-bezier(.2, 1.3, .4, 1), scale .55s cubic-bezier(.2, 1.3, .4, 1);
+    transition: opacity .35s ease-out, translate .45s ease-out, scale .45s ease-out;
     transition-delay: var(--zpozdeni, 0ms);
   }
   /* páska se plácne až po papíru */
@@ -267,8 +267,8 @@ h1.sekce .vystrizky { font-size: clamp(54px, 11vw, 100px); }
     transition: translate .25s cubic-bezier(.2, 1.4, .4, 1), filter .25s;
   }
   a.kus:hover .vystrizek, .rozcestnik a:hover, .fotky figure:hover {
-    translate: 0 -5px;
-    filter: drop-shadow(4px 7px 0 rgba(0, 0, 0, .16));
+    translate: 0 -2px;
+    filter: drop-shadow(2px 4px 0 rgba(0, 0, 0, .12));
   }
 
   /* štítky se při kliknutí zmáčknou */
@@ -351,11 +351,11 @@ h1.sekce .vystrizky { font-size: clamp(54px, 11vw, 100px); }
 .proc p { margin: 0 0 1em; }
 @media (max-width: 700px) { .proc { font-size: 18px; padding: 30px 24px 22px; } }
 .vystrizky.prehrat .p {
-  animation: nalepit .5s cubic-bezier(.2, 1.5, .4, 1) both;
-  animation-delay: calc(var(--i) * 55ms + 80ms);
+  animation: nalepit .35s cubic-bezier(.2, 1.2, .4, 1) both;
+  animation-delay: calc(var(--i) * 45ms + 60ms);
 }
 @keyframes nalepit {
-  from { opacity: 0; scale: 1.8; rotate: calc(var(--naklon) * 4); translate: 0 -.25em; }
+  from { opacity: 0; scale: 1.25; rotate: calc(var(--naklon) * 1.5); translate: 0 -.1em; }
   60% { opacity: 1; }
 }
 
@@ -390,8 +390,29 @@ h1.sekce .vystrizky { font-size: clamp(54px, 11vw, 100px); }
 }
 .formular textarea { min-height: 150px; resize: vertical; border: 2px dashed var(--toner-slaby); padding: 10px 12px; }
 .formular input[type=text]:focus, .formular textarea:focus { border-color: var(--toner); background: rgba(244, 226, 58, .18); }
+.formular .nepovinne { color: var(--toner-slaby); }
 .formular .zaskrt { display: flex; gap: 10px; align-items: flex-start; font-size: 15px; margin: 0 0 22px; cursor: pointer; }
 .formular .zaskrt input { width: 20px; height: 20px; accent-color: var(--toner); margin-top: 3px; flex: none; }
 .formular button { border: 0; cursor: pointer; font-size: 14px; padding: 9px 14px 8px; }
 .formular .stav { margin: 14px 0 0; font-size: 15px; min-height: 1.5em; }
 .formular .past { position: absolute; left: -9999px; }
+
+/* skupiny textů */
+h2.skupina { margin: 60px 0 22px; display: flex; gap: 12px; align-items: baseline; }
+h2.skupina:first-of-type { margin-top: 30px; }
+h2.skupina .dymo { font-size: 16px; padding: 8px 12px 7px; }
+h2.skupina .kolik-skup { font: 15px var(--stroj); color: var(--toner-slaby); }
+
+/* lístečky s poznámkami z okrajů sešitu */
+.listek {
+  float: right; clear: right; width: 190px; margin: 0 -270px 18px 0;
+  background: #fbfbf7; padding: 12px 14px 10px; font: 14px/1.45 var(--stroj);
+  rotate: 2deg; box-shadow: 2px 3px 0 rgba(0,0,0,.12); position: relative;
+}
+.listek.b { rotate: -2.5deg; background: #f6eea0; }
+.listek::before { content: ""; position: absolute; top: -9px; left: 50%; width: 54px; height: 16px;
+  translate: -50% 0; rotate: -4deg; background: rgba(225, 222, 208, .8); }
+.listek b { font-weight: 400; background: var(--zvyraz); padding: 0 .15em; }
+@media (max-width: 1150px) {
+  .listek { float: none; width: auto; max-width: 340px; margin: 6px 0 18px 10px; display: block; }
+}

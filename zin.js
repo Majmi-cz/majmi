@@ -6,7 +6,9 @@
    Nový text = přidej řádek na konec (s = název souboru bez .html). */
 var TEXTY = [
   { s: 'pickle-jar', n: 'Pickle Jar' },
-  { s: 'herakles', n: 'Héraklés' }
+  { s: 'herakles', n: 'Héraklés' },
+  { s: 'celsius-233', n: 'Celsius 233' },
+  { s: 'hudebni-nastroj', n: 'Hudební nástroj' }
 ];
 
 var pohyb = !(window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches);
@@ -81,7 +83,7 @@ if (pohyb) document.documentElement.classList.add('js-pohyb');
 /* ---------- 3) Lístky a fotky se přilepí, až k nim doscrolluješ ---------- */
 (function () {
   if (!pohyb || !('IntersectionObserver' in window)) return;
-  var kusy = document.querySelectorAll('.kus, .rozcestnik a, .fotky figure, .podtitul, .slova, .proc, .listovani a, .basen-kus');
+  var kusy = document.querySelectorAll('.kus, .rozcestnik a, .fotky figure, .podtitul, .slova, .proc, .listovani a, .basen-kus, .listek');
   var io = new IntersectionObserver(function (zaznamy) {
     var n = 0;
     zaznamy.forEach(function (z) {
@@ -485,21 +487,45 @@ var Zvuk = (function () {
   });
 })();
 
-/* ---------- 12) Recenze: formulář → přijde Majmimu na mail ----------
-   <section class="recenze" data-text="Pickle Jar"></section>
-   Zveřejněné recenze se píšou ručně do <div class="dopisy"> na stránce. */
+/* ---------- 12) Recenze ----------
+   Formulář: jen text, podpis nepovinný. Přijde Majmimu na mail.
+   Zveřejnění = přidat záznam do recenze.json:
+   { "herakles": [ { "text": "Myšlenkoberoucí.", "kdo": "Kubas" } ] } */
 (function () {
   var MAIL = 'tobikb8@gmail.com';
-  document.querySelectorAll('.recenze[data-text]').forEach(function (sek, k) {
+  var sekce = document.querySelectorAll('.recenze[data-text]');
+  if (!sekce.length) return;
+  var koren = document.querySelector('script[src*="zin.js"]').getAttribute('src').replace(/zin\.js.*$/, '');
+
+  // zveřejněné recenze
+  fetch(koren + 'recenze.json', { cache: 'no-cache' })
+    .then(function (r) { return r.ok ? r.json() : {}; })
+    .then(function (vse) {
+      sekce.forEach(function (sek) {
+        var seznam = vse[sek.getAttribute('data-klic')] || [];
+        var box = sek.querySelector('.dopisy');
+        if (!box) return;
+        seznam.forEach(function (r, i) {
+          var d = document.createElement('div');
+          d.className = 'dopis vystrizek' + (i % 2 ? ' b' : '');
+          var p = document.createElement('p'); p.textContent = r.text;
+          var k = document.createElement('p'); k.className = 'kdo-pise'; k.textContent = '— ' + (r.kdo || 'anonym');
+          d.appendChild(p); d.appendChild(k); box.appendChild(d);
+        });
+      });
+    })
+    .catch(function () {});
+
+  sekce.forEach(function (sek, k) {
     var nazev = sek.getAttribute('data-text');
     var f = document.createElement('form');
     f.className = 'formular vystrizek paska';
     f.innerHTML =
-      '<label for="r-jmeno' + k + '">jméno nebo přezdívka</label>' +
-      '<input type="text" id="r-jmeno' + k + '" name="jmeno" required maxlength="60" autocomplete="nickname">' +
       '<label for="r-text' + k + '">co si o tom myslíš</label>' +
       '<textarea id="r-text' + k + '" name="recenze" required maxlength="3000"></textarea>' +
-      '<label class="zaskrt"><input type="checkbox" name="zverejnit" value="ano, klidně to zveřejni"> chci, aby to bylo na webu (Majmi to nejdřív přečte a schválí)</label>' +
+      '<label for="r-jmeno' + k + '">podpis <span class="nepovinne">(nepovinné)</span></label>' +
+      '<input type="text" id="r-jmeno' + k + '" name="jmeno" maxlength="60" autocomplete="nickname">' +
+      '<label class="zaskrt"><input type="checkbox" name="zverejnit" value="ano"> klidně to dej na web</label>' +
       '<input type="text" name="_honey" class="past" tabindex="-1" autocomplete="off" aria-hidden="true">' +
       '<button type="submit" class="dymo">poslat ☞</button>' +
       '<p class="stav" role="status"></p>';
@@ -509,14 +535,19 @@ var Zvuk = (function () {
       e.preventDefault();
       var d = new FormData(f);
       if (d.get('_honey')) return;
-      if (!d.get('zverejnit')) d.set('zverejnit', 'ne, jen pro tebe');
-      d.append('text', nazev);
-      d.append('_subject', 'Recenze: ' + nazev + ' (' + d.get('jmeno') + ')');
-      d.append('_template', 'box');
-      d.append('_captcha', 'false');
+      var jm = (d.get('jmeno') || '').trim() || 'anonym';
+      var ven = d.get('zverejnit') ? 'ANO' : 'ne';
+      var poslat = new FormData();
+      poslat.append('Text', nazev);
+      poslat.append('Recenze', d.get('recenze'));
+      poslat.append('Podpis', jm);
+      poslat.append('Zveřejnit', ven);
+      poslat.append('_subject', (ven === 'ANO' ? '★ ' : '') + 'Recenze: ' + nazev + ' (' + jm + ')');
+      poslat.append('_template', 'box');
+      poslat.append('_captcha', 'false');
       tl.disabled = true;
       stav.textContent = 'posílám…';
-      fetch('https://formsubmit.co/ajax/' + MAIL, { method: 'POST', headers: { Accept: 'application/json' }, body: d })
+      fetch('https://formsubmit.co/ajax/' + MAIL, { method: 'POST', headers: { Accept: 'application/json' }, body: poslat })
         .then(function (r) { return r.json(); })
         .then(function (o) {
           if (String(o.success) !== 'true') throw 0;
