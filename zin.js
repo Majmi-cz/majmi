@@ -5,11 +5,20 @@
 /* Seznam textů v pořadí, jak vycházely.
    Nový text = přidej řádek na konec (s = název souboru bez .html). */
 var TEXTY = [
-  { s: 'pickle-jar', n: 'Pickle Jar' },
-  { s: 'herakles', n: 'Héraklés' },
-  { s: 'celsius-233', n: 'Celsius 233' },
-  { s: 'hudebni-nastroj', n: 'Hudební nástroj' },
-  { s: 'kdo-podrzi-petu', n: 'Kdo podrží Péťu?' }
+  { s: 'pickle-jar', n: 'Pickle Jar', k: 'dialogy' },
+  { s: 'herakles', n: 'Héraklés', k: 'dialogy' },
+  { s: 'kdo-podrzi-petu', n: 'Kdo podrží Péťu?', k: 'dialogy' },
+  { s: 'celsius-233', n: 'Celsius 233', k: 'úvahy' },
+  { s: 'hudebni-nastroj', n: 'Hudební nástroj', k: 'úvahy' }
+];
+// básně: odkazy do basne.html (nejsou v listování předchozí / další)
+var BASNE = [
+  { s: 'basne.html#sestikraska', n: 'Šestikráska', k: 'básně' },
+  { s: 'basne.html#ruze-ve-vlasech', n: 'Růže ve vlasech', k: 'básně' },
+  { s: 'basne.html#dopis', n: 'Dopis', k: 'básně' },
+  { s: 'basne.html#az-papir-zezloutne', n: 'Až papír zežloutne', k: 'básně' },
+  { s: 'basne.html#zastrelil-se-prvniho-maje', n: 'Zastřelil se prvního máje', k: 'básně' },
+  { s: 'basne.html#jeden-z-prokletych-basniku', n: 'Jeden z prokletých básníků', k: 'básně' }
 ];
 
 var pohyb = !(window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches);
@@ -137,7 +146,8 @@ document.querySelectorAll('.zalozky [role="tab"]').forEach(function (tab, _, all
 (function () {
   var nav = document.querySelector('.listovani[data-text]');
   if (!nav) return;
-  var i = TEXTY.findIndex(function (t) { return t.s === nav.getAttribute('data-text'); });
+  var PORADI = ['pickle-jar', 'herakles', 'celsius-233', 'hudebni-nastroj', 'kdo-podrzi-petu'].map(function (s) { return TEXTY.filter(function (t) { return t.s === s; })[0]; });
+  var i = PORADI.findIndex(function (t) { return t.s === nav.getAttribute('data-text'); });
   if (i < 0) return;
   function odkaz(t, kam, trida) {
     var a = document.createElement('a');
@@ -148,8 +158,8 @@ document.querySelectorAll('.zalozky [role="tab"]').forEach(function (tab, _, all
     a.querySelector('.nazev').textContent = t.n;
     nav.appendChild(a);
   }
-  if (TEXTY[i - 1]) odkaz(TEXTY[i - 1], '☜ předchozí', 'predchozi');
-  if (TEXTY[i + 1]) odkaz(TEXTY[i + 1], 'další ☞', 'dalsi');
+  if (PORADI[i - 1]) odkaz(PORADI[i - 1], '☜ předchozí', 'predchozi');
+  if (PORADI[i + 1]) odkaz(PORADI[i + 1], 'další ☞', 'dalsi');
 })();
 
 /* ---------- 7) Prohlížení fotek rukopisu přes celou obrazovku ---------- */
@@ -364,7 +374,7 @@ var Zvuk = (function () {
   });
   document.addEventListener('click', function (e) {
     var t = e.target;
-    if (t.closest('.prepinac-zvuku, .nahoru, .menu-tlacitko')) return;
+    if (t.closest('.prepinac-zvuku, .nahoru, .menu-tlacitko, .menu-panel summary')) return;
     if (t.closest('.prohlizec .zavrit')) return hraj('fuk');
     if (t.closest('.prohlizec .zpet, .prohlizec .vpred, .zalozky button')) return hraj('sust');
     if (t.closest('.fotky img, .rukopis-stranky img')) return hraj('plesk');
@@ -563,26 +573,87 @@ var Zvuk = (function () {
   });
 })();
 
-/* ---------- 14) Hamburger menu na mobilu ---------- */
+/* ---------- 14) Menu ☰ (na všech zařízeních) ----------
+   obálka · texty → dialogy / úvahy / básně → díla · rukopis · o zápisníku */
 (function () {
   var nav = document.querySelector('.navigace');
   if (!nav) return;
+  var koren = document.querySelector('script[src*="zin.js"]').getAttribute('src').replace(/zin\.js.*$/, '');
+  var zde = location.pathname.split('/').pop() || 'index.html';
+  document.documentElement.classList.add('js-menu');
+
   var b = document.createElement('button');
   b.type = 'button';
   b.className = 'dymo menu-tlacitko';
   b.textContent = '☰ menu';
   b.setAttribute('aria-expanded', 'false');
+  b.setAttribute('aria-controls', 'menu-panel');
+
+  var p = document.createElement('nav');
+  p.id = 'menu-panel';
+  p.className = 'menu-panel vystrizek paska';
+  p.setAttribute('aria-label', 'Menu');
+  p.hidden = true;
+
+  function odkaz(href, text, trida) {
+    var a = document.createElement('a');
+    a.href = koren + href;
+    a.textContent = text;
+    if (trida) a.className = trida;
+    if (href.split('#')[0] === zde || href.split('/').pop().split('#')[0] === zde && href.indexOf('#') < 0) a.setAttribute('aria-current', 'page');
+    return a;
+  }
+  var ul = document.createElement('ul');
+  function polozka(el) { var li = document.createElement('li'); li.appendChild(el); ul.appendChild(li); return li; }
+  polozka(odkaz('index.html', 'obálka', 'hlavni'));
+  var liT = polozka(odkaz('texty.html', 'texty', 'hlavni'));
+  var kat = document.createElement('ul'); kat.className = 'kategorie'; liT.appendChild(kat);
+  var skupiny = [
+    ['dialogy', TEXTY.filter(function (t) { return t.k === 'dialogy'; })],
+    ['úvahy', TEXTY.filter(function (t) { return t.k === 'úvahy'; })],
+    ['básně', BASNE]
+  ];
+  skupiny.forEach(function (sk) {
+    var li = document.createElement('li');
+    var d = document.createElement('details');
+    var s = document.createElement('summary');
+    s.textContent = sk[0] + ' (' + sk[1].length + ')';
+    d.appendChild(s);
+    var dila = document.createElement('ul'); dila.className = 'dila';
+    sk[1].forEach(function (t) {
+      var l = document.createElement('li');
+      var href = t.s.indexOf('.html') > -1 ? t.s : 'texty/' + t.s + '.html';
+      var a = odkaz(href, t.n);
+      if (location.pathname.indexOf('/texty/' + t.s + '.html') > -1) { a.setAttribute('aria-current', 'page'); d.open = true; }
+      l.appendChild(a); dila.appendChild(l);
+    });
+    d.appendChild(dila); li.appendChild(d); kat.appendChild(li);
+  });
+  polozka(odkaz('rukopis.html', 'rukopis', 'hlavni'));
+  polozka(odkaz('o-zapisniku.html', 'o zápisníku', 'hlavni'));
+  p.appendChild(ul);
+
   nav.parentNode.insertBefore(b, nav);
-  b.addEventListener('click', function (e) {
-    e.stopPropagation();
-    var o = nav.classList.toggle('otevreno');
+  nav.parentNode.insertBefore(p, nav);
+  // přepínač zvuku přesunout vedle tlačítka menu (až vznikne)
+  var hlidej = setInterval(function () {
+    var z = nav.querySelector('.prepinac-zvuku');
+    if (z) { b.parentNode.insertBefore(z, p); clearInterval(hlidej); }
+  }, 200);
+  setTimeout(function () { clearInterval(hlidej); }, 5000);
+
+  function nastav(o) {
+    p.hidden = !o;
     b.setAttribute('aria-expanded', o);
     b.textContent = o ? '✕ zavřít' : '☰ menu';
+  }
+  b.addEventListener('click', function (e) {
+    e.stopPropagation();
+    nastav(p.hidden);
     if (typeof Zvuk !== 'undefined') Zvuk.hraj('sust');
   });
   document.addEventListener('click', function (e) {
-    if (nav.classList.contains('otevreno') && !nav.contains(e.target)) {
-      nav.classList.remove('otevreno'); b.setAttribute('aria-expanded', 'false'); b.textContent = '☰ menu';
-    }
+    if (!p.hidden && !p.contains(e.target)) nastav(false);
   });
+  addEventListener('keydown', function (e) { if (e.key === 'Escape' && !p.hidden) { nastav(false); b.focus(); } });
 })();

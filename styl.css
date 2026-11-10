@@ -419,16 +419,35 @@ h2.skupina .kolik-skup { font: 15px var(--stroj); color: var(--toner-slaby); }
 
 .listek-basen { display: block; margin-top: 18px; font-size: 13px; color: #2a3a8f; rotate: -1deg; }
 
-/* hamburger menu na mobilu */
-.menu-tlacitko { display: none; border: 0; cursor: pointer; font-size: 13px; }
+/* ---------- menu ☰ ---------- */
+.js-menu .navigace { display: none; }
+.horni { position: relative; align-items: center; }
+.horni > .dymo, .horni > button { margin-right: 8px; }
+.menu-tlacitko { border: 0; cursor: pointer; font-size: 15px; padding: 9px 14px 8px; }
+.menu-panel {
+  position: absolute; top: 52px; left: 0; z-index: 60; width: min(360px, calc(100vw - 32px));
+  padding: 26px 28px 22px; rotate: -1deg; box-shadow: 5px 7px 0 rgba(0,0,0,.18);
+}
+.menu-panel[hidden] { display: none; }
+.menu-panel ul { list-style: none; margin: 0; padding: 0; }
+.menu-panel > ul > li { margin: 0 0 12px; }
+.menu-panel a { text-decoration: none; }
+.menu-panel a:hover, .menu-panel summary:hover { background: var(--zvyraz); }
+.menu-panel .hlavni { font: 400 26px/1.1 "Anton", sans-serif; text-transform: uppercase; text-shadow: none; }
+.menu-panel a[aria-current="page"] { background: var(--toner); color: var(--vystrizek); padding: 0 .2em; }
+.menu-panel .kategorie { margin: 8px 0 4px 6px; border-left: 2px dashed var(--toner-slaby); padding-left: 14px; }
+.menu-panel summary { cursor: pointer; font-size: 16px; padding: 3px 0; list-style: none; }
+.menu-panel summary::-webkit-details-marker { display: none; }
+.menu-panel summary::before { content: "▸ "; }
+.menu-panel details[open] > summary::before { content: "▾ "; }
+.menu-panel .dila { margin: 2px 0 8px 14px; }
+.menu-panel .dila li { margin: 3px 0; font-size: 15px; }
+.menu-panel .dila a::before { content: "– "; color: var(--toner-slaby); }
+@media (prefers-reduced-motion: no-preference) {
+  .menu-panel:not([hidden]) { animation: list-sem .25s ease-out; }
+}
+
 @media (max-width: 700px) {
-  .horni { align-items: center; }
-  .menu-tlacitko { display: inline-block; }
-  .navigace { display: none; flex-direction: column; align-items: flex-start; gap: 10px;
-    position: absolute; top: 58px; left: 16px; z-index: 60; background: var(--vystrizek);
-    padding: 18px 20px; box-shadow: 4px 6px 0 rgba(0,0,0,.18); rotate: -1deg; }
-  .navigace.otevreno { display: flex; }
-  .navigace .dymo { font-size: 15px; padding: 9px 14px 8px; }
   .horni .info { font-size: 12px; }
   .list-textu { padding: 26px 18px 22px; }
   .replika .dymo { display: inline-block; margin-bottom: 4px; }
@@ -438,3 +457,28 @@ h2.skupina .kolik-skup { font: 15px var(--stroj); color: var(--toner-slaby); }
   .nahoru { right: 14px; bottom: 14px; }
   .formular { padding: 22px 18px 18px; }
 }
+
+/* ---------- velké obrazovky ---------- */
+@media (min-width: 1500px) {
+  body { font-size: 20px; }
+  .arch { max-width: 1240px; }
+  .list-textu { max-width: 860px; padding: 56px 60px 50px; }
+  .recenze { max-width: 860px; }
+  .obsah { gap: 40px 28px; }
+  .kus h3 { font-size: 62px; }
+  .listek { width: 220px; margin-right: -300px; font-size: 15px; }
+  .basne { columns: 3 340px; }
+  .fotky figure { width: 300px; }
+  .proc { max-width: 760px; font-size: 23px; }
+  .menu-panel { width: 400px; }
+}
+@media (min-width: 2100px) {
+  body { font-size: 22px; }
+  .arch { max-width: 1500px; }
+  .list-textu { max-width: 980px; }
+  .recenze { max-width: 980px; }
+  .listek { width: 250px; margin-right: -340px; font-size: 16px; }
+  .fotky figure { width: 340px; }
+}
+.js-menu .horni { justify-content: flex-start; gap: 8px; }
+.js-menu .horni .info { margin-left: auto; }
