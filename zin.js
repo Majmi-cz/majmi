@@ -536,6 +536,13 @@ var Zvuk = (function () {
   // zveřejněné recenze: soubory recenze/<text>/*.json (zveřejňují se klikem z mailu)
   // + starší ručně psané v recenze.json
   var REPO = 'https://api.github.com/repos/Majmi-cz/majmi/contents/recenze/';
+  // režim pro Majmiho: otevři web s #majmi na konci adresy (vypnutí: #nemajmi)
+  var spravce = false;
+  try {
+    if (location.hash === '#majmi') localStorage.setItem('majmi-spravce', '1');
+    if (location.hash === '#nemajmi') localStorage.removeItem('majmi-spravce');
+    spravce = localStorage.getItem('majmi-spravce') === '1';
+  } catch (e) {}
   function vykresli(box, seznam) {
     seznam.forEach(function (r) {
       if (!r || !r.text) return;
@@ -543,7 +550,16 @@ var Zvuk = (function () {
       d.className = 'dopis vystrizek' + (box.children.length % 2 ? ' b' : '');
       var p = document.createElement('p'); p.textContent = r.text;
       var k = document.createElement('p'); k.className = 'kdo-pise'; k.textContent = '— ' + (r.kdo || T.anonym);
-      d.appendChild(p); d.appendChild(k); box.appendChild(d);
+      d.appendChild(p); d.appendChild(k);
+      if (spravce && r._cesta) {
+        var x = document.createElement('a');
+        x.className = 'smazat-recenzi';
+        x.href = 'https://github.com/Majmi-cz/majmi/delete/main/' + r._cesta;
+        x.target = '_blank'; x.rel = 'noopener';
+        x.textContent = '✕ smazat';
+        d.appendChild(x);
+      }
+      box.appendChild(d);
     });
   }
   sekce.forEach(function (sek) {
@@ -560,7 +576,7 @@ var Zvuk = (function () {
         soubory = (Array.isArray(soubory) ? soubory : []).filter(function (f) { return /\.json$/.test(f.name); })
           .sort(function (x, y) { return x.name < y.name ? -1 : 1; });
         return Promise.all(soubory.map(function (f) {
-          return fetch(f.download_url).then(function (r) { return r.json(); }).catch(function () { return null; });
+          return fetch(f.download_url).then(function (r) { return r.json(); }).then(function (o) { if (o) o._cesta = f.path; return o; }).catch(function () { return null; });
         }));
       })
       .catch(function () { return []; });
@@ -597,8 +613,11 @@ var Zvuk = (function () {
         // odkaz, který otevře GitHub s předvyplněnou recenzí -> stačí kliknout na „Commit changes“
         var klic = sek.getAttribute('data-klic') || 'ostatni';
         var obsah = JSON.stringify({ text: d.get('recenze'), kdo: jm, datum: new Date().toISOString().slice(0, 10) }, null, 2);
+        var soubor = Date.now() + '.json';
         poslat.append('ZVEŘEJNIT (klikni a dej Commit changes)',
-          'https://github.com/Majmi-cz/majmi/new/main/recenze/' + klic + '?filename=' + Date.now() + '.json&value=' + encodeURIComponent(obsah));
+          'https://github.com/Majmi-cz/majmi/new/main/recenze/' + klic + '?filename=' + soubor + '&value=' + encodeURIComponent(obsah));
+        poslat.append('SMAZAT (až bude zveřejněná, klikni a dej Commit changes)',
+          'https://github.com/Majmi-cz/majmi/delete/main/recenze/' + klic + '/' + soubor);
       }
       poslat.append('_subject', (ven === 'ANO' ? '★ ' : '') + 'Recenze: ' + nazev + ' (' + jm + ')');
       poslat.append('_template', 'box');
