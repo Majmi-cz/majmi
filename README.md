@@ -22,7 +22,7 @@
 ```
 index.html           obálka
 texty.html           seznam textů
-basne.html           básně (v menu pod Texty)
+texty/<báseň>.html   každá báseň má vlastní stránku (basne.html jen přesměruje)
 en/                  anglická verze
 hlavicka.py          generuje hlavičku a menu
 rukopis.html         fotky ze sešitu

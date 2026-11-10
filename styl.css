@@ -502,3 +502,7 @@ h2.sekce .vystrizky { font-size: clamp(40px, 7vw, 64px); }
 .dopis { position: relative; }
 .smazat-recenzi { position: absolute; top: 8px; right: 10px; font-size: 13px; background: #c0392b; color: #fff; padding: 2px 8px; text-decoration: none; text-shadow: none; }
 .smazat-recenzi:hover { background: var(--toner); color: #fff; }
+
+/* stránka básně */
+.basen-stranka .basen { font-size: 1.08em; line-height: 1.75; margin: 0; }
+.basen-stranka { max-width: 640px; }

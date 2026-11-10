@@ -8,27 +8,74 @@ var TEXTY = [
   {
     "s": "pickle-jar",
     "n": "Pickle Jar",
-    "en": "Pickle Jar"
+    "en": "Pickle Jar",
+    "k": "texty"
   },
   {
     "s": "herakles",
     "n": "Héraklés",
-    "en": "Heracles"
+    "en": "Heracles",
+    "k": "texty"
   },
   {
     "s": "celsius-233",
     "n": "Celsius 233",
-    "en": "Celsius 233"
+    "en": "Celsius 233",
+    "k": "texty"
   },
   {
     "s": "hudebni-nastroj",
     "n": "Hudební nástroj",
-    "en": "Musical Instrument"
+    "en": "Musical Instrument",
+    "k": "texty"
   },
   {
     "s": "kdo-podrzi-petu",
     "n": "Kdo podrží Péťu?",
-    "en": "Who Will Hold Péťa?"
+    "en": "Who Will Hold Péťa?",
+    "k": "texty"
+  },
+  {
+    "s": "sestikraska",
+    "n": "Šestikráska",
+    "en": "Six-Petal Daisy",
+    "k": "basne"
+  },
+  {
+    "s": "sozalenije",
+    "n": "Сожаление",
+    "en": "Сожаление (Regret)",
+    "k": "basne"
+  },
+  {
+    "s": "ruze-ve-vlasech",
+    "n": "Růže ve vlasech",
+    "en": "Roses in Her Hair",
+    "k": "basne"
+  },
+  {
+    "s": "dopis",
+    "n": "Dopis",
+    "en": "The Letter",
+    "k": "basne"
+  },
+  {
+    "s": "az-papir-zezloutne",
+    "n": "Až papír zežloutne",
+    "en": "When the Paper Yellows",
+    "k": "basne"
+  },
+  {
+    "s": "zastrelil-se-prvniho-maje",
+    "n": "Zastřelil se prvního máje",
+    "en": "He Shot Himself on the First of May",
+    "k": "basne"
+  },
+  {
+    "s": "jeden-z-prokletych-basniku",
+    "n": "Jeden z prokletých básníků",
+    "en": "One of the Cursed Poets",
+    "k": "basne"
   }
 ];
 
@@ -174,8 +221,10 @@ document.querySelectorAll('.zalozky [role="tab"]').forEach(function (tab, _, all
 (function () {
   var nav = document.querySelector('.listovani[data-text]');
   if (!nav) return;
-  var PORADI = TEXTY;
-  var i = PORADI.findIndex(function (t) { return t.s === nav.getAttribute('data-text'); });
+  var ted = TEXTY.filter(function (t) { return t.s === nav.getAttribute('data-text'); })[0];
+  if (!ted) return;
+  var PORADI = TEXTY.filter(function (t) { return t.k === ted.k; });   // texty mezi sebou, básně mezi sebou
+  var i = PORADI.indexOf(ted);
   if (i < 0) return;
   function odkaz(t, kam, trida) {
     var a = document.createElement('a');

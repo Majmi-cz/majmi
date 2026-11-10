@@ -10,7 +10,7 @@ TEXTY = [  # v pořadí, jak vycházely (I., II., …): (soubor, česky, anglick
     ('hudebni-nastroj', 'Hudební nástroj', 'Musical Instrument', 'úvahy'),
     ('kdo-podrzi-petu', 'Kdo podrží Péťu?', 'Who Will Hold Péťa?', 'dialogy'),
 ]
-BASNE = [  # (kotva v basne.html, česky, anglicky)
+BASNE = [  # (soubor v texty/, česky, anglicky)
     ('sestikraska', 'Šestikráska', 'Six-Petal Daisy'),
     ('sozalenije', 'Сожаление', 'Сожаление (Regret)'),
     ('ruze-ve-vlasech', 'Růže ve vlasech', 'Roses in Her Hair'),
@@ -48,12 +48,12 @@ def hlavicka(f, info):
         dila = []
         if k == 'básně':
             for kotva, cz, eng in BASNE:
-                dila.append(f'<li>{a("basne.html#" + kotva, eng if en else cz)}</li>')
+                dila.append(f'<li>{a("texty/" + kotva + ".html", eng if en else cz)}</li>')
         else:
             for s, cz, eng, kk in TEXTY:
                 if kk == k:
                     dila.append(f'<li>{a("texty/" + s + ".html", eng if en else cz)}</li>')
-        otevreno = ' open' if any(f'texty/{s}.html' == zde for s, _, _, kk in TEXTY if kk == k) or (k == 'básně' and zde == 'basne.html') else ''
+        otevreno = ' open' if any(f'texty/{s}.html' == zde for s, _, _, kk in TEXTY if kk == k) or (k == 'básně' and any(f'texty/{b[0]}.html' == zde for b in BASNE)) else ''
         nazev = KAT[k] if en else k
         kat.append(f'<li><details{otevreno}><summary>{nazev} ({len(dila)})</summary><ul class="dila">{"".join(dila)}</ul></details></li>')
 
@@ -87,7 +87,7 @@ for f in stranky():
 
 # seznam pro listování "předchozí / další" v zin.js
 j = open('zin.js', encoding='utf-8').read()
-data = 'var TEXTY = ' + json.dumps([{'s': s, 'n': cz, 'en': eng} for s, cz, eng, _ in TEXTY], ensure_ascii=False, indent=2) + ';'
+data = 'var TEXTY = ' + json.dumps([{'s': s, 'n': cz, 'en': eng, 'k': 'texty'} for s, cz, eng, _ in TEXTY] + [{'s': s, 'n': cz, 'en': eng, 'k': 'basne'} for s, cz, eng in BASNE], ensure_ascii=False, indent=2) + ';'
 j = re.sub(r'var TEXTY = \[.*?\];', lambda _: data, j, count=1, flags=re.S)
 open('zin.js', 'w', encoding='utf-8').write(j)
 print('hotovo')

@@ -17,4 +17,4 @@ Text můžeš před commitem i upravit.
   a u každé zveřejněné recenze uvidíš červené **✕ smazat** → klik → Commit changes.
   Vypnutí: `#nemajmi`. Ostatní tlačítko nevidí (a smazat stejně může jen ten, kdo má přístup do repa).
 
-Složky: `pickle-jar`, `herakles`, `celsius-233`, `hudebni-nastroj`, `kdo-podrzi-petu`, `basne`.
+Složka = název souboru textu nebo básně (`herakles`, `dopis`, `sestikraska`…).
