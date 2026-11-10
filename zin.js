@@ -8,7 +8,8 @@ var TEXTY = [
   { s: 'pickle-jar', n: 'Pickle Jar' },
   { s: 'herakles', n: 'Héraklés' },
   { s: 'celsius-233', n: 'Celsius 233' },
-  { s: 'hudebni-nastroj', n: 'Hudební nástroj' }
+  { s: 'hudebni-nastroj', n: 'Hudební nástroj' },
+  { s: 'kdo-podrzi-petu', n: 'Kdo podrží Péťu?' }
 ];
 
 var pohyb = !(window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches);
@@ -363,7 +364,7 @@ var Zvuk = (function () {
   });
   document.addEventListener('click', function (e) {
     var t = e.target;
-    if (t.closest('.prepinac-zvuku, .nahoru')) return;
+    if (t.closest('.prepinac-zvuku, .nahoru, .menu-tlacitko')) return;
     if (t.closest('.prohlizec .zavrit')) return hraj('fuk');
     if (t.closest('.prohlizec .zpet, .prohlizec .vpred, .zalozky button')) return hraj('sust');
     if (t.closest('.fotky img, .rukopis-stranky img')) return hraj('plesk');
@@ -559,5 +560,29 @@ var Zvuk = (function () {
           stav.textContent = 'Něco se pokazilo. Zkus to za chvíli znovu.';
         });
     });
+  });
+})();
+
+/* ---------- 14) Hamburger menu na mobilu ---------- */
+(function () {
+  var nav = document.querySelector('.navigace');
+  if (!nav) return;
+  var b = document.createElement('button');
+  b.type = 'button';
+  b.className = 'dymo menu-tlacitko';
+  b.textContent = '☰ menu';
+  b.setAttribute('aria-expanded', 'false');
+  nav.parentNode.insertBefore(b, nav);
+  b.addEventListener('click', function (e) {
+    e.stopPropagation();
+    var o = nav.classList.toggle('otevreno');
+    b.setAttribute('aria-expanded', o);
+    b.textContent = o ? '✕ zavřít' : '☰ menu';
+    if (typeof Zvuk !== 'undefined') Zvuk.hraj('sust');
+  });
+  document.addEventListener('click', function (e) {
+    if (nav.classList.contains('otevreno') && !nav.contains(e.target)) {
+      nav.classList.remove('otevreno'); b.setAttribute('aria-expanded', 'false'); b.textContent = '☰ menu';
+    }
   });
 })();

@@ -9,6 +9,7 @@
 | | | |
 |---|---|---|
 | básně | [Básně](https://majmi-cz.github.io/majmi/basne.html) | 5 básní |
+| V. | [Kdo podrží Péťu?](https://majmi-cz.github.io/majmi/texty/kdo-podrzi-petu.html) | dialog, 2026 |
 | IV. | [Hudební nástroj](https://majmi-cz.github.io/majmi/texty/hudebni-nastroj.html) | úvaha, 2026 |
 | III. | [Celsius 233](https://majmi-cz.github.io/majmi/texty/celsius-233.html) | úvaha, 2026 |
 | II. | [Héraklés](https://majmi-cz.github.io/majmi/texty/herakles.html) | dialog, 2026 |
