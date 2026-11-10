@@ -121,7 +121,7 @@ if (pohyb) document.documentElement.classList.add('js-pohyb');
 /* ---------- 3) Lístky a fotky se přilepí, až k nim doscrolluješ ---------- */
 (function () {
   if (!pohyb || !('IntersectionObserver' in window)) return;
-  var kusy = document.querySelectorAll('.kus, .rozcestnik a, .fotky figure, .podtitul, .slova, .proc, .listovani a, .basen-kus, .listek');
+  var kusy = document.querySelectorAll('.kus, .rozcestnik a, .fotky figure, .podtitul, .slova, .proc, .majmi, .listovani a, .basen-kus, .listek');
   var io = new IntersectionObserver(function (zaznamy) {
     var n = 0;
     zaznamy.forEach(function (z) {

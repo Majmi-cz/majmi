@@ -489,3 +489,12 @@ h2.skupina .kolik-skup { font: 15px var(--stroj); color: var(--toner-slaby); }
 .horni > .jazyk { background: transparent; color: var(--toner); box-shadow: inset 0 0 0 2px var(--toner); }
 .horni > .dymo:hover { background: var(--zvyraz); color: var(--toner); }
 .prepinac-zvuku[hidden] { display: none; }
+
+/* M.A.J.M.I. */
+.majmi { max-width: 640px; padding: 34px 40px 26px; rotate: .8deg; margin: 0 0 60px auto; }
+.majmi .zkratka { list-style: none; padding: 0; margin: 0 0 22px; font: 400 clamp(30px, 5vw, 46px)/1.15 "Anton", sans-serif; text-transform: uppercase; text-shadow: none; }
+.majmi .zkratka b { font-weight: 400; background: var(--toner); color: var(--vystrizek); padding: 0 .12em; margin-right: .06em; }
+.majmi .glosa { font: 15px var(--stroj); text-transform: none; color: var(--toner-slaby); margin-left: 8px; }
+.majmi p { margin: 0 0 .8em; }
+h2.sekce .vystrizky { font-size: clamp(40px, 7vw, 64px); }
+@media (max-width: 700px) { .majmi { padding: 26px 22px 20px; margin-left: 0; } }
