@@ -674,11 +674,14 @@ var Zvuk = (function () {
       tl.disabled = true;
       stav.textContent = T.posilam;
       fetch('https://formsubmit.co/ajax/' + MAIL, { method: 'POST', headers: { Accept: 'application/json' }, body: poslat })
-        .then(function (r) { return r.json(); })
-        .then(function (o) {
-          if (String(o.success) !== 'true') throw 0;
+        .then(function (r) {
+          // FormSubmit vrací 200, i když text odpovědi nejde přečíst -> stačí, že server přijal
+          if (!r.ok) throw 0;
+          return r.text().then(function (t) { try { console.log('FormSubmit:', t); } catch (e) {} });
+        })
+        .then(function () {
           f.innerHTML = '<p style="margin:0">' + T.diky + '</p>';
-          if (typeof Zvuk !== 'undefined') Zvuk.hraj('plesk');
+          try { if (typeof Zvuk !== 'undefined') Zvuk.hraj('plesk'); } catch (e) {}
         })
         .catch(function () {
           tl.disabled = false;
