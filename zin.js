@@ -664,7 +664,7 @@ var Zvuk = (function () {
         var obsah = JSON.stringify({ text: d.get('recenze'), kdo: jm, datum: new Date().toISOString().slice(0, 10) }, null, 2);
         var soubor = Date.now() + '.json';
         poslat.append('ZVEŘEJNIT (klikni a dej Commit changes)',
-          'https://github.com/Majmi-cz/majmi/new/main/recenze/' + klic + '?filename=' + soubor + '&value=' + encodeURIComponent(obsah));
+          'https://github.com/Majmi-cz/majmi/new/main?filename=' + encodeURIComponent('recenze/' + klic + '/' + soubor) + '&value=' + encodeURIComponent(obsah));
         poslat.append('SMAZAT (až bude zveřejněná, klikni a dej Commit changes)',
           'https://github.com/Majmi-cz/majmi/delete/main/recenze/' + klic + '/' + soubor);
       }
