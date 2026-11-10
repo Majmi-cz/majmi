@@ -533,24 +533,39 @@ var Zvuk = (function () {
   if (!sekce.length) return;
   var koren = document.querySelector('script[src*="zin.js"]').getAttribute('src').replace(/zin\.js.*$/, '');
 
-  // zveřejněné recenze
-  fetch(koren + 'recenze.json', { cache: 'no-cache' })
-    .then(function (r) { return r.ok ? r.json() : {}; })
-    .then(function (vse) {
-      sekce.forEach(function (sek) {
-        var seznam = vse[sek.getAttribute('data-klic')] || [];
-        var box = sek.querySelector('.dopisy');
-        if (!box) return;
-        seznam.forEach(function (r, i) {
-          var d = document.createElement('div');
-          d.className = 'dopis vystrizek' + (i % 2 ? ' b' : '');
-          var p = document.createElement('p'); p.textContent = r.text;
-          var k = document.createElement('p'); k.className = 'kdo-pise'; k.textContent = '— ' + (r.kdo || T.anonym);
-          d.appendChild(p); d.appendChild(k); box.appendChild(d);
-        });
-      });
-    })
-    .catch(function () {});
+  // zveřejněné recenze: soubory recenze/<text>/*.json (zveřejňují se klikem z mailu)
+  // + starší ručně psané v recenze.json
+  var REPO = 'https://api.github.com/repos/Majmi-cz/majmi/contents/recenze/';
+  function vykresli(box, seznam) {
+    seznam.forEach(function (r) {
+      if (!r || !r.text) return;
+      var d = document.createElement('div');
+      d.className = 'dopis vystrizek' + (box.children.length % 2 ? ' b' : '');
+      var p = document.createElement('p'); p.textContent = r.text;
+      var k = document.createElement('p'); k.className = 'kdo-pise'; k.textContent = '— ' + (r.kdo || T.anonym);
+      d.appendChild(p); d.appendChild(k); box.appendChild(d);
+    });
+  }
+  sekce.forEach(function (sek) {
+    var klic = sek.getAttribute('data-klic');
+    var box = sek.querySelector('.dopisy');
+    if (!box || !klic) return;
+    var stare = fetch(koren + 'recenze.json', { cache: 'no-cache' })
+      .then(function (r) { return r.ok ? r.json() : {}; })
+      .then(function (v) { return v[klic] || []; })
+      .catch(function () { return []; });
+    var nove = fetch(REPO + klic)
+      .then(function (r) { return r.ok ? r.json() : []; })
+      .then(function (soubory) {
+        soubory = (Array.isArray(soubory) ? soubory : []).filter(function (f) { return /\.json$/.test(f.name); })
+          .sort(function (x, y) { return x.name < y.name ? -1 : 1; });
+        return Promise.all(soubory.map(function (f) {
+          return fetch(f.download_url).then(function (r) { return r.json(); }).catch(function () { return null; });
+        }));
+      })
+      .catch(function () { return []; });
+    Promise.all([stare, nove]).then(function (v) { vykresli(box, v[0].concat(v[1])); });
+  });
 
   sekce.forEach(function (sek, k) {
     var nazev = sek.getAttribute('data-text');
@@ -558,7 +573,7 @@ var Zvuk = (function () {
     f.className = 'formular vystrizek paska';
     f.innerHTML =
       '<label for="r-text' + k + '">' + T.myslis + '</label>' +
-      '<textarea id="r-text' + k + '" name="recenze" required maxlength="3000"></textarea>' +
+      '<textarea id="r-text' + k + '" name="recenze" required maxlength="1500"></textarea>' +
       '<label for="r-jmeno' + k + '">' + T.podpis + ' <span class="nepovinne">' + T.nepovinne + '</span></label>' +
       '<input type="text" id="r-jmeno' + k + '" name="jmeno" maxlength="60" autocomplete="nickname">' +
       '<label class="zaskrt"><input type="checkbox" name="zverejnit" value="ano"> ' + T.naWeb + '</label>' +
@@ -578,6 +593,13 @@ var Zvuk = (function () {
       poslat.append('Recenze', d.get('recenze'));
       poslat.append('Podpis', jm);
       poslat.append('Zveřejnit', ven);
+      if (ven === 'ANO') {
+        // odkaz, který otevře GitHub s předvyplněnou recenzí -> stačí kliknout na „Commit changes“
+        var klic = sek.getAttribute('data-klic') || 'ostatni';
+        var obsah = JSON.stringify({ text: d.get('recenze'), kdo: jm, datum: new Date().toISOString().slice(0, 10) }, null, 2);
+        poslat.append('ZVEŘEJNIT (klikni a dej Commit changes)',
+          'https://github.com/Majmi-cz/majmi/new/main/recenze/' + klic + '?filename=' + Date.now() + '.json&value=' + encodeURIComponent(obsah));
+      }
       poslat.append('_subject', (ven === 'ANO' ? '★ ' : '') + 'Recenze: ' + nazev + ' (' + jm + ')');
       poslat.append('_template', 'box');
       poslat.append('_captcha', 'false');
