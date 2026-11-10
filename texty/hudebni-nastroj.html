@@ -22,14 +22,27 @@
   <meta property="og:image:alt" content="Hudební nástroj vystřižený z písmen jako ve fanzinu">
   <meta name="twitter:card" content="summary_large_image">
   <!-- /hlava -->
-  <link rel="stylesheet" href="../styl.css?v=202611101812">
+  <link rel="stylesheet" href="../styl.css?v=202611101820">
 </head>
 <body>
 <div class="arch">
 
   <header class="horni">
-    <nav class="navigace"><a class="dymo" href="../index.html">obálka</a><a class="dymo ted" href="../texty.html">texty</a><a class="dymo" href="../rukopis.html">rukopis</a><a class="dymo" href="../o-zapisniku.html">o zápisníku</a></nav>
+    <a class="dymo" href="../index.html">obálka</a>
+    <button type="button" class="dymo menu-tlacitko" aria-expanded="false" aria-controls="menu-panel">☰ menu</button>
+    <a class="dymo jazyk" href="../en/texty/hudebni-nastroj.html" hreflang="en" lang="en" title="Read in English">EN</a>
+    <button type="button" class="dymo prepinac-zvuku" aria-pressed="true" hidden>zvuk: zap</button>
     <div class="info">zápisník č. 1<br>text IV.</div>
+    <nav id="menu-panel" class="menu-panel vystrizek paska" aria-label="Menu" hidden>
+      <ul>
+        <li><a class="hlavni" href="../index.html">obálka</a></li>
+        <li><a class="hlavni" href="../texty.html">texty</a>
+          <ul class="kategorie"><li><details><summary>dialogy (3)</summary><ul class="dila"><li><a href="../texty/pickle-jar.html">Pickle Jar</a></li><li><a href="../texty/herakles.html">Héraklés</a></li><li><a href="../texty/kdo-podrzi-petu.html">Kdo podrží Péťu?</a></li></ul></details></li><li><details open><summary>úvahy (2)</summary><ul class="dila"><li><a href="../texty/celsius-233.html">Celsius 233</a></li><li><a href="../texty/hudebni-nastroj.html" aria-current="page">Hudební nástroj</a></li></ul></details></li><li><details><summary>básně (7)</summary><ul class="dila"><li><a href="../basne.html#sestikraska">Šestikráska</a></li><li><a href="../basne.html#sozalenije">Сожаление</a></li><li><a href="../basne.html#ruze-ve-vlasech">Růže ve vlasech</a></li><li><a href="../basne.html#dopis">Dopis</a></li><li><a href="../basne.html#az-papir-zezloutne">Až papír zežloutne</a></li><li><a href="../basne.html#zastrelil-se-prvniho-maje">Zastřelil se prvního máje</a></li><li><a href="../basne.html#jeden-z-prokletych-basniku">Jeden z prokletých básníků</a></li></ul></details></li></ul>
+        </li>
+        <li><a class="hlavni" href="../rukopis.html">rukopis</a></li>
+        <li><a class="hlavni" href="../o-zapisniku.html">o zápisníku</a></li>
+      </ul>
+    </nav>
   </header>
 
   <section class="hlava">
@@ -73,6 +86,6 @@
   <p class="zpet-dolu"><a class="dymo" href="../texty.html">☞ zpět na texty</a></p>
 
 </div>
-<script src="../zin.js?v=202611101812"></script>
+<script src="../zin.js?v=202611101820"></script>
 </body>
 </html>

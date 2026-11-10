@@ -22,7 +22,9 @@
 ```
 index.html           obálka
 texty.html           seznam textů
-basne.html           básně
+basne.html           básně (v menu pod Texty)
+en/                  anglická verze
+hlavicka.py          generuje hlavičku a menu
 rukopis.html         fotky ze sešitu
 o-zapisniku.html     pár slov o zápisníku
 texty/               jeden soubor = jeden text
@@ -49,3 +51,14 @@ Texty a fotky rukopisu jsou pod **CC BY-NC-SA 4.0** (kromě básní z Ročníku 
 ## Po změně vzhledu nebo skriptu
 
 Spusť `python3 obnov-verzi.py`. K odkazům na `styl.css` a `zin.js` se přidá nové číslo verze, takže lidem se hned načte nová verze, ne ta stará z mezipaměti.
+
+## Hlavička a menu
+
+Hlavička (obálka · ☰ menu · CZ/EN · zvuk) a celé menu jsou napevno v každé stránce.
+Generuje je skript: po přidání textu nebo básně ji zapiš do seznamů `TEXTY` / `BASNE`
+v `hlavicka.py` a spusť `python3 hlavicka.py`. Pak `python3 obnov-verzi.py`.
+
+## Anglická verze
+
+Je ve složce `en/` se stejnou strukturou (`en/texty/…`). Tlačítko CZ/EN vede na stejnou stránku v druhém jazyce.
+Nový text = přidat i jeho anglickou verzi do `en/texty/` (nebo poslat Claudovi).
