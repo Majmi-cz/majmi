@@ -913,11 +913,14 @@ var Zvuk = (function () {
     });
     if (!nalez) { var li = document.createElement('li'); li.className = 'nic'; li.textContent = T.nicNenalezeno; ol.appendChild(li); }
   }
-  vstup.addEventListener('focus', function () {
-    if (data) return;
-    fetch(koren + 'hledani.json').then(function (r) { return r.json(); }).then(function (d) { data = d; hledej(); }).catch(function () {});
-  }, { once: true });
-  vstup.addEventListener('input', hledej);
+  var nacita = false;
+  function nacti() {
+    if (data || nacita) return;
+    nacita = true;
+    fetch(koren + 'hledani.json').then(function (r) { return r.json(); }).then(function (d) { data = d; hledej(); }).catch(function () { nacita = false; });
+  }
+  vstup.addEventListener('focus', nacti);
+  vstup.addEventListener('input', function () { nacti(); hledej(); });
   var nah = box.querySelector('.nahodny');
   nah.textContent = T.nahodny;
   nah.addEventListener('click', function (e) {
