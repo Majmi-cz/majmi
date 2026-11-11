@@ -86,14 +86,14 @@ var T = EN ? {
   nalepit: 'stick it again', nahoru: '↑ top', nahoruPopis: 'Back to top', anonym: 'anonymous',
   myslis: 'what do you think', podpis: 'signature', nepovinne: '(optional)', naWeb: 'feel free to put it on the site',
   poslat: 'send ☞', posilam: 'sending…', diky: 'Thanks! Got it. <span class="zvyraz">Majmi will read it.</span>',
-  chyba: 'Something went wrong. Try again in a moment.', menu: '☰ menu', menuZavrit: '✕ close'
+  chyba: 'Something went wrong. Try again in a moment.', navstev: 'visits: ', cist: '▶ read aloud', stop: '■ stop', menu: '☰ menu', menuZavrit: '✕ close'
 } : {
   predchozi: '☜ předchozí', dalsi: 'další ☞', rukopisStr: 'Stránka rukopisu', predStr: 'Předchozí stránka', dalStr: 'Další stránka',
   zavrit: 'zavřít', cistText: ' číst text ☞', precteno: 'přečteno ', krat: '×', zvukZap: 'zvuk: zap', zvukVyp: 'zvuk: vyp',
   nalepit: 'nalepit znovu', nahoru: '↑ nahoru', nahoruPopis: 'Zpět nahoru', anonym: 'anonym',
   myslis: 'co si o tom myslíš', podpis: 'podpis', nepovinne: '(nepovinné)', naWeb: 'klidně to dej na web',
   poslat: 'poslat ☞', posilam: 'posílám…', diky: 'Díky! Došlo to. <span class="zvyraz">Majmi si to přečte.</span>',
-  chyba: 'Něco se pokazilo. Zkus to za chvíli znovu.', menu: '☰ menu', menuZavrit: '✕ zavřít'
+  chyba: 'Něco se pokazilo. Zkus to za chvíli znovu.', navstev: 'návštěv: ', cist: '▶ přečíst nahlas', stop: '■ zastavit', menu: '☰ menu', menuZavrit: '✕ zavřít'
 };
 
 var pohyb = !(window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches);
@@ -448,7 +448,7 @@ var Zvuk = (function () {
   });
   document.addEventListener('click', function (e) {
     var t = e.target;
-    if (t.closest('.prepinac-zvuku, .nahoru, .menu-tlacitko, .menu-panel summary')) return;
+    if (t.closest('.prepinac-zvuku, .nahoru, .menu-tlacitko, .menu-panel summary, .ctecka')) return;
     if (t.closest('.prohlizec .zavrit')) return hraj('fuk');
     if (t.closest('.prohlizec .zpet, .prohlizec .vpred, .zalozky button')) return hraj('sust');
     if (t.closest('.fotky img, .rukopis-stranky img')) return hraj('plesk');
@@ -710,4 +710,88 @@ var Zvuk = (function () {
     if (!p.hidden && !p.contains(e.target) && e.target !== b) nastav(false);
   });
   addEventListener('keydown', function (e) { if (e.key === 'Escape' && !p.hidden) { nastav(false); b.focus(); } });
+})();
+
+/* ---------- 15) Celkové počítadlo návštěv (v hlavičce vpravo) ---------- */
+(function () {
+  var info = document.querySelector('.horni .info');
+  if (!info || !window.fetch) return;
+  var naWebu = location.hostname === 'majmi-cz.github.io';
+  var pricist = naWebu;
+  try {
+    if (sessionStorage.getItem('navsteva')) pricist = false;
+    else if (naWebu) sessionStorage.setItem('navsteva', '1');
+  } catch (e) {}
+  fetch('https://abacus.jasoncameron.dev/' + (pricist ? 'hit' : 'get') + '/majmi-cz-zapisnik/celkem')
+    .then(function (r) { return r.status === 404 ? { value: 0 } : r.json(); })
+    .then(function (d) {
+      if (typeof d.value !== 'number') return;
+      var s = document.createElement('span');
+      s.className = 'celkem';
+      s.textContent = T.navstev + d.value;
+      info.appendChild(document.createElement('br'));
+      info.appendChild(s);
+    })
+    .catch(function () {});
+})();
+
+/* ---------- 16) Čtečka: přečte text nahlas (hlas z prohlížeče) ---------- */
+(function () {
+  var clanek = document.getElementById('prepis');
+  var meta = document.querySelector('.hlava .meta');
+  if (!clanek || !meta || !('speechSynthesis' in window)) return;
+  var jazyk = EN ? 'en' : 'cs';
+  var b = document.createElement('button');
+  b.type = 'button';
+  b.className = 'dymo ctecka';
+  b.textContent = T.cist;
+  meta.appendChild(b);
+  var hraje = false;
+
+  function hlas() {
+    var v = speechSynthesis.getVoices().filter(function (x) { return x.lang && x.lang.toLowerCase().indexOf(jazyk) === 0; });
+    return v[0] || null;
+  }
+  function textKCteni() {
+    var c = clanek.cloneNode(true);
+    c.querySelectorAll('aside, .listek, script').forEach(function (e) { e.remove(); });
+    c.querySelectorAll('.replika .dymo').forEach(function (e) { e.textContent = e.textContent + ': '; });
+    c.querySelectorAll('.osoby .dymo').forEach(function (e) { e.textContent = e.textContent + '. '; });
+    return c.innerText.replace(/\s+\n/g, '\n');
+  }
+  function kousky(t) {
+    // prohlížeče useknou dlouhé čtení, proto po větách / verších
+    var out = [], kus = '';
+    t.split(/(?<=[.!?…])\s+|\n+/).forEach(function (v) {
+      v = v.trim(); if (!v) return;
+      if ((kus + ' ' + v).length > 200) { if (kus) out.push(kus); kus = v; } else kus = kus ? kus + ' ' + v : v;
+    });
+    if (kus) out.push(kus);
+    return out;
+  }
+  function stop() {
+    hraje = false;
+    speechSynthesis.cancel();
+    b.textContent = T.cist;
+  }
+  b.addEventListener('click', function () {
+    if (hraje) return stop();
+    speechSynthesis.cancel();
+    var v = hlas();
+    var casti = kousky(textKCteni());
+    if (!casti.length) return;
+    hraje = true;
+    b.textContent = T.stop;
+    casti.forEach(function (c, i) {
+      var u = new SpeechSynthesisUtterance(c);
+      u.lang = EN ? 'en-GB' : 'cs-CZ';
+      if (v) u.voice = v;
+      u.rate = 0.95;
+      if (i === casti.length - 1) u.onend = function () { if (hraje) stop(); };
+      speechSynthesis.speak(u);
+    });
+  });
+  addEventListener('pagehide', function () { speechSynthesis.cancel(); });
+  // hlasy se načítají později
+  if (speechSynthesis.onvoiceschanged !== undefined) speechSynthesis.onvoiceschanged = function () {};
 })();

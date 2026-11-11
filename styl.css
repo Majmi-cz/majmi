@@ -508,3 +508,7 @@ h2.sekce .vystrizky { font-size: clamp(40px, 7vw, 64px); }
 /* stránka básně */
 .basen-stranka .basen { font-size: 1.08em; line-height: 1.75; margin: 0; }
 .basen-stranka { max-width: 640px; }
+
+.horni .info .celkem { color: var(--toner-slaby); }
+.ctecka { border: 0; cursor: pointer; font-size: 12px; padding: 6px 10px 5px; background: transparent; color: var(--toner); box-shadow: inset 0 0 0 2px var(--toner); }
+.ctecka:hover { background: var(--zvyraz); }
