@@ -877,7 +877,9 @@ var Zvuk = (function () {
     var k = fronta[i];
     zvyrazni(k.el);
     var h = hlasPro(k.kdo);
-    var u = new SpeechSynthesisUtterance(k.text);
+    var u = new SpeechSynthesisUtterance(k.text
+      .replace(/\s*⇒\s*/g, EN ? ', so ' : ', takže ').replace(/\s*→\s*/g, ', ').replace(/[⚠✗✱☞☜↙↗*_\/\\]+/g, ' ')
+      .replace(/\s+–\s+/g, ', ').replace(/\.{3}|…/g, '… '));
     u.lang = EN ? 'en-GB' : 'cs-CZ';
     if (h.voice) u.voice = h.voice;
     u.pitch = k.typ === 'scena' ? 0.95 : h.pitch;
