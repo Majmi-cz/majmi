@@ -21,8 +21,8 @@ BASNE = [  # (soubor v texty/, česky, anglicky)
 ]
 KAT = {'dialogy': 'dialogues', 'úvahy': 'essays', 'básně': 'poems'}
 SLOVA = {
-    'cs': dict(obalka='obálka', texty='texty', rukopis='rukopis', o='o zápisníku', menu='☰ menu', zvuk='zvuk: zap', jazyk='EN', jazyk_cil='en', jazyk_popis='Read in English'),
-    'en': dict(obalka='cover', texty='texts', rukopis='manuscript', o='about', menu='☰ menu', zvuk='sound: on', jazyk='CZ', jazyk_cil='cs', jazyk_popis='Číst česky'),
+    'cs': dict(obalka='obálka', texty='texty', rukopis='rukopis', listky='lístky', o='o zápisníku', menu='☰ menu', zvuk='zvuk: zap', jazyk='EN', jazyk_cil='en', jazyk_popis='Read in English'),
+    'en': dict(obalka='cover', texty='texts', rukopis='manuscript', listky='notes', o='about', menu='☰ menu', zvuk='sound: on', jazyk='CZ', jazyk_cil='cs', jazyk_popis='Číst česky'),
 }
 
 def stranky():
@@ -70,6 +70,7 @@ def hlavicka(f, info):
           <ul class="kategorie">{"".join(kat)}</ul>
         </li>
         <li>{a("rukopis.html", S["rukopis"], "hlavni")}</li>
+        <li>{a("listky.html", S["listky"], "hlavni")}</li>
         <li>{a("o-zapisniku.html", S["o"], "hlavni")}</li>
       </ul>
     </nav>

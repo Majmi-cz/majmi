@@ -1025,6 +1025,8 @@ var Zvuk = (function () {
       slova: 'rss feed atom odber odebirat sledovat follow subscribe' },
     { cz: 'Rukopis — fotky ze sešitu', en: 'Manuscript — photos from the notebook', kam: 'rukopis.html',
       slova: 'rukopis rukopisy fotky foto fotka obrazky sesit zapisnik scan sken rucne psane original propiska manuscript photos photo notebook handwriting' },
+    { cz: 'Lístky — čmáranice z okrajů', en: 'Notes — scribbles from the margins', kam: 'listky.html',
+      slova: 'listky listek poznamky poznamka okraje okraj cmaranice cmarat vtipy margin notes scribbles doodles' },
     { cz: 'O zápisníku — proč to celé je (a co je M.A.J.M.I.)', en: 'About — why this exists (and what M.A.J.M.I. means)', kam: 'o-zapisniku.html',
       slova: 'o zapisniku o mne proc kdo jsi kdo je autor autor majmi m.a.j.m.i zkratka narodil bio zivotopis about author who why me' },
     { cz: 'Všechny texty', en: 'All texts', kam: 'texty.html', slova: 'texty vsechno seznam obsah archiv texts all list archive' },
@@ -1314,3 +1316,9 @@ var Zvuk = (function () {
     meta.insertBefore(sp, v ? v.nextSibling : null);
   }
 })();
+
+/* odkaz s #rukopis otevře rovnou záložku s rukopisem */
+if (location.hash === '#rukopis') {
+  var _z = document.querySelector('.zalozky [aria-controls="rukopis"]');
+  if (_z) { _z.click(); setTimeout(function () { _z.scrollIntoView({ block: 'start' }); }, 50); }
+}
