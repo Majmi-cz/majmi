@@ -99,7 +99,7 @@ var T = EN ? {
   myslis: 'what do you think', podpis: 'signature', nepovinne: '(optional)', naWeb: 'feel free to put it on the site',
   poslat: 'send ☞', posilam: 'sending…', diky: 'Thanks! Got it. <span class="zvyraz">Majmi will read it.</span>',
   chyba: 'Something went wrong. Try again in a moment.', navstev: 'visits: ', cist: '▶ read aloud', stop: '■ stop', stopKr: '■', ctiOdsud: 'tap a paragraph = read from there · space = pause', zpetOdstavec: 'previous paragraph', dalOdstavec: 'next paragraph', menu: '☰ menu', menuZavrit: '✕ close',
-  slov: 'words', sdilet: 'share ↗', zkopirovano: 'link copied ✓', nove: 'new', odberNadpis: 'Don’t miss the next one', odberText: 'Leave your e-mail and Majmi will let you know when something new shows up. No spam, just texts.', odberMail: 'your@mail.com', odberTlacitko: 'let me know ☞', odberRss: 'or follow via an RSS reader', odberDiky: 'Got it! You’ll hear when there’s something new.', hledat: 'search', hledatPopis: 'search the texts… (a word, a line)', hledatMenu: 'search… (text, line, “reviews”…)', nicNenalezeno: 'Nothing. Try another word.', nahodny: '🎲 random text', pokracovat: '↓ continue where you left off', citovat: 'quote ↗', coRikaji: 'What people say', k: 'on'
+  slov: 'words', sdilet: 'share ↗', zkopirovano: 'link copied ✓', nove: 'new', odberNadpis: 'Don’t miss the next one', odberText: 'Leave your e-mail and Majmi will let you know when something new shows up. No spam, just texts.', odberMail: 'your@mail.com', odberTlacitko: 'let me know ☞', odberRss: 'or follow via an RSS reader', odberDiky: 'Got it! You’ll hear when there’s something new.', hledat: 'search', hledatPopis: 'search the texts… (a word, a line)', hledatMenu: 'search… (text, line, “reviews”…)', nicNenalezeno: 'Nothing. Try another word.', nahodny: '🎲 random text', pokracovat: '↓ continue where you left off', citovat: 'quote ↗', coRikaji: 'What people say', k: 'on', papirCerstvy: 'paper: fresh', papirMesice: 'paper: % months old', papirRoky: 'paper: % years old', papirTip: 'When the paper yellows: texts here really age. The older and more read, the yellower and more thumbed.'
 } : {
   predchozi: '☜ předchozí', dalsi: 'další ☞', rukopisStr: 'Stránka rukopisu', predStr: 'Předchozí stránka', dalStr: 'Další stránka',
   zavrit: 'zavřít', cistText: ' číst text ☞', precteno: 'přečteno ', krat: '×', zvukZap: 'zvuk: zap', zvukVyp: 'zvuk: vyp',
@@ -107,7 +107,7 @@ var T = EN ? {
   myslis: 'co si o tom myslíš', podpis: 'podpis', nepovinne: '(nepovinné)', naWeb: 'klidně to dej na web',
   poslat: 'poslat ☞', posilam: 'posílám…', diky: 'Díky! Došlo to. <span class="zvyraz">Majmi si to přečte.</span>',
   chyba: 'Něco se pokazilo. Zkus to za chvíli znovu.', navstev: 'návštěv: ', cist: '▶ přečíst nahlas', stop: '■ zastavit', stopKr: '■', ctiOdsud: 'klikni na odstavec = čti odsud · mezerník = pauza', zpetOdstavec: 'předchozí odstavec', dalOdstavec: 'další odstavec', menu: '☰ menu', menuZavrit: '✕ zavřít',
-  slov: 'slov', sdilet: 'sdílet ↗', zkopirovano: 'odkaz zkopírován ✓', nove: 'nové', odberNadpis: 'Ať ti nic neuteče', odberText: 'Nech mi mail a dám ti vědět, až sem přibude něco nového. Žádný spam, jen texty.', odberMail: 'tvuj@mail.cz', odberTlacitko: 'dej mi vědět ☞', odberRss: 'nebo odebírej přes RSS čtečku', odberDiky: 'Mám tě! Ozvu se, až bude něco nového.', hledat: 'hledat', hledatPopis: 'hledat v textech… (slovo, verš)', hledatMenu: 'hledat… (text, verš, „recenze“…)', nicNenalezeno: 'Nic. Zkus jiné slovo.', nahodny: '🎲 náhodný text', pokracovat: '↓ pokračovat, kde jsi skončil', citovat: 'citovat ↗', coRikaji: 'Co říkají lidi', k: 'k'
+  slov: 'slov', sdilet: 'sdílet ↗', zkopirovano: 'odkaz zkopírován ✓', nove: 'nové', odberNadpis: 'Ať ti nic neuteče', odberText: 'Nech mi mail a dám ti vědět, až sem přibude něco nového. Žádný spam, jen texty.', odberMail: 'tvuj@mail.cz', odberTlacitko: 'dej mi vědět ☞', odberRss: 'nebo odebírej přes RSS čtečku', odberDiky: 'Mám tě! Ozvu se, až bude něco nového.', hledat: 'hledat', hledatPopis: 'hledat v textech… (slovo, verš)', hledatMenu: 'hledat… (text, verš, „recenze“…)', nicNenalezeno: 'Nic. Zkus jiné slovo.', nahodny: '🎲 náhodný text', pokracovat: '↓ pokračovat, kde jsi skončil', citovat: 'citovat ↗', coRikaji: 'Co říkají lidi', k: 'k', papirCerstvy: 'papír: čerstvý', papirMesice: 'papír: % měs. starý', papirRoky: 'papír: % let starý', papirTip: 'Až papír zežloutne: texty tu doopravdy stárnou. Čím starší a čtenější, tím žlutější a ohmatanější.'
 };
 
 var pohyb = !(window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches);
@@ -1257,3 +1257,60 @@ var Zvuk = (function () {
   });
 })();
 
+
+/* ---------- 24) Až papír zežloutne: texty tu doopravdy stárnou ----------
+   Podle toho, kolik dní je text na webu, papír žloutne, okraje hnědnou,
+   po půl roce se objeví kroužek od kafe, po roce přeložení, po dvou letech je to starý list.
+   Čím víc lidí text přečte, tím víc je „ohmataný“ (otisky prstů v rohu).
+   Náhled do budoucna: přidej k adrese ?stari=400 (počet dní). */
+(function () {
+  var nahled = (location.search.match(/[?&]stari=(\d+)/) || [])[1];
+  function hash(t) { var h = 7; for (var i = 0; i < t.length; i++) h = (h * 31 + t.charCodeAt(i)) >>> 0; return h; }
+  function dny(t) {
+    if (nahled) return +nahled;
+    return t.d ? Math.max(0, (Date.now() - Date.parse(t.d)) / 864e5) : 0;
+  }
+  function zestarni(el, t, cteni) {
+    var d = dny(t), st = Math.min(1, d / 730), h = hash(t.s);
+    var kafe = Math.max(0, Math.min(1, (d - 180) / 60)), lom = Math.max(0, Math.min(1, (d - 365) / 60));
+    var p = el.querySelector(':scope > .patina');
+    if (!p) { p = document.createElement('span'); p.className = 'patina'; p.setAttribute('aria-hidden', 'true'); el.insertBefore(p, el.firstChild); el.classList.add('stari'); }
+    el.style.setProperty('--s', st.toFixed(3));
+    el.style.setProperty('--kafe', kafe.toFixed(3));
+    el.style.setProperty('--lom', lom.toFixed(3));
+    el.style.setProperty('--kx', (15 + h % 70) + '%');
+    el.style.setProperty('--ky', (20 + (h >> 7) % 60) + '%');
+    if (cteni != null) el.style.setProperty('--o', Math.min(1, cteni / 250).toFixed(3));
+    return d;
+  }
+  function popis(d) {
+    if (d < 30) return T.papirCerstvy;
+    if (d < 365) return T.papirMesice.replace('%', Math.round(d / 30));
+    return T.papirRoky.replace('%', (d / 365).toFixed(1).replace('.0', ''));
+  }
+  // karty
+  document.querySelectorAll('a.kus').forEach(function (a) {
+    var m = a.getAttribute('href').match(/([^/]+)\.html$/);
+    var t = m && TEXTY.filter(function (x) { return x.s === m[1]; })[0];
+    var v = a.querySelector('.vystrizek');
+    if (!t || !v) return;
+    zestarni(v, t);
+    if (typeof Pocitadlo !== 'undefined') Pocitadlo.cislo('/majmi/texty/' + t.s + '.html').then(function (n) { if (n) zestarni(v, t, n); }).catch(function () {});
+  });
+  // stránka textu
+  var clanek = document.getElementById('prepis');
+  var m = location.pathname.match(/texty\/([^/]+)\.html$/);
+  var t = m && TEXTY.filter(function (x) { return x.s === m[1]; })[0];
+  if (!clanek || !t) return;
+  var d = zestarni(clanek, t);
+  if (typeof Pocitadlo !== 'undefined') Pocitadlo.cislo('/majmi/texty/' + t.s + '.html').then(function (n) { if (n) zestarni(clanek, t, n); }).catch(function () {});
+  var meta = document.querySelector('.hlava .meta');
+  if (meta) {
+    var sp = document.createElement('span');
+    sp.className = 'papir';
+    sp.textContent = popis(d);
+    sp.title = T.papirTip;
+    var v = meta.querySelector('.vzniklo');
+    meta.insertBefore(sp, v ? v.nextSibling : null);
+  }
+})();
