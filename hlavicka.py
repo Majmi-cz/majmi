@@ -139,4 +139,24 @@ open('feed.xml', 'w', encoding='utf-8').write(f"""<?xml version="1.0" encoding="
 </channel>
 </rss>
 """)
+# Vyhledávání (hledani.json), sitemap.xml, robots.txt
+from html import unescape
+def holy_text(soubor):
+    try: h = open(soubor, encoding='utf-8').read()
+    except FileNotFoundError: return ''
+    m = re.search(r'<article[^>]*id="prepis".*?</article>', h, re.S)
+    t = m.group(0) if m else ''
+    t = re.sub(r'<aside.*?</aside>', ' ', t, flags=re.S)
+    t = re.sub(r'<br\s*/?>|</p>|</div>', '\n', t)
+    t = unescape(re.sub(r'<[^>]+>', ' ', t))
+    return re.sub(r'[ \t]+', ' ', re.sub(r'\n\s*', '\n', t)).strip()
+hledani = []
+for slug, cz, eng, kat in [(a, b, c, d) for a, b, c, d in TEXTY] + [(a, b, c, 'básně') for a, b, c in BASNE]:
+    hledani.append({'s': slug, 'n': cz, 'en': eng, 'k': kat, 'k_en': KAT[kat],
+                    't': holy_text(f'texty/{slug}.html'), 't_en': holy_text(f'en/texty/{slug}.html')})
+open('hledani.json', 'w', encoding='utf-8').write(json.dumps(hledani, ensure_ascii=False))
+mapa = [f for f in stranky() if not os.path.basename(f).startswith('_') and f not in ('basne.html', 'en/basne.html', '404.html')]
+open('sitemap.xml', 'w', encoding='utf-8').write('<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n'
+    + ''.join(f'  <url><loc>{WEB}{"" if f == "index.html" else f}</loc></url>\n' for f in mapa) + '</urlset>\n')
+open('robots.txt', 'w', encoding='utf-8').write(f'User-agent: *\nAllow: /\nSitemap: {WEB}sitemap.xml\n')
 print('hotovo')

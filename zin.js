@@ -99,7 +99,7 @@ var T = EN ? {
   myslis: 'what do you think', podpis: 'signature', nepovinne: '(optional)', naWeb: 'feel free to put it on the site',
   poslat: 'send ☞', posilam: 'sending…', diky: 'Thanks! Got it. <span class="zvyraz">Majmi will read it.</span>',
   chyba: 'Something went wrong. Try again in a moment.', navstev: 'visits: ', cist: '▶ read aloud', stop: '■ stop', menu: '☰ menu', menuZavrit: '✕ close',
-  slov: 'words', sdilet: 'share ↗', zkopirovano: 'link copied ✓', nove: 'new', odberNadpis: 'Don’t miss the next one', odberText: 'Leave your e-mail and Majmi will let you know when something new shows up. No spam, just texts.', odberMail: 'your@mail.com', odberTlacitko: 'let me know ☞', odberRss: 'or follow via an RSS reader', odberDiky: 'Got it! You’ll hear when there’s something new.'
+  slov: 'words', sdilet: 'share ↗', zkopirovano: 'link copied ✓', nove: 'new', odberNadpis: 'Don’t miss the next one', odberText: 'Leave your e-mail and Majmi will let you know when something new shows up. No spam, just texts.', odberMail: 'your@mail.com', odberTlacitko: 'let me know ☞', odberRss: 'or follow via an RSS reader', odberDiky: 'Got it! You’ll hear when there’s something new.', hledat: 'search', hledatPopis: 'search the texts… (a word, a line)', nicNenalezeno: 'Nothing. Try another word.', nahodny: '🎲 random text', pokracovat: '↓ continue where you left off', citovat: 'quote ↗', coRikaji: 'What people say', k: 'on'
 } : {
   predchozi: '☜ předchozí', dalsi: 'další ☞', rukopisStr: 'Stránka rukopisu', predStr: 'Předchozí stránka', dalStr: 'Další stránka',
   zavrit: 'zavřít', cistText: ' číst text ☞', precteno: 'přečteno ', krat: '×', zvukZap: 'zvuk: zap', zvukVyp: 'zvuk: vyp',
@@ -107,7 +107,7 @@ var T = EN ? {
   myslis: 'co si o tom myslíš', podpis: 'podpis', nepovinne: '(nepovinné)', naWeb: 'klidně to dej na web',
   poslat: 'poslat ☞', posilam: 'posílám…', diky: 'Díky! Došlo to. <span class="zvyraz">Majmi si to přečte.</span>',
   chyba: 'Něco se pokazilo. Zkus to za chvíli znovu.', navstev: 'návštěv: ', cist: '▶ přečíst nahlas', stop: '■ zastavit', menu: '☰ menu', menuZavrit: '✕ zavřít',
-  slov: 'slov', sdilet: 'sdílet ↗', zkopirovano: 'odkaz zkopírován ✓', nove: 'nové', odberNadpis: 'Ať ti nic neuteče', odberText: 'Nech mi mail a dám ti vědět, až sem přibude něco nového. Žádný spam, jen texty.', odberMail: 'tvuj@mail.cz', odberTlacitko: 'dej mi vědět ☞', odberRss: 'nebo odebírej přes RSS čtečku', odberDiky: 'Mám tě! Ozvu se, až bude něco nového.'
+  slov: 'slov', sdilet: 'sdílet ↗', zkopirovano: 'odkaz zkopírován ✓', nove: 'nové', odberNadpis: 'Ať ti nic neuteče', odberText: 'Nech mi mail a dám ti vědět, až sem přibude něco nového. Žádný spam, jen texty.', odberMail: 'tvuj@mail.cz', odberTlacitko: 'dej mi vědět ☞', odberRss: 'nebo odebírej přes RSS čtečku', odberDiky: 'Mám tě! Ozvu se, až bude něco nového.', hledat: 'hledat', hledatPopis: 'hledat v textech… (slovo, verš)', nicNenalezeno: 'Nic. Zkus jiné slovo.', nahodny: '🎲 náhodný text', pokracovat: '↓ pokračovat, kde jsi skončil', citovat: 'citovat ↗', coRikaji: 'Co říkají lidi', k: 'k'
 };
 
 var pohyb = !(window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches);
@@ -844,7 +844,7 @@ var Zvuk = (function () {
 /* ---------- 19) Odběr: RSS + „dej mi vědět“ e-mailem (na konci textu a na obálce) ---------- */
 (function () {
   var kam = document.querySelector('.recenze') || document.querySelector('.obalka');
-  if (!kam) return;
+  if (!kam || document.body.classList.contains('e404')) return;
   var koren = document.querySelector('script[src*="zin.js"]').getAttribute('src').replace(/zin\.js.*$/, '');
   var box = document.createElement('section');
   box.className = 'odber vystrizek b paska';
@@ -872,5 +872,157 @@ var Zvuk = (function () {
     fetch('https://formsubmit.co/ajax/tobikb8@gmail.com', { method: 'POST', headers: { Accept: 'application/json' }, body: d })
       .then(function (r) { if (!r.ok) throw 0; form.hidden = true; stav.textContent = T.odberDiky; })
       .catch(function () { stav.textContent = T.chyba; });
+  });
+})();
+
+/* ---------- 20) Hledání v textech (na stránce Texty) ---------- */
+(function () {
+  var prvni = document.querySelector('h2.skupina');
+  if (!prvni || !window.fetch) return;
+  var koren = document.querySelector('script[src*="zin.js"]').getAttribute('src').replace(/zin\.js.*$/, '');
+  var box = document.createElement('div');
+  box.className = 'hledani';
+  box.innerHTML = '<label><span class="vid"></span><input type="search" autocomplete="off"></label> <a class="dymo nahodny" href="#"></a><ol class="vysledky" aria-live="polite"></ol>';
+  box.querySelector('.vid').textContent = T.hledat;
+  var vstup = box.querySelector('input'), ol = box.querySelector('.vysledky');
+  vstup.placeholder = T.hledatPopis;
+  prvni.parentNode.insertBefore(box, prvni);
+  var data = null;
+  function bez(t) { return t.toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g, ''); }
+  function hledej() {
+    var q = bez(vstup.value.trim());
+    ol.innerHTML = '';
+    if (q.length < 2 || !data) return;
+    var nalez = 0;
+    data.forEach(function (d) {
+      var nazev = EN ? d.en : d.n, text = EN ? d.t_en : d.t, b = bez(text), i = b.indexOf(q);
+      if (i < 0 && bez(nazev).indexOf(q) < 0) return;
+      nalez++;
+      var li = document.createElement('li'), a = document.createElement('a');
+      a.href = 'texty/' + d.s + '.html';
+      a.innerHTML = '<strong></strong> <span class="kat"></span><span class="ukazka"></span>';
+      a.querySelector('strong').textContent = nazev;
+      a.querySelector('.kat').textContent = EN ? d.k_en : d.k;
+      if (i >= 0) {
+        var od = Math.max(0, i - 50), uk = a.querySelector('.ukazka');
+        uk.appendChild(document.createTextNode((od ? '…' : '') + text.slice(od, i).replace(/\s+/g, ' ')));
+        var m = document.createElement('mark'); m.textContent = text.slice(i, i + q.length); uk.appendChild(m);
+        uk.appendChild(document.createTextNode(text.slice(i + q.length, i + q.length + 60).replace(/\s+/g, ' ') + '…'));
+      }
+      li.appendChild(a); ol.appendChild(li);
+    });
+    if (!nalez) { var li = document.createElement('li'); li.className = 'nic'; li.textContent = T.nicNenalezeno; ol.appendChild(li); }
+  }
+  vstup.addEventListener('focus', function () {
+    if (data) return;
+    fetch(koren + 'hledani.json').then(function (r) { return r.json(); }).then(function (d) { data = d; hledej(); }).catch(function () {});
+  }, { once: true });
+  vstup.addEventListener('input', hledej);
+  var nah = box.querySelector('.nahodny');
+  nah.textContent = T.nahodny;
+  nah.addEventListener('click', function (e) {
+    e.preventDefault();
+    location.href = 'texty/' + TEXTY[Math.floor(Math.random() * TEXTY.length)].s + '.html';
+  });
+})();
+
+/* ---------- 21) Pokračovat ve čtení (prohlížeč si pamatuje, kde jsi skončil) ---------- */
+(function () {
+  var clanek = document.getElementById('prepis');
+  if (!clanek) return;
+  var klic = 'kde-' + location.pathname.replace(/^.*\//, '');
+  function max() { return document.documentElement.scrollHeight - innerHeight; }
+  var ulozeno = 0;
+  try { ulozeno = parseFloat(localStorage.getItem(klic)) || 0; } catch (e) {}
+  if (ulozeno > 0.08 && ulozeno < 0.85 && scrollY < 50 && !location.hash) {
+    var b = document.createElement('button');
+    b.type = 'button';
+    b.className = 'dymo pokracovat';
+    b.textContent = T.pokracovat;
+    document.body.appendChild(b);
+    var pryc = function () { b.remove(); };
+    b.addEventListener('click', function () { scrollTo({ top: ulozeno * max(), behavior: pohyb ? 'smooth' : 'auto' }); pryc(); });
+    setTimeout(pryc, 9000);
+  }
+  var t = null;
+  addEventListener('scroll', function () {
+    clearTimeout(t);
+    t = setTimeout(function () { try { var m = max(); if (m > 0) localStorage.setItem(klic, (scrollY / m).toFixed(3)); } catch (e) {} }, 400);
+  }, { passive: true });
+})();
+
+/* ---------- 22) Označ kus textu → „citovat ↗“ (zkopíruje citát i s odkazem) ---------- */
+(function () {
+  var clanek = document.getElementById('prepis');
+  if (!clanek || !window.getSelection) return;
+  var b = document.createElement('button');
+  b.type = 'button';
+  b.className = 'dymo citovat';
+  b.textContent = T.citovat;
+  b.hidden = true;
+  document.body.appendChild(b);
+  var citat = '';
+  function schovej() { b.hidden = true; }
+  document.addEventListener('selectionchange', function () {
+    var sel = getSelection();
+    if (!sel.rangeCount || sel.isCollapsed) return schovej();
+    var r = sel.getRangeAt(0);
+    if (!clanek.contains(r.commonAncestorContainer)) return schovej();
+    citat = sel.toString().trim().replace(/\s+/g, ' ');
+    if (citat.length < 3) return schovej();
+    var o = r.getBoundingClientRect();
+    b.style.left = Math.max(8, Math.min(innerWidth - 140, o.left + o.width / 2 - 60)) + 'px';
+    b.style.top = (o.top + scrollY - 44) + 'px';
+    b.hidden = false;
+  });
+  b.addEventListener('mousedown', function (e) { e.preventDefault(); });
+  b.addEventListener('click', function () {
+    var nazev = document.title.replace(/\s+—.*$/, '');
+    var url = location.href.split('#')[0];
+    var t = '„' + citat + '“ — Majmi, ' + nazev;
+    var hotovo = function () { b.textContent = T.zkopirovano; setTimeout(function () { b.textContent = T.citovat; schovej(); }, 1500); };
+    if (navigator.share && matchMedia('(pointer: coarse)').matches) { navigator.share({ text: t, url: url }).catch(function () {}); return; }
+    if (navigator.clipboard) navigator.clipboard.writeText(t + '\n' + url).then(hotovo, function () {});
+  });
+})();
+
+/* ---------- 23) Recenze na obálce: poslední vzkazy ze všech textů ---------- */
+(function () {
+  var obalka = document.querySelector('.obalka');
+  if (!obalka || !window.fetch || document.body.classList.contains('e404')) return;
+  var sekce = document.createElement('section');
+  sekce.className = 'recenze recenze-obalka';
+  sekce.innerHTML = '<h2 class="odber-nadpis"></h2><div class="dopisy"></div>';
+  sekce.querySelector('h2').textContent = T.coRikaji;
+  var odber = document.querySelector('.odber');
+  obalka.parentNode.insertBefore(sekce, odber || obalka.nextSibling);
+  sekce.hidden = true;
+  var box = sekce.querySelector('.dopisy');
+  var koren = document.querySelector('script[src*="zin.js"]').getAttribute('src').replace(/zin\.js.*$/, '');
+  var stare = fetch(koren + 'recenze.json', { cache: 'no-cache' }).then(function (r) { return r.json(); }).catch(function () { return {}; })
+    .then(function (v) { var out = []; Object.keys(v).forEach(function (k) { (v[k] || []).forEach(function (r) { r._k = k; out.push(r); }); }); return out; });
+  var nove = fetch('https://api.github.com/repos/Majmi-cz/majmi/git/trees/main?recursive=1')
+    .then(function (r) { return r.ok ? r.json() : { tree: [] }; })
+    .then(function (d) {
+      var soubory = (d.tree || []).filter(function (f) { return /^recenze\/[^/]+\/\d+\.json$/.test(f.path); })
+        .sort(function (a, b) { return parseInt(b.path.split('/')[2]) - parseInt(a.path.split('/')[2]); }).slice(0, 4);
+      return Promise.all(soubory.map(function (f) {
+        return fetch('https://raw.githubusercontent.com/Majmi-cz/majmi/main/' + f.path).then(function (r) { return r.json(); })
+          .then(function (o) { o._k = f.path.split('/')[1]; return o; }).catch(function () { return null; });
+      }));
+    }).catch(function () { return []; });
+  Promise.all([nove, stare]).then(function (v) {
+    var vse = v[0].concat(v[1]).filter(function (r) { return r && r.text; }).slice(0, 4);
+    if (!vse.length) return;
+    vse.forEach(function (r, i) {
+      var t = TEXTY.filter(function (x) { return x.s === r._k; })[0];
+      var d = document.createElement('div');
+      d.className = 'dopis vystrizek' + (i % 2 ? ' b' : '');
+      var p = document.createElement('p'); p.textContent = r.text;
+      var k = document.createElement('p'); k.className = 'kdo-pise'; k.textContent = '— ' + (r.kdo || T.anonym) + (t ? ' ' + T.k + ' ' : '');
+      if (t) { var a = document.createElement('a'); a.href = 'texty/' + t.s + '.html'; a.textContent = EN ? t.en : t.n; k.appendChild(a); }
+      d.appendChild(p); d.appendChild(k); box.appendChild(d);
+    });
+    sekce.hidden = false;
   });
 })();

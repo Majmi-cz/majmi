@@ -1,0 +1,3 @@
+User-agent: *
+Allow: /
+Sitemap: https://majmi-cz.github.io/majmi/sitemap.xml
