@@ -37,6 +37,8 @@ TEXTY = eval(re.search(r'^TEXTY = (\[.*?^\])', src, re.S | re.M).group(1))
 BASNE = eval(re.search(r'^BASNE = (\[.*?^\])', src, re.S | re.M).group(1))
 NAZVY = {s: (cz, en) for s, cz, en, *_ in TEXTY + BASNE}
 
+import time
+VERZE = time.strftime('%Y%m%d%H%M')
 os.makedirs('listky', exist_ok=True)
 for i, (s, p, ram, otoc, *_ ) in enumerate(L):
     if ram is None: continue
@@ -74,7 +76,7 @@ def stranka(en):
             posledni = s
         alt = re.sub(r'<[^>]+>', ' ', eng if en else cz)
         out.append(f'''    <section class="lp">
-      <figure class="lp-foto vystrizek paska"><img src="{up}listky/{i:02d}.jpg" alt="{'Handwritten' if en else 'Rukopis'}: {alt}" loading="lazy"></figure>
+      <figure class="lp-foto vystrizek paska"><img src="{up}listky/{i:02d}.jpg?v={VERZE}" alt="{'Handwritten' if en else 'Rukopis'}: {alt}" loading="lazy"></figure>
       <div class="lp-prepis vystrizek b"><p>{eng if en else cz}</p><a class="lp-zdroj" href="texty/{s}.html#rukopis">{('page' if en else 'str.')} {p} · {nazev}</a></div>
     </section>
 ''')
