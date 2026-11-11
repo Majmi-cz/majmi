@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+<channel>
+  <title>Majmi — zápisník</title>
+  <link>https://majmi-cz.github.io/majmi/</link>
+  <atom:link href="https://majmi-cz.github.io/majmi/feed.xml" rel="self" type="application/rss+xml"/>
+  <description>Dialogy, úvahy a básně ze sešitu.</description>
+  <language>cs</language>
+  <lastBuildDate>Tue, 10 Nov 2026 20:55:39 +0100</lastBuildDate>
+  <item>
+    <title>Šestikráska</title>
+    <link>https://majmi-cz.github.io/majmi/texty/sestikraska.html</link>
+    <guid>https://majmi-cz.github.io/majmi/texty/sestikraska.html</guid>
+    <category>básně</category>
+    <pubDate>Tue, 10 Nov 2026 20:55:39 +0100</pubDate>
+    <description>Báseň. Šestikráska.</description>
+  </item>
+  <item>
+    <title>Сожаление</title>
+    <link>https://majmi-cz.github.io/majmi/texty/sozalenije.html</link>
+    <guid>https://majmi-cz.github.io/majmi/texty/sozalenije.html</guid>
+    <category>básně</category>
+    <pubDate>Tue, 10 Nov 2026 20:55:39 +0100</pubDate>
+    <description>Báseň. Сожаление.</description>
+  </item>
+  <item>
+    <title>Růže ve vlasech</title>
+    <link>https://majmi-cz.github.io/majmi/texty/ruze-ve-vlasech.html</link>
+    <guid>https://majmi-cz.github.io/majmi/texty/ruze-ve-vlasech.html</guid>
+    <category>básně</category>
+    <pubDate>Tue, 10 Nov 2026 20:55:39 +0100</pubDate>
+    <description>Báseň. Růže ve vlasech.</description>
+  </item>
+  <item>
+    <title>Dopis</title>
+    <link>https://majmi-cz.github.io/majmi/texty/dopis.html</link>
+    <guid>https://majmi-cz.github.io/majmi/texty/dopis.html</guid>
+    <category>básně</category>
+    <pubDate>Tue, 10 Nov 2026 20:55:39 +0100</pubDate>
+    <description>Báseň. Dopis.</description>
+  </item>
+  <item>
+    <title>Až papír zežloutne</title>
+    <link>https://majmi-cz.github.io/majmi/texty/az-papir-zezloutne.html</link>
+    <guid>https://majmi-cz.github.io/majmi/texty/az-papir-zezloutne.html</guid>
+    <category>básně</category>
+    <pubDate>Tue, 10 Nov 2026 20:55:39 +0100</pubDate>
+    <description>Báseň. Až papír zežloutne.</description>
+  </item>
+  <item>
+    <title>Zastřelil se prvního máje</title>
+    <link>https://majmi-cz.github.io/majmi/texty/zastrelil-se-prvniho-maje.html</link>
+    <guid>https://majmi-cz.github.io/majmi/texty/zastrelil-se-prvniho-maje.html</guid>
+    <category>básně</category>
+    <pubDate>Tue, 10 Nov 2026 20:55:39 +0100</pubDate>
+    <description>Báseň. Zastřelil se prvního máje.</description>
+  </item>
+  <item>
+    <title>Jeden z prokletých básníků</title>
+    <link>https://majmi-cz.github.io/majmi/texty/jeden-z-prokletych-basniku.html</link>
+    <guid>https://majmi-cz.github.io/majmi/texty/jeden-z-prokletych-basniku.html</guid>
+    <category>básně</category>
+    <pubDate>Tue, 10 Nov 2026 20:55:39 +0100</pubDate>
+    <description>Báseň. Jeden z prokletých básníků.</description>
+  </item>
+  <item>
+    <title>Kdo podrží Péťu?</title>
+    <link>https://majmi-cz.github.io/majmi/texty/kdo-podrzi-petu.html</link>
+    <guid>https://majmi-cz.github.io/majmi/texty/kdo-podrzi-petu.html</guid>
+    <category>dialogy</category>
+    <pubDate>Tue, 10 Nov 2026 18:06:02 +0100</pubDate>
+    <description>Dialog. Pískoviště u školky, kam paní učitelky nedohlédnou. Tonda, Péťa a Věra – a otázka, kdo podrží toho, kdo drží ostatní.</description>
+  </item>
+  <item>
+    <title>Celsius 233</title>
+    <link>https://majmi-cz.github.io/majmi/texty/celsius-233.html</link>
+    <guid>https://majmi-cz.github.io/majmi/texty/celsius-233.html</guid>
+    <category>úvahy</category>
+    <pubDate>Sun, 08 Nov 2026 15:57:25 +0100</pubDate>
+    <description>Úvaha. Baví mě vůbec číst? O Wertherovi, spoilerech, komfortu a o tom, jestli chci dělat něco, u čeho nevím, jak dopadne.</description>
+  </item>
+  <item>
+    <title>Hudební nástroj</title>
+    <link>https://majmi-cz.github.io/majmi/texty/hudebni-nastroj.html</link>
+    <guid>https://majmi-cz.github.io/majmi/texty/hudebni-nastroj.html</guid>
+    <category>úvahy</category>
+    <pubDate>Sun, 08 Nov 2026 15:57:25 +0100</pubDate>
+    <description>Úvaha. Kdybych si měl vybrat nástroj, byl by to hlas. O hlasech v hlavě, hlasech andělů a o tom, že má každý hlas stejnou váhu.</description>
+  </item>
+  <item>
+    <title>Héraklés</title>
+    <link>https://majmi-cz.github.io/majmi/texty/herakles.html</link>
+    <guid>https://majmi-cz.github.io/majmi/texty/herakles.html</guid>
+    <category>dialogy</category>
+    <pubDate>Fri, 06 Nov 2026 21:31:00 +0100</pubDate>
+    <description>Dialog. Polobůh Héraklés a stará otrokyně na athénské tržnici. Kdo z nich je otrok a co je vlastně síla?</description>
+  </item>
+  <item>
+    <title>Pickle Jar</title>
+    <link>https://majmi-cz.github.io/majmi/texty/pickle-jar.html</link>
+    <guid>https://majmi-cz.github.io/majmi/texty/pickle-jar.html</guid>
+    <category>dialogy</category>
+    <pubDate>Fri, 06 Nov 2026 20:18:36 +0100</pubDate>
+    <description>Dialog. Muž vs. sklenice okurek. Jan má otevřít sklenici, protože je muž. Jarmila je ale silnější.</description>
+  </item>
+</channel>
+</rss>

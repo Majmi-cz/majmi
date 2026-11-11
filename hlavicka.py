@@ -75,6 +75,22 @@ def hlavicka(f, info):
     </nav>
   </header>'''
 
+WEB = 'https://majmi-cz.github.io/majmi/'
+
+def do_hlavy(f, s):
+    """RSS odkaz + GoatCounter (počítadlo) do <head>. CZ a EN verze se počítají dohromady."""
+    up = '../' * f.count('/')
+    blok = (f'<!--hlava-->\n  <link rel="alternate" type="application/rss+xml" title="Majmi — zápisník" href="{up}feed.xml">\n'
+            '  <script>window.goatcounter = { path: function (p) { return p.replace(/^\\/majmi\\/en\\//, \'/majmi/\').replace(/index\\.html$/, \'\'); } };</script>\n'
+            '  <script data-goatcounter="https://majmi.goatcounter.com/count" async src="//gc.zgo.at/count.js"></script>\n  <!--/hlava-->')
+    s = re.sub(r'\s*<!--hlava-->.*?<!--/hlava-->', '', s, flags=re.S)
+    return s.replace('</head>', '  ' + blok + '\n</head>', 1)
+
+def datum(slug):
+    import subprocess
+    d = subprocess.run(['git', 'log', '--diff-filter=A', '--format=%aI', '--', f'texty/{slug}.html'], capture_output=True, text=True).stdout.split()
+    return d[-1] if d else '2026-11-11T12:00:00+01:00'
+
 for f in stranky():
     s = open(f, encoding='utf-8').read()
     m = re.search(r'<header class="horni">.*?</header>', s, re.S)
@@ -83,11 +99,44 @@ for f in stranky():
     info = re.search(r'<div class="info">(.*?)</div>', m.group(0), re.S)
     info = info.group(1) if info else ''
     s = s[:m.start()] + hlavicka(f, info) + s[m.end():]
+    s = do_hlavy(f, s)
     open(f, 'w', encoding='utf-8').write(s)
 
 # seznam pro listování "předchozí / další" v zin.js
 j = open('zin.js', encoding='utf-8').read()
-data = 'var TEXTY = ' + json.dumps([{'s': s, 'n': cz, 'en': eng, 'k': 'texty'} for s, cz, eng, _ in TEXTY] + [{'s': s, 'n': cz, 'en': eng, 'k': 'basne'} for s, cz, eng in BASNE], ensure_ascii=False, indent=2) + ';'
+data = 'var TEXTY = ' + json.dumps([{'s': s, 'n': cz, 'en': eng, 'k': 'texty', 'd': datum(s)[:10]} for s, cz, eng, _ in TEXTY] + [{'s': s, 'n': cz, 'en': eng, 'k': 'basne', 'd': datum(s)[:10]} for s, cz, eng in BASNE], ensure_ascii=False, indent=2) + ';'
 j = re.sub(r'var TEXTY = \[.*?\];', lambda _: data, j, count=1, flags=re.S)
 open('zin.js', 'w', encoding='utf-8').write(j)
+
+# RSS feed (feed.xml) — nejnovější nahoře
+from email.utils import format_datetime
+from datetime import datetime
+from html import escape
+polozky = []
+for slug, cz, _, kat in [(a, b, c, d) for a, b, c, d in TEXTY] + [(a, b, c, 'básně') for a, b, c in BASNE]:
+    html = open(f'texty/{slug}.html', encoding='utf-8').read()
+    popis = re.search(r'<meta name="description" content="([^"]*)"', html) or re.search(r'<meta property="og:description" content="([^"]*)"', html)
+    d = datetime.fromisoformat(datum(slug))
+    polozky.append((d, f"""  <item>
+    <title>{escape(cz)}</title>
+    <link>{WEB}texty/{slug}.html</link>
+    <guid>{WEB}texty/{slug}.html</guid>
+    <category>{kat}</category>
+    <pubDate>{format_datetime(d)}</pubDate>
+    <description>{popis.group(1) if popis else ''}</description>
+  </item>"""))
+polozky.sort(key=lambda x: x[0], reverse=True)
+open('feed.xml', 'w', encoding='utf-8').write(f"""<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+<channel>
+  <title>Majmi — zápisník</title>
+  <link>{WEB}</link>
+  <atom:link href="{WEB}feed.xml" rel="self" type="application/rss+xml"/>
+  <description>Dialogy, úvahy a básně ze sešitu.</description>
+  <language>cs</language>
+  <lastBuildDate>{format_datetime(polozky[0][0])}</lastBuildDate>
+{chr(10).join(p for _, p in polozky)}
+</channel>
+</rss>
+""")
 print('hotovo')

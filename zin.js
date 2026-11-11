@@ -9,73 +9,85 @@ var TEXTY = [
     "s": "pickle-jar",
     "n": "Pickle Jar",
     "en": "Pickle Jar",
-    "k": "texty"
+    "k": "texty",
+    "d": "2026-11-06"
   },
   {
     "s": "herakles",
     "n": "Héraklés",
     "en": "Heracles",
-    "k": "texty"
+    "k": "texty",
+    "d": "2026-11-06"
   },
   {
     "s": "celsius-233",
     "n": "Celsius 233",
     "en": "Celsius 233",
-    "k": "texty"
+    "k": "texty",
+    "d": "2026-11-08"
   },
   {
     "s": "hudebni-nastroj",
     "n": "Hudební nástroj",
     "en": "Musical Instrument",
-    "k": "texty"
+    "k": "texty",
+    "d": "2026-11-08"
   },
   {
     "s": "kdo-podrzi-petu",
     "n": "Kdo podrží Péťu?",
     "en": "Who Will Hold Péťa?",
-    "k": "texty"
+    "k": "texty",
+    "d": "2026-11-10"
   },
   {
     "s": "sestikraska",
     "n": "Šestikráska",
     "en": "Six-Petal Daisy",
-    "k": "basne"
+    "k": "basne",
+    "d": "2026-11-10"
   },
   {
     "s": "sozalenije",
     "n": "Сожаление",
     "en": "Сожаление (Regret)",
-    "k": "basne"
+    "k": "basne",
+    "d": "2026-11-10"
   },
   {
     "s": "ruze-ve-vlasech",
     "n": "Růže ve vlasech",
     "en": "Roses in Her Hair",
-    "k": "basne"
+    "k": "basne",
+    "d": "2026-11-10"
   },
   {
     "s": "dopis",
     "n": "Dopis",
     "en": "The Letter",
-    "k": "basne"
+    "k": "basne",
+    "d": "2026-11-10"
   },
   {
     "s": "az-papir-zezloutne",
     "n": "Až papír zežloutne",
     "en": "When the Paper Yellows",
-    "k": "basne"
+    "k": "basne",
+    "d": "2026-11-10"
   },
   {
     "s": "zastrelil-se-prvniho-maje",
     "n": "Zastřelil se prvního máje",
     "en": "He Shot Himself on the First of May",
-    "k": "basne"
+    "k": "basne",
+    "d": "2026-11-10"
   },
   {
     "s": "jeden-z-prokletych-basniku",
     "n": "Jeden z prokletých básníků",
     "en": "One of the Cursed Poets",
-    "k": "basne"
+    "k": "basne",
+    "d": "2026-11-10"
   }
 ];
 
@@ -86,14 +98,16 @@ var T = EN ? {
   nalepit: 'stick it again', nahoru: '↑ top', nahoruPopis: 'Back to top', anonym: 'anonymous',
   myslis: 'what do you think', podpis: 'signature', nepovinne: '(optional)', naWeb: 'feel free to put it on the site',
   poslat: 'send ☞', posilam: 'sending…', diky: 'Thanks! Got it. <span class="zvyraz">Majmi will read it.</span>',
-  chyba: 'Something went wrong. Try again in a moment.', navstev: 'visits: ', cist: '▶ read aloud', stop: '■ stop', menu: '☰ menu', menuZavrit: '✕ close'
+  chyba: 'Something went wrong. Try again in a moment.', navstev: 'visits: ', cist: '▶ read aloud', stop: '■ stop', menu: '☰ menu', menuZavrit: '✕ close',
+  slov: 'words', sdilet: 'share ↗', zkopirovano: 'link copied ✓', nove: 'new', odberNadpis: 'Don’t miss the next one', odberText: 'Leave your e-mail and Majmi will let you know when something new shows up. No spam, just texts.', odberMail: 'your@mail.com', odberTlacitko: 'let me know ☞', odberRss: 'or follow via an RSS reader', odberDiky: 'Got it! You’ll hear when there’s something new.'
 } : {
   predchozi: '☜ předchozí', dalsi: 'další ☞', rukopisStr: 'Stránka rukopisu', predStr: 'Předchozí stránka', dalStr: 'Další stránka',
   zavrit: 'zavřít', cistText: ' číst text ☞', precteno: 'přečteno ', krat: '×', zvukZap: 'zvuk: zap', zvukVyp: 'zvuk: vyp',
   nalepit: 'nalepit znovu', nahoru: '↑ nahoru', nahoruPopis: 'Zpět nahoru', anonym: 'anonym',
   myslis: 'co si o tom myslíš', podpis: 'podpis', nepovinne: '(nepovinné)', naWeb: 'klidně to dej na web',
   poslat: 'poslat ☞', posilam: 'posílám…', diky: 'Díky! Došlo to. <span class="zvyraz">Majmi si to přečte.</span>',
-  chyba: 'Něco se pokazilo. Zkus to za chvíli znovu.', navstev: 'návštěv: ', cist: '▶ přečíst nahlas', stop: '■ zastavit', menu: '☰ menu', menuZavrit: '✕ zavřít'
+  chyba: 'Něco se pokazilo. Zkus to za chvíli znovu.', navstev: 'návštěv: ', cist: '▶ přečíst nahlas', stop: '■ zastavit', menu: '☰ menu', menuZavrit: '✕ zavřít',
+  slov: 'slov', sdilet: 'sdílet ↗', zkopirovano: 'odkaz zkopírován ✓', nove: 'nové', odberNadpis: 'Ať ti nic neuteče', odberText: 'Nech mi mail a dám ti vědět, až sem přibude něco nového. Žádný spam, jen texty.', odberMail: 'tvuj@mail.cz', odberTlacitko: 'dej mi vědět ☞', odberRss: 'nebo odebírej přes RSS čtečku', odberDiky: 'Mám tě! Ozvu se, až bude něco nového.'
 };
 
 var pohyb = !(window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches);
@@ -314,39 +328,35 @@ document.querySelectorAll('.zalozky [role="tab"]').forEach(function (tab, _, all
   });
 })();
 
-/* ---------- 8) Počítadlo přečtení (služba Abacus, zdarma, bez registrace) ----------
-   <span class="precteno" data-pocitadlo="pickle-jar" data-pricist hidden></span>
-   Na stránce textu přičte 1 (jednou za návštěvu), v seznamu jen čte. */
-(function () {
-  var API = 'https://abacus.jasoncameron.dev';
-  var NS = 'majmi-cz-zapisnik';
-  var naWebu = location.hostname === 'majmi-cz.github.io';
-  function napocitej(el, cil) {
+/* ---------- 8) Počítadlo přečtení (GoatCounter: majmi.goatcounter.com) ----------
+   <span class="precteno" data-pocitadlo="pickle-jar" hidden></span>
+   Návštěvy počítá skript GoatCounteru v <head>, tady se jen čtou čísla.
+   CZ i EN verze se sčítají dohromady. */
+var Pocitadlo = (function () {
+  var GC = 'https://majmi.goatcounter.com/counter/';
+  function cislo(cesta) {
+    return fetch(GC + encodeURIComponent(cesta) + '.json')
+      .then(function (r) { return r.status === 404 ? { count: '0' } : r.json(); })
+      .then(function (d) { var n = parseInt(String(d.count).replace(/\D/g, ''), 10); return isNaN(n) ? null : n; });
+  }
+  function napocitej(el, cil, popisek) {
     el.hidden = false;
-    if (!pohyb || cil < 2) { el.textContent = T.precteno + cil + T.krat; return; }
+    if (!pohyb || cil < 2) { el.textContent = popisek(cil); return; }
     var start = null, trvani = Math.min(900, 300 + cil * 20);
     function krok(t) {
       if (!start) start = t;
       var k = Math.min(1, (t - start) / trvani);
-      el.textContent = T.precteno + Math.round(cil * (1 - Math.pow(1 - k, 3))) + T.krat;
+      el.textContent = popisek(Math.round(cil * (1 - Math.pow(1 - k, 3))));
       if (k < 1) requestAnimationFrame(krok);
     }
     requestAnimationFrame(krok);
   }
-  document.querySelectorAll('[data-pocitadlo]').forEach(function (el) {
-    var klic = el.getAttribute('data-pocitadlo');
-    var pricist = el.hasAttribute('data-pricist') && naWebu;
-    if (pricist) {
-      try {
-        if (sessionStorage.getItem('precteno-' + klic)) pricist = false;
-        else sessionStorage.setItem('precteno-' + klic, '1');
-      } catch (e) {}
-    }
-    fetch(API + (pricist ? '/hit/' : '/get/') + NS + '/' + klic)
-      .then(function (r) { return r.status === 404 ? { value: 0 } : r.json(); })
-      .then(function (d) { if (typeof d.value === 'number') napocitej(el, d.value); })
+  if (window.fetch) document.querySelectorAll('[data-pocitadlo]').forEach(function (el) {
+    cislo('/majmi/texty/' + el.getAttribute('data-pocitadlo') + '.html')
+      .then(function (n) { if (n !== null) napocitej(el, n, function (x) { return T.precteno + x + T.krat; }); })
       .catch(function () {});
   });
+  return { cislo: cislo, napocitej: napocitej };
 })();
 
 /* ---------- 9) Zvuky dělané pusou ----------
@@ -716,23 +726,14 @@ var Zvuk = (function () {
 (function () {
   var info = document.querySelector('.horni .info');
   if (!info || !window.fetch) return;
-  var naWebu = location.hostname === 'majmi-cz.github.io';
-  var pricist = naWebu;
-  try {
-    if (sessionStorage.getItem('navsteva')) pricist = false;
-    else if (naWebu) sessionStorage.setItem('navsteva', '1');
-  } catch (e) {}
-  fetch('https://abacus.jasoncameron.dev/' + (pricist ? 'hit' : 'get') + '/majmi-cz-zapisnik/celkem')
-    .then(function (r) { return r.status === 404 ? { value: 0 } : r.json(); })
-    .then(function (d) {
-      if (typeof d.value !== 'number') return;
-      var s = document.createElement('span');
-      s.className = 'celkem';
-      s.textContent = T.navstev + d.value;
-      info.appendChild(document.createElement('br'));
-      info.appendChild(s);
-    })
-    .catch(function () {});
+  Pocitadlo.cislo('TOTAL').then(function (n) {
+    if (n === null) return;
+    var s = document.createElement('span');
+    s.className = 'celkem';
+    info.appendChild(document.createElement('br'));
+    info.appendChild(s);
+    Pocitadlo.napocitej(s, n, function (x) { return T.navstev + x; });
+  }).catch(function () {});
 })();
 
 /* ---------- 16) Čtečka: přečte text nahlas (hlas z prohlížeče) ---------- */
@@ -794,4 +795,82 @@ var Zvuk = (function () {
   addEventListener('pagehide', function () { speechSynthesis.cancel(); });
   // hlasy se načítají později
   if (speechSynthesis.onvoiceschanged !== undefined) speechSynthesis.onvoiceschanged = function () {};
+})();
+
+/* ---------- 17) Doba čtení + sdílet (v hlavičce textu) ---------- */
+(function () {
+  var clanek = document.getElementById('prepis');
+  var meta = document.querySelector('.hlava .meta');
+  if (!clanek || !meta) return;
+  var c = clanek.cloneNode(true);
+  c.querySelectorAll('aside, .listek').forEach(function (e) { e.remove(); });
+  var slov = (c.textContent.match(/\S+/g) || []).length;
+  var min = Math.max(1, Math.round(slov / 180));
+  var cas = document.createElement('span');
+  cas.className = 'doba';
+  cas.textContent = '~' + min + ' min';
+  cas.title = slov + ' ' + T.slov;
+  meta.insertBefore(cas, meta.querySelector('.precteno') || null);
+
+  var b = document.createElement('button');
+  b.type = 'button';
+  b.className = 'dymo sdilet';
+  b.textContent = T.sdilet;
+  meta.appendChild(b);
+  b.addEventListener('click', function () {
+    var data = { title: document.title, url: location.href.split('#')[0] };
+    if (navigator.share) { navigator.share(data).catch(function () {}); return; }
+    var hotovo = function () { b.textContent = T.zkopirovano; setTimeout(function () { b.textContent = T.sdilet; }, 1800); };
+    if (navigator.clipboard) navigator.clipboard.writeText(data.url).then(hotovo, function () { prompt(T.sdilet, data.url); });
+    else prompt(T.sdilet, data.url);
+  });
+})();
+
+/* ---------- 18) Štítek NOVÉ u textů mladších než 14 dní ---------- */
+(function () {
+  var ted = Date.now();
+  TEXTY.forEach(function (t) {
+    if (!t.d || ted - Date.parse(t.d) > 14 * 864e5) return;
+    document.querySelectorAll('a.kus[href$="texty/' + t.s + '.html"] h3, .dila a[href$="texty/' + t.s + '.html"]').forEach(function (el) {
+      if (el.querySelector('.nove')) return;
+      var n = document.createElement('span');
+      n.className = 'nove';
+      n.textContent = T.nove;
+      el.appendChild(n);
+    });
+  });
+})();
+
+/* ---------- 19) Odběr: RSS + „dej mi vědět“ e-mailem (na konci textu a na obálce) ---------- */
+(function () {
+  var kam = document.querySelector('.recenze') || document.querySelector('.obalka');
+  if (!kam) return;
+  var koren = document.querySelector('script[src*="zin.js"]').getAttribute('src').replace(/zin\.js.*$/, '');
+  var box = document.createElement('section');
+  box.className = 'odber vystrizek b paska';
+  box.innerHTML = '<h2 class="odber-nadpis"></h2><p class="odber-text"></p>' +
+    '<form><label><span class="vid"></span><input type="email" name="email" required autocomplete="email"></label> ' +
+    '<button class="dymo" type="submit"></button></form>' +
+    '<p class="odber-rss"><a class="dymo" href="' + koren + 'feed.xml">RSS</a> <span></span></p><p class="odber-stav" role="status"></p>';
+  box.querySelector('.odber-nadpis').textContent = T.odberNadpis;
+  box.querySelector('.odber-text').textContent = T.odberText;
+  box.querySelector('.vid').textContent = 'e-mail';
+  box.querySelector('input').placeholder = T.odberMail;
+  box.querySelector('button').textContent = T.odberTlacitko;
+  box.querySelector('.odber-rss span').textContent = T.odberRss;
+  kam.parentNode.insertBefore(box, kam.nextSibling);
+  var form = box.querySelector('form'), stav = box.querySelector('.odber-stav');
+  form.addEventListener('submit', function (e) {
+    e.preventDefault();
+    var d = new FormData();
+    d.append('email', form.email.value);
+    d.append('_subject', 'Zápisník: nový odběratel');
+    d.append('_template', 'box');
+    d.append('_captcha', 'false');
+    d.append('co', 'Chce vědět o nových textech. Stránka: ' + location.href);
+    stav.textContent = T.posilam;
+    fetch('https://formsubmit.co/ajax/tobikb8@gmail.com', { method: 'POST', headers: { Accept: 'application/json' }, body: d })
+      .then(function (r) { if (!r.ok) throw 0; form.hidden = true; stav.textContent = T.odberDiky; })
+      .catch(function () { stav.textContent = T.chyba; });
+  });
 })();
