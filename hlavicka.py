@@ -82,7 +82,7 @@ def do_hlavy(f, s):
     """RSS odkaz + GoatCounter (počítadlo) do <head>. CZ a EN verze se počítají dohromady."""
     up = '../' * f.count('/')
     blok = (f'<!--hlava-->\n  <link rel="alternate" type="application/rss+xml" title="Majmi — zápisník" href="{up}feed.xml">\n'
-            '  <script>window.goatcounter = { path: function (p) { return p.replace(/^\\/majmi\\/en\\//, \'/majmi/\').replace(/index\\.html$/, \'\'); } };</script>\n'
+            '  <script>window.goatcounter = { path: function (p) { return p.replace(/[?#].*$/, \'\').replace(/^\\/majmi\\/en\\//, \'/majmi/\').replace(/index\\.html$/, \'\').replace(/\\/([^/.]+)$/, \'/$1.html\'); } };</script>\n'
             '  <script data-goatcounter="https://majmi.goatcounter.com/count" async src="//gc.zgo.at/count.js"></script>\n  <!--/hlava-->')
     s = re.sub(r'\s*<!--hlava-->.*?<!--/hlava-->', '', s, flags=re.S)
     return s.replace('</head>', '  ' + blok + '\n</head>', 1)

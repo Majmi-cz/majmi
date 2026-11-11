@@ -22,10 +22,10 @@
   <meta property="og:image:alt" content="Notes cut out of letters">
   <meta name="twitter:card" content="summary_large_image">
   
-  <link rel="stylesheet" href="../styl.css?v=202611112045">
+  <link rel="stylesheet" href="../styl.css?v=202611112207">
   <!--hlava-->
   <link rel="alternate" type="application/rss+xml" title="Majmi — zápisník" href="../feed.xml">
-  <script>window.goatcounter = { path: function (p) { return p.replace(/^\/majmi\/en\//, '/majmi/').replace(/index\.html$/, ''); } };</script>
+  <script>window.goatcounter = { path: function (p) { return p.replace(/[?#].*$/, '').replace(/^\/majmi\/en\//, '/majmi/').replace(/index\.html$/, '').replace(/\/([^/.]+)$/, '/$1.html'); } };</script>
   <script data-goatcounter="https://majmi.goatcounter.com/count" async src="//gc.zgo.at/count.js"></script>
   <!--/hlava-->
 </head>
@@ -35,7 +35,7 @@
   <header class="horni">
     <a class="dymo" href="index.html">cover</a>
     <button type="button" class="dymo menu-tlacitko" aria-expanded="false" aria-controls="menu-panel">☰ menu</button>
-    <a class="dymo jazyk" href="../o-zapisniku.html" hreflang="cs" lang="cs" title="Číst česky">CZ</a>
+    <a class="dymo jazyk" href="../listky.html" hreflang="cs" lang="cs" title="Číst česky">CZ</a>
     <button type="button" class="dymo prepinac-zvuku" aria-pressed="true" hidden>sound: on</button>
     <div class="info">notebook no. 1<br>notes from the margins</div>
     <nav id="menu-panel" class="menu-panel vystrizek paska" aria-label="Menu" hidden>
@@ -45,8 +45,8 @@
           <ul class="kategorie"><li><details><summary>dialogues (3)</summary><ul class="dila"><li><a href="texty/pickle-jar.html">Pickle Jar</a></li><li><a href="texty/herakles.html">Heracles</a></li><li><a href="texty/kdo-podrzi-petu.html">Who Will Hold Péťa?</a></li></ul></details></li><li><details><summary>essays (2)</summary><ul class="dila"><li><a href="texty/celsius-233.html">Celsius 233</a></li><li><a href="texty/hudebni-nastroj.html">Musical Instrument</a></li></ul></details></li><li><details><summary>poems (7)</summary><ul class="dila"><li><a href="texty/sestikraska.html">Six-Petal Daisy</a></li><li><a href="texty/sozalenije.html">Сожаление (Regret)</a></li><li><a href="texty/ruze-ve-vlasech.html">Roses in Her Hair</a></li><li><a href="texty/dopis.html">The Letter</a></li><li><a href="texty/az-papir-zezloutne.html">When the Paper Yellows</a></li><li><a href="texty/zastrelil-se-prvniho-maje.html">He Shot Himself on the First of May</a></li><li><a href="texty/jeden-z-prokletych-basniku.html">One of the Cursed Poets</a></li></ul></details></li></ul>
         </li>
         <li><a class="hlavni" href="rukopis.html">manuscript</a></li>
-        <li><a class="hlavni" href="listky.html">notes</a></li>
-        <li><a class="hlavni" href="o-zapisniku.html" aria-current="page">about</a></li>
+        <li><a class="hlavni" href="listky.html" aria-current="page">notes</a></li>
+        <li><a class="hlavni" href="o-zapisniku.html">about</a></li>
       </ul>
     </nav>
   </header>
@@ -156,6 +156,6 @@
   </div>
 
 </div>
-<script src="../zin.js?v=202611112045"></script>
+<script src="../zin.js?v=202611112207"></script>
 </body>
 </html>
