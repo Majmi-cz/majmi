@@ -848,6 +848,7 @@ var Zvuk = (function () {
   var koren = document.querySelector('script[src*="zin.js"]').getAttribute('src').replace(/zin\.js.*$/, '');
   var box = document.createElement('section');
   box.className = 'odber vystrizek b paska';
+  box.id = 'odber';
   box.innerHTML = '<h2 class="odber-nadpis"></h2><p class="odber-text"></p>' +
     '<form><label><span class="vid"></span><input type="email" name="email" required autocomplete="email"></label> ' +
     '<button class="dymo" type="submit"></button></form>' +
@@ -875,79 +876,147 @@ var Zvuk = (function () {
   });
 })();
 
-/* ---------- 20) Hledání v textech (v menu ☰ a na stránce Texty) ---------- */
+/* ---------- 20) Hledání (⌕ v hlavičce + nahoře v menu) ----------
+   Hledá v textech a navíc zná „zkratky“: napíšeš třeba „hvězdička“ nebo „komentář“
+   a nabídne recenze, i když to slovo na webu nikde není. Seznam slov je v ZKRATKY. */
 (function () {
   if (!window.fetch) return;
   var koren = document.querySelector('script[src*="zin.js"]').getAttribute('src').replace(/zin\.js.*$/, '');
-  var cesta = koren + (EN ? 'en/' : '') + 'texty/';
+  var jaz = koren + (EN ? 'en/' : '');
+  var naTextu = !!document.querySelector('.recenze[data-klic]');
+  var ZKRATKY = [
+    { cz: 'Recenze — napiš mi, co si myslíš', en: 'Reviews — tell me what you think', kam: naTextu ? '#recenze' : 'index.html#recenze-obalka',
+      slova: 'recenze recenzovat recenzi hodnoceni hodnotit ohodnotit hvezdicka hvezdicky hvezda hvezdy znamka body like lajk palec komentar komentare komentovat napis mi napsat vzkaz nazor nazory feedback zpetna vazba kritika chvala co rikaji lidi review reviews rating rate star stars comment comments opinion kontakt contact' },
+    { cz: 'Odběr — dám ti vědět o novém textu', en: 'Subscribe — get told about new texts', kam: naTextu ? '#odber' : 'index.html#odber',
+      slova: 'odber odebirat odebirani newsletter mail email e-mail upozorneni upozornit novinky nove texty rss feed ctecka rss sledovat follow subscribe notify notification news' },
+    { cz: 'Rukopis — fotky ze sešitu', en: 'Manuscript — photos from the notebook', kam: 'rukopis.html',
+      slova: 'rukopis rukopisy fotky foto fotka obrazky sesit zapisnik scan sken rucne psane original propiska manuscript photos photo notebook handwriting' },
+    { cz: 'O zápisníku — proč to celé je (a co je M.A.J.M.I.)', en: 'About — why this exists (and what M.A.J.M.I. means)', kam: 'o-zapisniku.html',
+      slova: 'o zapisniku o mne proc kdo jsi kdo je autor autor majmi m.a.j.m.i zkratka narodil bio zivotopis about author who why me' },
+    { cz: 'Všechny texty', en: 'All texts', kam: 'texty.html', slova: 'texty vsechno seznam obsah archiv texts all list archive' },
+    { cz: 'Dialogy', en: 'Dialogues', kam: 'texty.html#dialogy', slova: 'dialogy dialog drama dramata hra divadlo rozhovor dialogue dialogues play theatre' },
+    { cz: 'Úvahy', en: 'Essays', kam: 'texty.html#uvahy', slova: 'uvahy uvaha eseje esej teze zamysleni essay essays thoughts' },
+    { cz: 'Básně', en: 'Poems', kam: 'texty.html#basne', slova: 'basne basen basnicky poezie verse versiky rym rymy poems poem poetry verse rhyme' },
+    { cz: '🎲 Náhodný text', en: '🎲 Random text', kam: '?nahodny', slova: 'nahodny nahoda nahodne prekvap me prekvapeni cokoliv random surprise lucky' },
+    { cz: 'Obálka', en: 'Cover', kam: 'index.html', slova: 'obalka domu uvod hlavni stranka zacatek home cover start main' },
+    { cz: '▶ Přečíst nahlas (na stránce textu)', en: '▶ Read aloud (on a text page)', kam: '?ctecka', slova: 'nahlas cteni nahlas precist predcitat audio poslech hlas tts read aloud listen voice' },
+    { cz: 'English version', en: 'Česká verze', kam: '?jazyk', slova: 'anglicky anglictina english preklad translation cesky cestina czech jazyk language' }
+  ];
+  function bez(t) { return t.toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g, ''); }
+  function vzdal(a, b) {   // Levenshtein, na překlepy
+    if (Math.abs(a.length - b.length) > 2) return 9;
+    var p = [], i, j;
+    for (j = 0; j <= b.length; j++) p[j] = j;
+    for (i = 1; i <= a.length; i++) {
+      var d = p[0]; p[0] = i;
+      for (j = 1; j <= b.length; j++) { var t = p[j]; p[j] = Math.min(p[j] + 1, p[j - 1] + 1, d + (a[i - 1] === b[j - 1] ? 0 : 1)); d = t; }
+    }
+    return p[b.length];
+  }
+  function sedi(q, slova) {
+    var sl = slova.split(' ');
+    for (var i = 0; i < sl.length; i++) {
+      var w = sl[i];
+      if (w.indexOf(q) === 0 || (q.length >= 4 && q.indexOf(w) === 0 && w.length >= 4)) return true;
+      if (q.length >= 4 && vzdal(q, w.slice(0, q.length + 1)) <= (q.length >= 7 ? 2 : 1)) return true;
+    }
+    // víc slov („co říkají lidi“)
+    return q.indexOf(' ') > 0 && (' ' + slova + ' ').indexOf(' ' + q) >= 0;
+  }
+  function akce(kam, e) {
+    if (kam === '?nahodny') { e.preventDefault(); location.href = jaz + 'texty/' + TEXTY[Math.floor(Math.random() * TEXTY.length)].s + '.html'; return; }
+    if (kam === '?jazyk') { var j = document.querySelector('.horni .jazyk'); if (j) { e.preventDefault(); location.href = j.href; } return; }
+    if (kam === '?ctecka') {
+      var c = document.querySelector('.ctecka');
+      e.preventDefault();
+      if (c) { zavriMenu(); c.click(); } else location.href = jaz + 'texty/' + TEXTY[0].s + '.html';
+      return;
+    }
+    if (kam.charAt(0) === '#') zavriMenu();
+  }
+  function zavriMenu() { var p = document.getElementById('menu-panel'), b = document.querySelector('.menu-tlacitko'); if (p && !p.hidden && b) b.click(); }
+
   var data = null, nacita = null;
   function nacti() {
     if (!nacita) nacita = fetch(koren + 'hledani.json').then(function (r) { return r.json(); }).then(function (d) { data = d; return d; })
       .catch(function () { nacita = null; });
     return nacita;
   }
-  function bez(t) { return t.toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g, ''); }
+  function polozka(ol, nazev, kat, href, trida) {
+    var li = document.createElement('li'), a = document.createElement('a');
+    if (trida) li.className = trida;
+    a.href = href;
+    a.innerHTML = '<strong></strong> <span class="kat"></span><span class="ukazka"></span>';
+    a.querySelector('strong').textContent = nazev;
+    a.querySelector('.kat').textContent = kat;
+    li.appendChild(a); ol.appendChild(li);
+    return a;
+  }
   function hledac(vstup, ol, max) {
     function hledej() {
-      var q = bez(vstup.value.trim());
+      var q = bez(vstup.value.trim()).replace(/\s+/g, ' ');
       ol.innerHTML = '';
-      if (q.length < 2 || !data) return;
+      if (q.length < 2) return;
       var nalez = 0;
-      data.forEach(function (d) {
+      ZKRATKY.forEach(function (z) {
+        if (!sedi(q, z.slova)) return;
+        nalez++;
+        var kam = z.kam;
+        var href = kam.charAt(0) === '?' ? '#' : kam.charAt(0) === '#' ? kam : jaz + kam;
+        polozka(ol, EN ? z.en : z.cz, '☞', href, 'zkratka').addEventListener('click', function (e) { akce(kam, e); });
+      });
+      if (data) data.forEach(function (d) {
         var nazev = EN ? d.en : d.n, text = EN ? d.t_en : d.t, i = bez(text).indexOf(q);
         if (i < 0 && bez(nazev).indexOf(q) < 0) return;
         if (max && nalez >= max) return;
         nalez++;
-        var li = document.createElement('li'), a = document.createElement('a');
-        a.href = cesta + d.s + '.html';
-        a.innerHTML = '<strong></strong> <span class="kat"></span><span class="ukazka"></span>';
-        a.querySelector('strong').textContent = nazev;
-        a.querySelector('.kat').textContent = EN ? d.k_en : d.k;
+        var a = polozka(ol, nazev, EN ? d.k_en : d.k, jaz + 'texty/' + d.s + '.html');
         if (i >= 0) {
           var od = Math.max(0, i - 50), uk = a.querySelector('.ukazka');
           uk.appendChild(document.createTextNode((od ? '…' : '') + text.slice(od, i).replace(/\s+/g, ' ')));
           var m = document.createElement('mark'); m.textContent = text.slice(i, i + q.length); uk.appendChild(m);
           uk.appendChild(document.createTextNode(text.slice(i + q.length, i + q.length + 60).replace(/\s+/g, ' ') + '…'));
         }
-        li.appendChild(a); ol.appendChild(li);
       });
-      if (!nalez) { var li = document.createElement('li'); li.className = 'nic'; li.textContent = T.nicNenalezeno; ol.appendChild(li); }
+      if (!nalez && data) { var li = document.createElement('li'); li.className = 'nic'; li.textContent = T.nicNenalezeno; ol.appendChild(li); }
     }
     vstup.addEventListener('focus', nacti);
-    vstup.addEventListener('input', function () { if (data) hledej(); else (nacti() || Promise.resolve()).then(hledej); });
+    vstup.addEventListener('input', function () { hledej(); if (!data) (nacti() || Promise.resolve()).then(hledej); });
     vstup.addEventListener('keydown', function (e) {
-      if (e.key === 'Enter') { var a = ol.querySelector('a'); if (a) { e.preventDefault(); location.href = a.href; } }
+      if (e.key === 'Enter') { var a = ol.querySelector('a'); if (a) { e.preventDefault(); a.click(); } }
     });
   }
 
-  // v menu
   var panel = document.getElementById('menu-panel');
-  if (panel) {
-    var mb = document.createElement('div');
-    mb.className = 'menu-hledani';
-    mb.innerHTML = '<label><span class="vid"></span><input type="search" autocomplete="off"></label><ol class="vysledky" aria-live="polite"></ol>';
-    mb.querySelector('.vid').textContent = T.hledat;
-    mb.querySelector('.vid').className = 'vid skryte';
-    mb.querySelector('input').placeholder = T.hledatMenu;
-    panel.insertBefore(mb, panel.firstChild);
-    hledac(mb.querySelector('input'), mb.querySelector('ol'), 6);
-  }
+  if (!panel) return;
+  var mb = document.createElement('div');
+  mb.className = 'menu-hledani';
+  mb.innerHTML = '<label><span class="vid"></span><input type="search" autocomplete="off" enterkeyhint="go"></label><ol class="vysledky" aria-live="polite"></ol>';
+  mb.querySelector('.vid').textContent = T.hledat;
+  var vstup = mb.querySelector('input');
+  vstup.placeholder = T.hledatMenu;
+  panel.insertBefore(mb, panel.firstChild);
+  hledac(vstup, mb.querySelector('ol'), 6);
 
-  // na stránce Texty
-  var prvni = document.querySelector('h2.skupina');
-  if (!prvni) return;
-  var box = document.createElement('div');
-  box.className = 'hledani';
-  box.innerHTML = '<label><span class="vid"></span><input type="search" autocomplete="off"></label> <a class="dymo nahodny" href="#"></a><ol class="vysledky" aria-live="polite"></ol>';
-  box.querySelector('.vid').textContent = T.hledat;
-  box.querySelector('input').placeholder = T.hledatPopis;
-  prvni.parentNode.insertBefore(box, prvni);
-  hledac(box.querySelector('input'), box.querySelector('ol'), 0);
-  var nah = box.querySelector('.nahodny');
-  nah.textContent = T.nahodny;
-  nah.addEventListener('click', function (e) {
-    e.preventDefault();
-    location.href = cesta + TEXTY[Math.floor(Math.random() * TEXTY.length)].s + '.html';
+  // nenápadná lupa úplně vlevo v hlavičce: otevře menu a skočí do hledání
+  var horni = document.querySelector('.horni');
+  var mt = document.querySelector('.menu-tlacitko');
+  if (horni && mt) {
+    var lupa = document.createElement('button');
+    lupa.type = 'button';
+    lupa.className = 'dymo lupa';
+    lupa.textContent = '⌕';
+    lupa.title = lupa.ariaLabel = T.hledat;
+    lupa.setAttribute('aria-label', T.hledat);
+    horni.insertBefore(lupa, horni.firstChild);
+    lupa.addEventListener('click', function (e) {
+      e.stopPropagation();
+      if (panel.hidden) mt.click();
+      vstup.focus();
+    });
+  }
+  addEventListener('keydown', function (e) {   // klávesa / = hledat
+    if (e.key === '/' && !/INPUT|TEXTAREA/.test(document.activeElement.tagName) && lupa) { e.preventDefault(); lupa.click(); }
   });
 })();
 
@@ -1017,6 +1086,7 @@ var Zvuk = (function () {
   if (!obalka || !window.fetch || document.body.classList.contains('e404')) return;
   var sekce = document.createElement('section');
   sekce.className = 'recenze recenze-obalka';
+  sekce.id = 'recenze-obalka';
   sekce.innerHTML = '<h2 class="odber-nadpis"></h2><div class="dopisy"></div>';
   sekce.querySelector('h2').textContent = T.coRikaji;
   var odber = document.querySelector('.odber');
@@ -1049,5 +1119,9 @@ var Zvuk = (function () {
       d.appendChild(p); d.appendChild(k); box.appendChild(d);
     });
     sekce.hidden = false;
+    if (location.hash === '#recenze-obalka') sekce.scrollIntoView();
   });
 })();
+
+/* odkazy na sekce, které vyrábí až skript (#odber, #recenze-obalka) */
+if (location.hash === '#odber') { var _o = document.getElementById('odber'); if (_o) _o.scrollIntoView(); }
