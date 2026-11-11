@@ -458,7 +458,7 @@ var Zvuk = (function () {
   });
   document.addEventListener('click', function (e) {
     var t = e.target;
-    if (t.closest('.prepinac-zvuku, .nahoru, .menu-tlacitko, .menu-panel summary, .ctecka')) return;
+    if (t.closest('.prepinac-zvuku, .nahoru, .menu-tlacitko, .menu-panel summary, .ctecka, .ctecka-lista')) return;
     if (t.closest('.prohlizec .zavrit')) return hraj('fuk');
     if (t.closest('.prohlizec .zpet, .prohlizec .vpred, .zalozky button')) return hraj('sust');
     if (t.closest('.fotky img, .rukopis-stranky img')) return hraj('plesk');
