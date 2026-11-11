@@ -841,41 +841,6 @@ var Zvuk = (function () {
   });
 })();
 
-/* ---------- 19) Odběr: RSS + „dej mi vědět“ e-mailem (na konci textu a na obálce) ---------- */
-(function () {
-  var kam = document.querySelector('.recenze') || document.querySelector('.obalka');
-  if (!kam || document.body.classList.contains('e404')) return;
-  var koren = document.querySelector('script[src*="zin.js"]').getAttribute('src').replace(/zin\.js.*$/, '');
-  var box = document.createElement('section');
-  box.className = 'odber vystrizek b paska';
-  box.id = 'odber';
-  box.innerHTML = '<h2 class="odber-nadpis"></h2><p class="odber-text"></p>' +
-    '<form><label><span class="vid"></span><input type="email" name="email" required autocomplete="email"></label> ' +
-    '<button class="dymo" type="submit"></button></form>' +
-    '<p class="odber-rss"><a class="dymo" href="' + koren + 'feed.xml">RSS</a> <span></span></p><p class="odber-stav" role="status"></p>';
-  box.querySelector('.odber-nadpis').textContent = T.odberNadpis;
-  box.querySelector('.odber-text').textContent = T.odberText;
-  box.querySelector('.vid').textContent = 'e-mail';
-  box.querySelector('input').placeholder = T.odberMail;
-  box.querySelector('button').textContent = T.odberTlacitko;
-  box.querySelector('.odber-rss span').textContent = T.odberRss;
-  kam.parentNode.insertBefore(box, kam.nextSibling);
-  var form = box.querySelector('form'), stav = box.querySelector('.odber-stav');
-  form.addEventListener('submit', function (e) {
-    e.preventDefault();
-    var d = new FormData();
-    d.append('email', form.email.value);
-    d.append('_subject', 'Zápisník: nový odběratel');
-    d.append('_template', 'box');
-    d.append('_captcha', 'false');
-    d.append('co', 'Chce vědět o nových textech. Stránka: ' + location.href);
-    stav.textContent = T.posilam;
-    fetch('https://formsubmit.co/ajax/tobikb8@gmail.com', { method: 'POST', headers: { Accept: 'application/json' }, body: d })
-      .then(function (r) { if (!r.ok) throw 0; form.hidden = true; stav.textContent = T.odberDiky; })
-      .catch(function () { stav.textContent = T.chyba; });
-  });
-})();
-
 /* ---------- 20) Hledání (⌕ v hlavičce + nahoře v menu) ----------
    Hledá v textech a navíc zná „zkratky“: napíšeš třeba „hvězdička“ nebo „komentář“
    a nabídne recenze, i když to slovo na webu nikde není. Seznam slov je v ZKRATKY. */
@@ -887,8 +852,8 @@ var Zvuk = (function () {
   var ZKRATKY = [
     { cz: 'Recenze — napiš mi, co si myslíš', en: 'Reviews — tell me what you think', kam: naTextu ? '#recenze' : 'index.html#recenze-obalka',
       slova: 'recenze recenzovat recenzi hodnoceni hodnotit ohodnotit hvezdicka hvezdicky hvezda hvezdy znamka body like lajk palec komentar komentare komentovat napis mi napsat vzkaz nazor nazory feedback zpetna vazba kritika chvala co rikaji lidi review reviews rating rate star stars comment comments opinion kontakt contact' },
-    { cz: 'Odběr — dám ti vědět o novém textu', en: 'Subscribe — get told about new texts', kam: naTextu ? '#odber' : 'index.html#odber',
-      slova: 'odber odebirat odebirani newsletter mail email e-mail upozorneni upozornit novinky nove texty rss feed ctecka rss sledovat follow subscribe notify notification news' },
+    { cz: 'RSS feed — nové texty ve čtečce', en: 'RSS feed — new texts in your reader', kam: 'feed.xml',
+      slova: 'rss feed atom odber odebirat sledovat follow subscribe' },
     { cz: 'Rukopis — fotky ze sešitu', en: 'Manuscript — photos from the notebook', kam: 'rukopis.html',
       slova: 'rukopis rukopisy fotky foto fotka obrazky sesit zapisnik scan sken rucne psane original propiska manuscript photos photo notebook handwriting' },
     { cz: 'O zápisníku — proč to celé je (a co je M.A.J.M.I.)', en: 'About — why this exists (and what M.A.J.M.I. means)', kam: 'o-zapisniku.html',
@@ -962,7 +927,7 @@ var Zvuk = (function () {
         if (!sedi(q, z.slova)) return;
         nalez++;
         var kam = z.kam;
-        var href = kam.charAt(0) === '?' ? '#' : kam.charAt(0) === '#' ? kam : jaz + kam;
+        var href = kam.charAt(0) === '?' ? '#' : kam.charAt(0) === '#' ? kam : (kam === 'feed.xml' ? koren : jaz) + kam;
         polozka(ol, EN ? z.en : z.cz, '☞', href, 'zkratka').addEventListener('click', function (e) { akce(kam, e); });
       });
       if (data) data.forEach(function (d) {
@@ -1123,5 +1088,3 @@ var Zvuk = (function () {
   });
 })();
 
-/* odkazy na sekce, které vyrábí až skript (#odber, #recenze-obalka) */
-if (location.hash === '#odber') { var _o = document.getElementById('odber'); if (_o) _o.scrollIntoView(); }
