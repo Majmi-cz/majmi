@@ -98,7 +98,7 @@ var T = EN ? {
   nalepit: 'stick it again', nahoru: '↑ top', nahoruPopis: 'Back to top', anonym: 'anonymous',
   myslis: 'what do you think', podpis: 'signature', nepovinne: '(optional)', naWeb: 'feel free to put it on the site',
   poslat: 'send ☞', posilam: 'sending…', diky: 'Thanks! Got it. <span class="zvyraz">Majmi will read it.</span>',
-  chyba: 'Something went wrong. Try again in a moment.', navstev: 'visits: ', cist: '▶ read aloud', stop: '■ stop', menu: '☰ menu', menuZavrit: '✕ close',
+  chyba: 'Something went wrong. Try again in a moment.', navstev: 'visits: ', cist: '▶ read aloud', stop: '■ stop', stopKr: '■', ctiOdsud: 'tap a paragraph = read from there · space = pause', zpetOdstavec: 'previous paragraph', dalOdstavec: 'next paragraph', menu: '☰ menu', menuZavrit: '✕ close',
   slov: 'words', sdilet: 'share ↗', zkopirovano: 'link copied ✓', nove: 'new', odberNadpis: 'Don’t miss the next one', odberText: 'Leave your e-mail and Majmi will let you know when something new shows up. No spam, just texts.', odberMail: 'your@mail.com', odberTlacitko: 'let me know ☞', odberRss: 'or follow via an RSS reader', odberDiky: 'Got it! You’ll hear when there’s something new.', hledat: 'search', hledatPopis: 'search the texts… (a word, a line)', hledatMenu: 'search… (text, line, “reviews”…)', nicNenalezeno: 'Nothing. Try another word.', nahodny: '🎲 random text', pokracovat: '↓ continue where you left off', citovat: 'quote ↗', coRikaji: 'What people say', k: 'on'
 } : {
   predchozi: '☜ předchozí', dalsi: 'další ☞', rukopisStr: 'Stránka rukopisu', predStr: 'Předchozí stránka', dalStr: 'Další stránka',
@@ -106,7 +106,7 @@ var T = EN ? {
   nalepit: 'nalepit znovu', nahoru: '↑ nahoru', nahoruPopis: 'Zpět nahoru', anonym: 'anonym',
   myslis: 'co si o tom myslíš', podpis: 'podpis', nepovinne: '(nepovinné)', naWeb: 'klidně to dej na web',
   poslat: 'poslat ☞', posilam: 'posílám…', diky: 'Díky! Došlo to. <span class="zvyraz">Majmi si to přečte.</span>',
-  chyba: 'Něco se pokazilo. Zkus to za chvíli znovu.', navstev: 'návštěv: ', cist: '▶ přečíst nahlas', stop: '■ zastavit', menu: '☰ menu', menuZavrit: '✕ zavřít',
+  chyba: 'Něco se pokazilo. Zkus to za chvíli znovu.', navstev: 'návštěv: ', cist: '▶ přečíst nahlas', stop: '■ zastavit', stopKr: '■', ctiOdsud: 'klikni na odstavec = čti odsud · mezerník = pauza', zpetOdstavec: 'předchozí odstavec', dalOdstavec: 'další odstavec', menu: '☰ menu', menuZavrit: '✕ zavřít',
   slov: 'slov', sdilet: 'sdílet ↗', zkopirovano: 'odkaz zkopírován ✓', nove: 'nové', odberNadpis: 'Ať ti nic neuteče', odberText: 'Nech mi mail a dám ti vědět, až sem přibude něco nového. Žádný spam, jen texty.', odberMail: 'tvuj@mail.cz', odberTlacitko: 'dej mi vědět ☞', odberRss: 'nebo odebírej přes RSS čtečku', odberDiky: 'Mám tě! Ozvu se, až bude něco nového.', hledat: 'hledat', hledatPopis: 'hledat v textech… (slovo, verš)', hledatMenu: 'hledat… (text, verš, „recenze“…)', nicNenalezeno: 'Nic. Zkus jiné slovo.', nahodny: '🎲 náhodný text', pokracovat: '↓ pokračovat, kde jsi skončil', citovat: 'citovat ↗', coRikaji: 'Co říkají lidi', k: 'k'
 };
 
@@ -736,65 +736,232 @@ var Zvuk = (function () {
   }).catch(function () {});
 })();
 
-/* ---------- 16) Čtečka: přečte text nahlas (hlas z prohlížeče) ---------- */
+/* ---------- 16) Čtečka: přečte text nahlas (hlas z prohlížeče) ----------
+   - vybere nejlepší dostupný hlas (Natural / Online / Neural…)
+   - v dialogu má každá postava jiný hlas (nebo aspoň jinou výšku), scénické poznámky čte vypravěč
+   - zvýrazňuje, co se právě čte, a posouvá stránku
+   - pauza, rychlost, klik na odstavec = čti odsud */
 (function () {
   var clanek = document.getElementById('prepis');
   var meta = document.querySelector('.hlava .meta');
   if (!clanek || !meta || !('speechSynthesis' in window)) return;
+  var ss = speechSynthesis;
   var jazyk = EN ? 'en' : 'cs';
   var b = document.createElement('button');
   b.type = 'button';
   b.className = 'dymo ctecka';
   b.textContent = T.cist;
   meta.appendChild(b);
-  var hraje = false;
 
-  function hlas() {
-    var v = speechSynthesis.getVoices().filter(function (x) { return x.lang && x.lang.toLowerCase().indexOf(jazyk) === 0; });
-    return v[0] || null;
+  // ---- hlasy ----
+  var ZENY = /vlasta|zuzana|iveta|jana|kate|libby|sonia|maisie|hazel|susan|serena|samantha|karen|moira|tessa|aria|jenny|emma|sonia|female|žen/i;
+  function hlasy() {
+    var v = ss.getVoices().filter(function (x) { return x.lang && x.lang.toLowerCase().replace('_', '-').indexOf(jazyk) === 0; });
+    function skore(x) {
+      var n = x.name;
+      return (/natural|neural|online|premium|enhanced|wavenet/i.test(n) ? 10 : 0) + (/google/i.test(n) ? 4 : 0) + (x.localService ? 0 : 2) +
+        (EN && /en-gb/i.test(x.lang) ? 1 : 0);
+    }
+    return v.sort(function (a, b) { return skore(b) - skore(a); });
   }
-  function textKCteni() {
-    var c = clanek.cloneNode(true);
-    c.querySelectorAll('aside, .listek, script').forEach(function (e) { e.remove(); });
-    c.querySelectorAll('.replika .dymo').forEach(function (e) { e.textContent = e.textContent + ': '; });
-    c.querySelectorAll('.osoby .dymo').forEach(function (e) { e.textContent = e.textContent + '. '; });
-    return c.innerText.replace(/\s+\n/g, '\n');
+  function zena(jmeno) {   // odhad podle jména postavy
+    var j = jmeno.toLowerCase();
+    if (EN) return /(a|ie|y|ess|wife|woman|slave girl)$/.test(j) || /jarmila|věra|vera|slave/.test(j);
+    return /(a|e|ě)$/.test(j) && !/^(tonda|péťa|honza|jirka|pepa|kuba)$/.test(j);
   }
-  function kousky(t) {
-    // prohlížeče useknou dlouhé čtení, proto po větách / verších
+  var obsazeni = {};
+  function hlasPro(kdo) {
+    var vse = hlasy();
+    var vyp = vse[0] || null;
+    if (!kdo) return { voice: vyp, pitch: 1, rate: 1 };
+    if (obsazeni[kdo]) return obsazeni[kdo];
+    var z = zena(kdo);
+    var vhodne = vse.filter(function (v) { return ZENY.test(v.name) === z; });
+    var poradi = Object.keys(obsazeni).length;
+    var voice = vhodne.length ? vhodne[poradi % vhodne.length] : vyp;
+    // když není jiný hlas, aspoň jiná výška
+    var pitch = vhodne.length ? 1 : (z ? 1.2 : 0.85) + (poradi % 2 ? 0.08 : 0);
+    obsazeni[kdo] = { voice: voice, pitch: pitch, rate: 1, z: z };
+    return obsazeni[kdo];
+  }
+
+  // ---- co číst ----
+  function rozsekej(t) {   // prohlížeče useknou dlouhé čtení → po větách
     var out = [], kus = '';
     t.split(/(?<=[.!?…])\s+|\n+/).forEach(function (v) {
       v = v.trim(); if (!v) return;
-      if ((kus + ' ' + v).length > 200) { if (kus) out.push(kus); kus = v; } else kus = kus ? kus + ' ' + v : v;
+      if ((kus + ' ' + v).length > 180) { if (kus) out.push(kus); kus = v; } else kus = kus ? kus + ' ' + v : v;
     });
     if (kus) out.push(kus);
     return out;
   }
-  function stop() {
-    hraje = false;
-    speechSynthesis.cancel();
-    b.textContent = T.cist;
-  }
-  b.addEventListener('click', function () {
-    if (hraje) return stop();
-    speechSynthesis.cancel();
-    var v = hlas();
-    var casti = kousky(textKCteni());
-    if (!casti.length) return;
-    hraje = true;
-    b.textContent = T.stop;
-    casti.forEach(function (c, i) {
-      var u = new SpeechSynthesisUtterance(c);
-      u.lang = EN ? 'en-GB' : 'cs-CZ';
-      if (v) u.voice = v;
-      u.rate = 0.95;
-      if (i === casti.length - 1) u.onend = function () { if (hraje) stop(); };
-      speechSynthesis.speak(u);
+  var fronta = null;
+  function sestav() {
+    obsazeni = {};
+    // básně: slohy do vlastních kousků, aby šly zvýraznit
+    clanek.querySelectorAll('p.basen:not([data-slohy])').forEach(function (p) {
+      var slohy = p.textContent.split(/\n\s*\n/);
+      p.textContent = '';
+      slohy.forEach(function (s, i) {
+        var sp = document.createElement('span'); sp.className = 'sloha'; sp.textContent = s.replace(/^\n+|\n+$/g, '');
+        p.appendChild(sp);
+        if (i < slohy.length - 1) p.appendChild(document.createTextNode('\n\n'));
+      });
+      p.setAttribute('data-slohy', '1');
     });
+    var bloky = clanek.querySelectorAll('.osoby p, .replika, .scena, .sloha, p:not(.basen):not(.replika):not(.scena), h2, h3');
+    var dalsiHlas = hlasy().length > 1;
+    var q = [];
+    bloky.forEach(function (el) {
+      if (el.closest('aside, .listek')) return;
+      if (el.matches('.osoby p') && el.querySelector('.dymo') && el.textContent.trim().length < 20) {   // štítek „postavy“
+        q.push({ el: el, text: el.textContent.trim() + '.', kdo: null, typ: 'stitek' });
+        return;
+      }
+      var kdo = null, text;
+      if (el.classList.contains('replika')) {
+        var d = el.querySelector('.dymo');
+        kdo = d ? d.textContent.trim() : null;
+        var c = el.cloneNode(true); var dd = c.querySelector('.dymo'); if (dd) dd.remove();
+        text = c.textContent.trim();
+        if (kdo && !dalsiHlas) text = kdo + ': ' + text;   // jeden hlas → říct, kdo mluví
+        // poznámky v závorce uvnitř repliky čte vypravěč
+        var casti = text.split(/(\([^)]*\))/);
+        casti.forEach(function (t) {
+          t = t.trim(); if (!t) return;
+          var pozn = /^\(.*\)$/.test(t);
+          rozsekej(pozn ? t.slice(1, -1) : t).forEach(function (r) { q.push({ el: el, text: r, kdo: pozn ? null : kdo, typ: pozn ? 'scena' : 'replika' }); });
+        });
+        return;
+      }
+      text = el.textContent.trim();
+      if (!text) return;
+      var scena = el.classList.contains('scena');
+      if (scena) text = text.replace(/^\(|\)$/g, '');
+      var sloha = el.classList.contains('sloha');
+      (sloha ? text.split(/\n/).filter(Boolean) : rozsekej(text)).forEach(function (r) {
+        q.push({ el: el, text: r, kdo: null, typ: scena ? 'scena' : sloha ? 'vers' : 'text' });
+      });
+    });
+    return q;
+  }
+
+  // ---- přehrávání ----
+  var i = 0, hraje = false, pauza = false, rychlost = 1, ted = null, tokenCteni = 0;
+  var RYCHLOSTI = [0.8, 1, 1.2, 1.5];
+  var lista = document.createElement('div');
+  lista.className = 'ctecka-lista vystrizek paska';
+  lista.hidden = true;
+  lista.innerHTML = '<button type="button" class="dymo c-pauza"></button> <button type="button" class="dymo c-zpet">«</button> ' +
+    '<button type="button" class="dymo c-dal">»</button> <button type="button" class="dymo c-rychlost">1×</button> ' +
+    '<button type="button" class="dymo c-stop"></button><span class="c-tip"></span>';
+  document.body.appendChild(lista);
+  var bPauza = lista.querySelector('.c-pauza');
+  lista.querySelector('.c-stop').textContent = T.stopKr;
+  lista.querySelector('.c-tip').textContent = T.ctiOdsud;
+  lista.querySelector('.c-zpet').title = T.zpetOdstavec;
+  lista.querySelector('.c-dal').title = T.dalOdstavec;
+
+  function zvyrazni(el) {
+    if (ted === el) return;
+    if (ted) ted.classList.remove('cte');
+    ted = el;
+    if (!el) return;
+    el.classList.add('cte');
+    var r = el.getBoundingClientRect();
+    if (r.top < 70 || r.bottom > innerHeight - 90) el.scrollIntoView({ block: 'center', behavior: pohyb ? 'smooth' : 'auto' });
+  }
+  function rekni() {
+    if (!hraje || pauza) return;
+    if (i >= fronta.length) return stop();
+    var k = fronta[i];
+    zvyrazni(k.el);
+    var h = hlasPro(k.kdo);
+    var u = new SpeechSynthesisUtterance(k.text);
+    u.lang = EN ? 'en-GB' : 'cs-CZ';
+    if (h.voice) u.voice = h.voice;
+    u.pitch = k.typ === 'scena' ? 0.95 : h.pitch;
+    u.rate = rychlost * (k.typ === 'scena' ? 0.95 : k.typ === 'vers' ? 0.9 : 1);
+    u.volume = k.typ === 'scena' ? 0.85 : 1;
+    var muj = tokenCteni;
+    u.onend = function () {
+      if (muj !== tokenCteni || !hraje || pauza) return;
+      var dalsi = fronta[i + 1];
+      var mezera = !dalsi ? 0 : dalsi.el !== k.el ? (k.typ === 'vers' || dalsi.typ === 'vers' ? 450 : 250) : k.typ === 'vers' ? 120 : 0;
+      i++;
+      setTimeout(function () { if (muj === tokenCteni) rekni(); }, mezera);
+    };
+    u.onerror = u.onend;
+    ss.speak(u);
+  }
+  function hraj(od) {
+    tokenCteni++;
+    ss.cancel();
+    if (!fronta) fronta = sestav();
+    if (!fronta.length) return;
+    i = Math.max(0, Math.min(od || 0, fronta.length - 1));
+    hraje = true; pauza = false;
+    b.textContent = T.stop;
+    bPauza.textContent = '❚❚';
+    lista.hidden = false;
+    document.documentElement.classList.add('cte-se');
+    // Chrome občas „usne“ uprostřed dlouhého čtení
+    rekni();
+  }
+  function stop() {
+    tokenCteni++;
+    hraje = false; pauza = false;
+    ss.cancel();
+    zvyrazni(null);
+    b.textContent = T.cist;
+    lista.hidden = true;
+    document.documentElement.classList.remove('cte-se');
+  }
+  function prepniPauzu() {
+    if (!hraje) return;
+    if (pauza) { pauza = false; bPauza.textContent = '❚❚'; tokenCteni++; ss.cancel(); rekni(); }
+    else { pauza = true; bPauza.textContent = '▶'; tokenCteni++; ss.cancel(); }
+  }
+  function skoc(smer) {   // na předchozí / další odstavec
+    if (!fronta) return;
+    var el = fronta[i] && fronta[i].el, j = i;
+    if (smer > 0) { while (j < fronta.length && fronta[j].el === el) j++; }
+    else {
+      while (j > 0 && fronta[j - 1].el === el) j--;          // začátek tohohle
+      if (j > 0) { var p = fronta[j - 1].el; j--; while (j > 0 && fronta[j - 1].el === p) j--; }
+    }
+    hraj(j);
+  }
+
+  b.addEventListener('click', function () { hraje ? stop() : hraj(0); });
+  bPauza.addEventListener('click', prepniPauzu);
+  lista.querySelector('.c-stop').addEventListener('click', stop);
+  lista.querySelector('.c-zpet').addEventListener('click', function () { skoc(-1); });
+  lista.querySelector('.c-dal').addEventListener('click', function () { skoc(1); });
+  var bRychl = lista.querySelector('.c-rychlost');
+  try { rychlost = parseFloat(localStorage.getItem('ctecka-rychlost')) || 1; } catch (e) {}
+  bRychl.textContent = rychlost + '×';
+  bRychl.addEventListener('click', function () {
+    rychlost = RYCHLOSTI[(RYCHLOSTI.indexOf(rychlost) + 1) % RYCHLOSTI.length];
+    bRychl.textContent = rychlost + '×';
+    try { localStorage.setItem('ctecka-rychlost', rychlost); } catch (e) {}
+    if (hraje && !pauza) { tokenCteni++; ss.cancel(); rekni(); }
   });
-  addEventListener('pagehide', function () { speechSynthesis.cancel(); });
-  // hlasy se načítají později
-  if (speechSynthesis.onvoiceschanged !== undefined) speechSynthesis.onvoiceschanged = function () {};
+  // klik na odstavec během čtení = čti odsud
+  clanek.addEventListener('click', function (e) {
+    if (!hraje || getSelection().toString()) return;
+    var el = e.target.closest('.replika, .scena, .sloha, p, h2, h3');
+    if (!el || !fronta) return;
+    for (var j = 0; j < fronta.length; j++) if (fronta[j].el === el || el.contains(fronta[j].el)) return hraj(j);
+  });
+  addEventListener('keydown', function (e) {
+    if (!hraje || /INPUT|TEXTAREA/.test(document.activeElement.tagName)) return;
+    if (e.key === ' ') { e.preventDefault(); prepniPauzu(); }
+    if (e.key === 'Escape') stop();
+  });
+  addEventListener('pagehide', function () { ss.cancel(); });
+  if (ss.onvoiceschanged !== undefined) ss.onvoiceschanged = function () { obsazeni = {}; };
+  ss.getVoices();
 })();
 
 /* ---------- 17) Doba čtení + sdílet (v hlavičce textu) ---------- */
