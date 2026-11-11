@@ -826,12 +826,12 @@ var Zvuk = (function () {
   });
 })();
 
-/* ---------- 18) Štítek NOVÉ u textů mladších než 14 dní ---------- */
+/* ---------- 18) Štítek NOVÉ u textů mladších než 4 dny (jen na kartách) ---------- */
 (function () {
   var ted = Date.now();
   TEXTY.forEach(function (t) {
-    if (!t.d || ted - Date.parse(t.d) > 14 * 864e5) return;
-    document.querySelectorAll('a.kus[href$="texty/' + t.s + '.html"] h3, .dila a[href$="texty/' + t.s + '.html"]').forEach(function (el) {
+    if (!t.d || ted - Date.parse(t.d) > 4 * 864e5) return;
+    document.querySelectorAll('a.kus[href$="texty/' + t.s + '.html"] h3').forEach(function (el) {
       if (el.querySelector('.nove')) return;
       var n = document.createElement('span');
       n.className = 'nove';
