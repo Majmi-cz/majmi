@@ -918,7 +918,7 @@ var Zvuk = (function () {
     for (var i = 0; i < sl.length; i++) {
       var w = sl[i];
       if (w.indexOf(q) === 0 || (q.length >= 4 && q.indexOf(w) === 0 && w.length >= 4)) return true;
-      if (q.length >= 5 && vzdal(q, w.slice(0, q.length)) <= (q.length >= 7 ? 2 : 1)) return true;
+      if (q.length >= 5 && w.length >= 5 && Math.min(vzdal(q, w.slice(0, q.length - 1)), vzdal(q, w.slice(0, q.length)), vzdal(q, w.slice(0, q.length + 1))) <= (q.length >= 7 ? 2 : 1)) return true;
     }
     // víc slov („co říkají lidi“)
     return q.indexOf(' ') > 0 && (' ' + slova + ' ').indexOf(' ' + q) >= 0;
