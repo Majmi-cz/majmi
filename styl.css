@@ -630,7 +630,7 @@ h2.skupina .kolik-skup { border: 2px solid var(--toner-slaby); border-radius: 50
 .menu-hledani .vysledky .ukazka { font-size: 13px; }
 .menu-hledani .vid { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); }
 .horni .lupa { border: 0; cursor: pointer; background: transparent; color: var(--toner); box-shadow: inset 0 0 0 2px var(--toner); text-shadow: none;
-  font-size: 17px; line-height: 1; padding: 6px 9px 6px; rotate: -4deg; }
+  line-height: 0; padding: 6px 8px; rotate: -4deg; vertical-align: middle; }
 .horni .lupa:hover { background: var(--zvyraz); }
 .vysledky .zkratka { background: var(--zvyraz); }
 .vysledky .zkratka .kat { color: var(--toner); }
