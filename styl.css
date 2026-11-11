@@ -645,3 +645,5 @@ h2.skupina .kolik-skup { border: 2px solid var(--toner-slaby); border-radius: 50
 .ctecka-lista button { border: 0; cursor: pointer; font-size: 14px; min-width: 38px; padding: 8px 10px 7px; }
 .ctecka-lista .c-tip { flex: 1 1 100%; font-size: 12px; color: var(--toner-slaby); }
 .cte-se .nahoru, .cte-se .pokracovat { display: none !important; }
+.meta .vzniklo { font-size: 14px; color: var(--toner-slaby); }
+.meta .vzniklo::before { content: "✎ "; }
