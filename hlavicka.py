@@ -9,6 +9,7 @@ TEXTY = [  # v pořadí, jak vycházely (I., II., …): (soubor, česky, anglick
     ('celsius-233', 'Celsius 233', 'Celsius 233', 'úvahy'),
     ('hudebni-nastroj', 'Hudební nástroj', 'Musical Instrument', 'úvahy'),
     ('kdo-podrzi-petu', 'Kdo podrží Péťu?', 'Who Will Hold Péťa?', 'dialogy'),
+    ('samet-a-smetana', 'Samet a Smetana', 'Velvet and Smetana', 'úvahy'),
 ]
 BASNE = [  # (soubor v texty/, česky, anglicky)
     ('sestikraska', 'Šestikráska', 'Six-Petal Daisy'),

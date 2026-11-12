@@ -10,84 +10,91 @@ var TEXTY = [
     "n": "Pickle Jar",
     "en": "Pickle Jar",
     "k": "texty",
-    "d": "2026-11-06"
+    "d": "2026-11-11"
   },
   {
     "s": "herakles",
     "n": "Héraklés",
     "en": "Heracles",
     "k": "texty",
-    "d": "2026-11-06"
+    "d": "2026-11-11"
   },
   {
     "s": "celsius-233",
     "n": "Celsius 233",
     "en": "Celsius 233",
     "k": "texty",
-    "d": "2026-11-08"
+    "d": "2026-11-11"
   },
   {
     "s": "hudebni-nastroj",
     "n": "Hudební nástroj",
     "en": "Musical Instrument",
     "k": "texty",
-    "d": "2026-11-08"
+    "d": "2026-11-11"
   },
   {
     "s": "kdo-podrzi-petu",
     "n": "Kdo podrží Péťu?",
     "en": "Who Will Hold Péťa?",
     "k": "texty",
-    "d": "2026-11-10"
+    "d": "2026-11-11"
+  },
+  {
+    "s": "samet-a-smetana",
+    "n": "Samet a Smetana",
+    "en": "Velvet and Smetana",
+    "k": "texty",
+    "d": "2026-11-12"
   },
   {
     "s": "sestikraska",
     "n": "Šestikráska",
     "en": "Six-Petal Daisy",
     "k": "basne",
-    "d": "2026-11-10"
+    "d": "2026-11-11"
   },
   {
     "s": "sozalenije",
     "n": "Сожаление",
     "en": "Сожаление (Regret)",
     "k": "basne",
-    "d": "2026-11-10"
+    "d": "2026-11-11"
   },
   {
     "s": "ruze-ve-vlasech",
     "n": "Růže ve vlasech",
     "en": "Roses in Her Hair",
     "k": "basne",
-    "d": "2026-11-10"
+    "d": "2026-11-11"
   },
   {
     "s": "dopis",
     "n": "Dopis",
     "en": "The Letter",
     "k": "basne",
-    "d": "2026-11-10"
+    "d": "2026-11-11"
   },
   {
     "s": "az-papir-zezloutne",
     "n": "Až papír zežloutne",
     "en": "When the Paper Yellows",
     "k": "basne",
-    "d": "2026-11-10"
+    "d": "2026-11-11"
   },
   {
     "s": "zastrelil-se-prvniho-maje",
     "n": "Zastřelil se prvního máje",
     "en": "He Shot Himself on the First of May",
     "k": "basne",
-    "d": "2026-11-10"
+    "d": "2026-11-11"
   },
   {
     "s": "jeden-z-prokletych-basniku",
     "n": "Jeden z prokletých básníků",
     "en": "One of the Cursed Poets",
     "k": "basne",
-    "d": "2026-11-10"
+    "d": "2026-11-11"
   }
 ];
 
