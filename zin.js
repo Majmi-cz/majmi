@@ -10,91 +10,104 @@ var TEXTY = [
     "n": "Pickle Jar",
     "en": "Pickle Jar",
     "k": "texty",
-    "d": "2026-11-11"
+    "d": "2026-11-06",
+    "t": "2026-11-06T20:18:36+01:00"
   },
   {
     "s": "herakles",
     "n": "Héraklés",
     "en": "Heracles",
     "k": "texty",
-    "d": "2026-11-11"
+    "d": "2026-11-06",
+    "t": "2026-11-06T21:31:00+01:00"
   },
   {
     "s": "celsius-233",
     "n": "Celsius 233",
     "en": "Celsius 233",
     "k": "texty",
-    "d": "2026-11-11"
+    "d": "2026-11-08",
+    "t": "2026-11-08T15:57:25+01:00"
   },
   {
     "s": "hudebni-nastroj",
     "n": "Hudební nástroj",
     "en": "Musical Instrument",
     "k": "texty",
-    "d": "2026-11-11"
+    "d": "2026-11-08",
+    "t": "2026-11-08T15:57:25+01:00"
   },
   {
     "s": "kdo-podrzi-petu",
     "n": "Kdo podrží Péťu?",
     "en": "Who Will Hold Péťa?",
     "k": "texty",
-    "d": "2026-11-11"
+    "d": "2026-11-10",
+    "t": "2026-11-10T18:06:02+01:00"
   },
   {
     "s": "samet-a-smetana",
     "n": "Samet a Smetana",
     "en": "Velvet and Smetana",
     "k": "texty",
-    "d": "2026-11-12"
+    "d": "2026-11-12",
+    "t": "2026-11-12T12:26:22+01:00"
   },
   {
     "s": "sestikraska",
     "n": "Šestikráska",
     "en": "Six-Petal Daisy",
     "k": "basne",
-    "d": "2026-11-11"
+    "d": "2026-11-10",
+    "t": "2026-11-10T20:55:39+01:00"
   },
   {
     "s": "sozalenije",
     "n": "Сожаление",
     "en": "Сожаление (Regret)",
     "k": "basne",
-    "d": "2026-11-11"
+    "d": "2026-11-10",
+    "t": "2026-11-10T20:55:39+01:00"
   },
   {
     "s": "ruze-ve-vlasech",
     "n": "Růže ve vlasech",
     "en": "Roses in Her Hair",
     "k": "basne",
-    "d": "2026-11-11"
+    "d": "2026-11-10",
+    "t": "2026-11-10T20:55:39+01:00"
   },
   {
     "s": "dopis",
     "n": "Dopis",
     "en": "The Letter",
     "k": "basne",
-    "d": "2026-11-11"
+    "d": "2026-11-10",
+    "t": "2026-11-10T20:55:39+01:00"
   },
   {
     "s": "az-papir-zezloutne",
     "n": "Až papír zežloutne",
     "en": "When the Paper Yellows",
     "k": "basne",
-    "d": "2026-11-11"
+    "d": "2026-11-10",
+    "t": "2026-11-10T20:55:39+01:00"
   },
   {
     "s": "zastrelil-se-prvniho-maje",
     "n": "Zastřelil se prvního máje",
     "en": "He Shot Himself on the First of May",
     "k": "basne",
-    "d": "2026-11-11"
+    "d": "2026-11-10",
+    "t": "2026-11-10T20:55:39+01:00"
   },
   {
     "s": "jeden-z-prokletych-basniku",
     "n": "Jeden z prokletých básníků",
     "en": "One of the Cursed Poets",
     "k": "basne",
-    "d": "2026-11-11"
+    "d": "2026-11-10",
+    "t": "2026-11-10T20:55:39+01:00"
   }
 ];
 
@@ -106,7 +119,7 @@ var T = EN ? {
   myslis: 'what do you think', podpis: 'signature', nepovinne: '(optional)', naWeb: 'feel free to put it on the site',
   poslat: 'send ☞', posilam: 'sending…', diky: 'Thanks! Got it. <span class="zvyraz">Majmi will read it.</span>',
   chyba: 'Something went wrong. Try again in a moment.', navstev: 'visitors: ', cist: '▶ read aloud', stop: '■ stop', stopKr: '■', ctiOdsud: 'tap a paragraph = read from there · space = pause', zpetOdstavec: 'previous paragraph', dalOdstavec: 'next paragraph', menu: '☰ menu', menuZavrit: '✕ close',
-  slov: 'words', sdilet: 'share ↗', zkopirovano: 'link copied ✓', nove: 'new', odberNadpis: 'Don’t miss the next one', odberText: 'Leave your e-mail and Majmi will let you know when something new shows up. No spam, just texts.', odberMail: 'your@mail.com', odberTlacitko: 'let me know ☞', odberRss: 'or follow via an RSS reader', odberDiky: 'Got it! You’ll hear when there’s something new.', hledat: 'search', hledatPopis: 'search the texts… (a word, a line)', hledatMenu: 'search… (text, line, “reviews”…)', nicNenalezeno: 'Nothing. Try another word.', nahodny: '🎲 random text', pokracovat: '↓ continue where you left off', citovat: 'quote ↗', coRikaji: 'What people say', k: 'on', papirCerstvy: 'paper: fresh', papirMesice: 'paper: % months old', papirRoky: 'paper: % years old', papirTip: 'When the paper yellows: texts here really age. The older and more read, the yellower and more thumbed.'
+  slov: 'words', sdilet: 'share ↗', zkopirovano: 'link copied ✓', nove: 'new', odberNadpis: 'Don’t miss the next one', odberText: 'Leave your e-mail and Majmi will let you know when something new shows up. No spam, just texts.', odberMail: 'your@mail.com', odberTlacitko: 'let me know ☞', odberRss: 'or follow via an RSS reader', odberDiky: 'Got it! You’ll hear when there’s something new.', hledat: 'search', hledatPopis: 'search the texts… (a word, a line)', hledatMenu: 'search… (text, line, “reviews”…)', nicNenalezeno: 'Nothing. Try another word.', nahodny: '🎲 random text', pokracovat: '↓ continue where you left off', citovat: 'quote ↗', coRikaji: 'What people say', k: 'on', naWebu: 'online for', cteni: 'read', papirCerstvy: 'paper: fresh', papirMesice: 'paper: % months old', papirRoky: 'paper: % years old', papirTip: 'When the paper yellows: texts here really age. The older and more read, the yellower and more thumbed.'
 } : {
   predchozi: '☜ předchozí', dalsi: 'další ☞', rukopisStr: 'Stránka rukopisu', predStr: 'Předchozí stránka', dalStr: 'Další stránka',
   zavrit: 'zavřít', cistText: ' číst text ☞', precteno: 'čtenářů: ', krat: '', zvukZap: 'zvuk: zap', zvukVyp: 'zvuk: vyp',
@@ -114,7 +127,7 @@ var T = EN ? {
   myslis: 'co si o tom myslíš', podpis: 'podpis', nepovinne: '(nepovinné)', naWeb: 'klidně to dej na web',
   poslat: 'poslat ☞', posilam: 'posílám…', diky: 'Díky! Došlo to. <span class="zvyraz">Majmi si to přečte.</span>',
   chyba: 'Něco se pokazilo. Zkus to za chvíli znovu.', navstev: 'návštěvníků: ', cist: '▶ přečíst nahlas', stop: '■ zastavit', stopKr: '■', ctiOdsud: 'klikni na odstavec = čti odsud · mezerník = pauza', zpetOdstavec: 'předchozí odstavec', dalOdstavec: 'další odstavec', menu: '☰ menu', menuZavrit: '✕ zavřít',
-  slov: 'slov', sdilet: 'sdílet ↗', zkopirovano: 'odkaz zkopírován ✓', nove: 'nové', odberNadpis: 'Ať ti nic neuteče', odberText: 'Nech mi mail a dám ti vědět, až sem přibude něco nového. Žádný spam, jen texty.', odberMail: 'tvuj@mail.cz', odberTlacitko: 'dej mi vědět ☞', odberRss: 'nebo odebírej přes RSS čtečku', odberDiky: 'Mám tě! Ozvu se, až bude něco nového.', hledat: 'hledat', hledatPopis: 'hledat v textech… (slovo, verš)', hledatMenu: 'hledat… (text, verš, „recenze“…)', nicNenalezeno: 'Nic. Zkus jiné slovo.', nahodny: '🎲 náhodný text', pokracovat: '↓ pokračovat, kde jsi skončil', citovat: 'citovat ↗', coRikaji: 'Co říkají lidi', k: 'k', papirCerstvy: 'papír: čerstvý', papirMesice: 'papír: % měs. starý', papirRoky: 'papír: % let starý', papirTip: 'Až papír zežloutne: texty tu doopravdy stárnou. Čím starší a čtenější, tím žlutější a ohmatanější.'
+  slov: 'slov', sdilet: 'sdílet ↗', zkopirovano: 'odkaz zkopírován ✓', nove: 'nové', odberNadpis: 'Ať ti nic neuteče', odberText: 'Nech mi mail a dám ti vědět, až sem přibude něco nového. Žádný spam, jen texty.', odberMail: 'tvuj@mail.cz', odberTlacitko: 'dej mi vědět ☞', odberRss: 'nebo odebírej přes RSS čtečku', odberDiky: 'Mám tě! Ozvu se, až bude něco nového.', hledat: 'hledat', hledatPopis: 'hledat v textech… (slovo, verš)', hledatMenu: 'hledat… (text, verš, „recenze“…)', nicNenalezeno: 'Nic. Zkus jiné slovo.', nahodny: '🎲 náhodný text', pokracovat: '↓ pokračovat, kde jsi skončil', citovat: 'citovat ↗', coRikaji: 'Co říkají lidi', k: 'k', naWebu: 'na webu', cteni: 'čtení', papirCerstvy: 'papír: čerstvý', papirMesice: 'papír: % měs. starý', papirRoky: 'papír: % let starý', papirTip: 'Až papír zežloutne: texty tu doopravdy stárnou. Čím starší a čtenější, tím žlutější a ohmatanější.'
 };
 
 var pohyb = !(window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches);
@@ -984,7 +997,7 @@ var Zvuk = (function () {
   var min = Math.max(1, Math.round(slov / 180));
   var cas = document.createElement('span');
   cas.className = 'doba';
-  cas.textContent = '~' + min + ' min';
+  cas.textContent = T.cteni + ' ~' + min + ' min';
   cas.title = slov + ' ' + T.slov;
   meta.insertBefore(cas, meta.querySelector('.precteno') || null);
 
@@ -1329,3 +1342,71 @@ if (location.hash === '#rukopis') {
   var _z = document.querySelector('.zalozky [aria-controls="rukopis"]');
   if (_z) { _z.click(); setTimeout(function () { _z.scrollIntoView({ block: 'start' }); }, 50); }
 }
+
+
+/* ---------- 19) Jak dlouho je text na webu (živý časovač) + uspořádání hlavičky textu ----------
+   řádek 1 = informace (druh · rok · vzniklo · čtení · na webu · papír · čtenáři)
+   řádek 2 = akce (přečíst nahlas · sdílet) */
+(function () {
+  function trvani(od, presne) {
+    var s = Math.max(0, Math.floor((Date.now() - od) / 1000));
+    var d = Math.floor(s / 86400), h = Math.floor(s % 86400 / 3600), m = Math.floor(s % 3600 / 60), x = s % 60;
+    var r = EN ? 'y' : 'r';
+    if (presne) {
+      var hms = (h < 10 ? '0' : '') + h + ':' + (m < 10 ? '0' : '') + m + ':' + (x < 10 ? '0' : '') + x;
+      if (d >= 365) return Math.floor(d / 365) + ' ' + r + ' ' + (d % 365) + ' d ' + hms;
+      return (d ? d + ' d ' : '') + hms;
+    }
+    if (d >= 365) return Math.floor(d / 365) + ' ' + r + ' ' + (d % 365) + ' d';
+    if (d) return d + ' d ' + h + ' h';
+    if (h) return h + ' h ' + m + ' min';
+    return m + ' min';
+  }
+  function cas(t) { return Date.parse(t.t || t.d); }
+  // karty v seznamech
+  var karty = [];
+  document.querySelectorAll('a.kus').forEach(function (a) {
+    var m = a.getAttribute('href').match(/([^/]+)\.html$/);
+    var t = m && TEXTY.filter(function (x) { return x.s === m[1]; })[0];
+    var v = a.querySelector('.vystrizek');
+    if (!t || !v || v.querySelector('.na-webu')) return;
+    var sp = document.createElement('span');
+    sp.className = 'na-webu';
+    v.appendChild(sp);
+    karty.push([sp, cas(t)]);
+  });
+  function karty_obnov() { karty.forEach(function (k) { k[0].textContent = T.naWebu + ' ' + trvani(k[1]); }); }
+  if (karty.length) { karty_obnov(); setInterval(karty_obnov, 60000); }
+
+  // stránka textu
+  var meta = document.querySelector('.hlava .meta');
+  var m = location.pathname.match(/texty\/([^/]+)\.html$/);
+  var t = m && TEXTY.filter(function (x) { return x.s === m[1]; })[0];
+  if (!meta) return;
+  var info = document.createElement('div');
+  info.className = 'meta-info';
+  var akce = document.createElement('div');
+  akce.className = 'meta-akce';
+  var druh = meta.querySelector('.dymo:not(button)');
+  var poradi = [druh];
+  Array.prototype.forEach.call(meta.children, function (el) {
+    if (el !== druh && el.tagName === 'SPAN' && !el.classList.contains('papir') && !el.classList.contains('doba') && !el.classList.contains('precteno') && !el.classList.contains('vzniklo')) poradi.push(el);
+  });
+  poradi.push(meta.querySelector('.vzniklo'), meta.querySelector('.doba'));
+  if (t) {
+    var w = document.createElement('span');
+    w.className = 'na-webu';
+    w.title = new Date(cas(t)).toLocaleString(EN ? 'en-GB' : 'cs-CZ');
+    var od = cas(t);
+    var tik = function () { w.textContent = T.naWebu + ' ' + trvani(od, true); };
+    tik(); setInterval(tik, 1000);
+    poradi.push(w);
+  }
+  poradi.push(meta.querySelector('.papir'), meta.querySelector('.precteno'));
+  poradi.forEach(function (el) { if (el) info.appendChild(el); });
+  meta.querySelectorAll('button').forEach(function (b) { akce.appendChild(b); });
+  meta.innerHTML = '';
+  meta.appendChild(info);
+  if (akce.children.length) meta.appendChild(akce);
+  meta.classList.add('meta-dva-radky');
+})();

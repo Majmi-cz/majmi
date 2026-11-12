@@ -106,7 +106,7 @@ for f in stranky():
 
 # seznam pro listování "předchozí / další" v zin.js
 j = open('zin.js', encoding='utf-8').read()
-data = 'var TEXTY = ' + json.dumps([{'s': s, 'n': cz, 'en': eng, 'k': 'texty', 'd': datum(s)[:10]} for s, cz, eng, _ in TEXTY] + [{'s': s, 'n': cz, 'en': eng, 'k': 'basne', 'd': datum(s)[:10]} for s, cz, eng in BASNE], ensure_ascii=False, indent=2) + ';'
+data = 'var TEXTY = ' + json.dumps([{'s': s, 'n': cz, 'en': eng, 'k': 'texty', 'd': datum(s)[:10], 't': datum(s)} for s, cz, eng, _ in TEXTY] + [{'s': s, 'n': cz, 'en': eng, 'k': 'basne', 'd': datum(s)[:10], 't': datum(s)} for s, cz, eng in BASNE], ensure_ascii=False, indent=2) + ';'
 j = re.sub(r'var TEXTY = \[.*?\];', lambda _: data, j, count=1, flags=re.S)
 open('zin.js', 'w', encoding='utf-8').write(j)
 
