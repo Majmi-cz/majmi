@@ -10,6 +10,8 @@ TEXTY = [  # v pořadí, jak vycházely (I., II., …): (soubor, česky, anglick
     ('hudebni-nastroj', 'Hudební nástroj', 'Musical Instrument', 'úvahy'),
     ('kdo-podrzi-petu', 'Kdo podrží Péťu?', 'Who Will Hold Péťa?', 'dialogy'),
     ('samet-a-smetana', 'Samet a Smetana', 'Velvet and Smetana', 'úvahy'),
+    ('slava-x-slama', 'Sláva × Sláma', 'Fame × Straw', 'úvahy'),
+    ('ma-smysl-to-prepisovat', 'Má smysl to přepisovat?', 'Is It Worth Rewriting?', 'úvahy'),
 ]
 BASNE = [  # (soubor v texty/, česky, anglicky)
     ('sestikraska', 'Šestikráska', 'Six-Petal Daisy'),

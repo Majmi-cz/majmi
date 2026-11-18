@@ -9,6 +9,8 @@
 | | | |
 |---|---|---|
 | básně | [Básně](https://majmi-cz.github.io/majmi/basne.html) | 5 básní |
+| VIII. | [Má smysl to přepisovat?](https://majmi-cz.github.io/majmi/texty/ma-smysl-to-prepisovat.html) | úvaha, 2026 |
+| VII. | [Sláva × Sláma](https://majmi-cz.github.io/majmi/texty/slava-x-slama.html) | úvaha, 2026 |
 | VI. | [Samet a Smetana](https://majmi-cz.github.io/majmi/texty/samet-a-smetana.html) | úvaha, 2026 |
 | V. | [Kdo podrží Péťu?](https://majmi-cz.github.io/majmi/texty/kdo-podrzi-petu.html) | dialog, 2026 |
 | IV. | [Hudební nástroj](https://majmi-cz.github.io/majmi/texty/hudebni-nastroj.html) | úvaha, 2026 |
