@@ -6,7 +6,23 @@
   <atom:link href="https://majmi-cz.github.io/majmi/feed.xml" rel="self" type="application/rss+xml"/>
   <description>Dialogy, úvahy a básně ze sešitu.</description>
   <language>cs</language>
-  <lastBuildDate>Thu, 12 Nov 2026 12:26:22 +0100</lastBuildDate>
+  <lastBuildDate>Wed, 18 Nov 2026 22:50:34 +0100</lastBuildDate>
+  <item>
+    <title>Sláva × Sláma</title>
+    <link>https://majmi-cz.github.io/majmi/texty/slava-x-slama.html</link>
+    <guid>https://majmi-cz.github.io/majmi/texty/slava-x-slama.html</guid>
+    <category>úvahy</category>
+    <pubDate>Wed, 18 Nov 2026 22:50:34 +0100</pubDate>
+    <description>Úvaha. Kdo se má líp: já, co doma hraje lolko, mistr světa, farmář na kupce slámy, nebo celebrita? O slávě a studeném zlatě.</description>
+  </item>
+  <item>
+    <title>Má smysl to přepisovat?</title>
+    <link>https://majmi-cz.github.io/majmi/texty/ma-smysl-to-prepisovat.html</link>
+    <guid>https://majmi-cz.github.io/majmi/texty/ma-smysl-to-prepisovat.html</guid>
+    <category>úvahy</category>
+    <pubDate>Wed, 18 Nov 2026 22:50:34 +0100</pubDate>
+    <description>Úvaha. Proč texty nepřepisuju načisto a proč na ně AI nesáhne. Autentičnost, duše a gramatické chyby.</description>
+  </item>
   <item>
     <title>Samet a Smetana</title>
     <link>https://majmi-cz.github.io/majmi/texty/samet-a-smetana.html</link>

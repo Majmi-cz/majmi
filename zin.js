@@ -54,6 +54,22 @@ var TEXTY = [
     "t": "2026-11-12T12:26:22+01:00"
   },
   {
+    "s": "slava-x-slama",
+    "n": "Sláva × Sláma",
+    "en": "Fame × Straw",
+    "k": "texty",
+    "d": "2026-11-18",
+    "t": "2026-11-18T22:50:34+01:00"
+  },
+  {
+    "s": "ma-smysl-to-prepisovat",
+    "n": "Má smysl to přepisovat?",
+    "en": "Is It Worth Rewriting?",
+    "k": "texty",
+    "d": "2026-11-18",
+    "t": "2026-11-18T22:50:34+01:00"
+  },
+  {
     "s": "sestikraska",
     "n": "Šestikráska",
     "en": "Six-Petal Daisy",
@@ -197,6 +213,26 @@ if (pohyb) document.documentElement.classList.add('js-pohyb');
       });
     });
   });
+
+  /* Dlouhé slovo (ŠESTIKRÁSKA, PŘEPISOVAT?) se nezalomí, tak se celý nadpis
+     zmenší, aby se vešel na šířku a nepřetékal z obrazovky. */
+  function vejdiSe() {
+    document.querySelectorAll('.vystrizky').forEach(function (el) {
+      el.style.fontSize = '';
+      var box = getComputedStyle(el).display === 'inline' ? el.parentElement : el;
+      var misto = box.clientWidth;
+      var nejsirsi = 0;
+      el.querySelectorAll('.slovo').forEach(function (w) { nejsirsi = Math.max(nejsirsi, w.getBoundingClientRect().width); });
+      if (misto > 0 && nejsirsi > misto) {
+        var vel = parseFloat(getComputedStyle(el).fontSize);
+        el.style.fontSize = Math.floor(vel * misto / nejsirsi * 0.96) + 'px';
+      }
+    });
+  }
+  vejdiSe();
+  if (document.fonts && document.fonts.ready) document.fonts.ready.then(vejdiSe);
+  var vejdiCas;
+  window.addEventListener('resize', function () { clearTimeout(vejdiCas); vejdiCas = setTimeout(vejdiSe, 150); });
 })();
 
 /* ---------- 3) Lístky a fotky se přilepí, až k nim doscrolluješ ---------- */
