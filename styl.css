@@ -711,3 +711,9 @@ h2.skupina .kolik-skup { border: 2px solid var(--toner-slaby); border-radius: 50
 .meta-akce .dymo { font-size: 13px; }
 .kus .na-webu { display: block; margin-top: 8px; font-size: 12px; color: var(--toner-slaby); font-variant-numeric: tabular-nums; }
 @media print { .meta-akce { display: none; } }
+
+/* uložit + „teď na stole“ */
+.nove.stitek-cte { background: var(--toner); color: var(--vystrizek); }
+a.kus:hover h3 .nove.stitek-cte { background: var(--toner); color: var(--vystrizek); }
+.meta .ulozit[aria-pressed="true"] { background: var(--zvyraz); }
+.menu-panel .kolik-menu { font: 15px var(--stroj); }
