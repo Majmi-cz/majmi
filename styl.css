@@ -717,3 +717,4 @@ h2.skupina .kolik-skup { border: 2px solid var(--toner-slaby); border-radius: 50
 a.kus:hover h3 .nove.stitek-cte { background: var(--toner); color: var(--vystrizek); }
 .meta .ulozit[aria-pressed="true"] { background: var(--zvyraz); }
 .menu-panel .kolik-menu { font: 15px var(--stroj); }
+.na-github { border-style: dashed; }

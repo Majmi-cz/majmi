@@ -1526,6 +1526,29 @@ var Ulozene = (function () {
   });
 })();
 
+/* ---------- 27) Schovaná zkratka na GitHub ----------
+   Ukáže se jen Majmimu: otevři kteroukoli stránku s #majmi na konci adresy
+   (vypnutí: #nemajmi). Pak je v horní liště štítek „github ↗“.
+   Na stránce textu vede rovnou na úpravu toho textu. */
+(function () {
+  var spravce = false;
+  try {
+    if (location.hash === '#majmi') localStorage.setItem('majmi-spravce', '1');
+    if (location.hash === '#nemajmi') localStorage.removeItem('majmi-spravce');
+    spravce = localStorage.getItem('majmi-spravce') === '1';
+  } catch (e) {}
+  var horni = document.querySelector('.horni');
+  if (!spravce || !horni) return;
+  var soubor = (location.pathname.match(/\/majmi\/(.+\.html)$/) || [])[1];
+  var a = document.createElement('a');
+  a.className = 'dymo na-github';
+  a.href = 'https://github.com/Majmi-cz/majmi' + (soubor ? '/edit/main/' + soubor : '');
+  a.target = '_blank'; a.rel = 'noopener';
+  a.textContent = 'github ↗';
+  a.title = 'jen pro Majmiho (vypnout: #nemajmi)';
+  horni.insertBefore(a, horni.querySelector('.info'));
+})();
+
 /* ---------- 19) Jak dlouho je text na webu (živý časovač) + uspořádání hlavičky textu ----------
    řádek 1 = informace (druh · rok · vzniklo · čtení · na webu · papír · čtenáři)
    řádek 2 = akce (přečíst nahlas · sdílet) */
